@@ -1,0 +1,23 @@
+* Split Month-over-dates to the right one.. [done]
+* Integrade Loanmodels (not as default just per one hour)
+	* Maybe more than one per company? (after 2h, after 5h, after 9h etc)
+* Livesearch [done]
+* Blend out savebutton sometimes..
+* Diagramms
+* Things live AHV or holiday-money which go directly away
+	* Maybe as "Special Credits"
+	* ...or loanSplits
+* Configs saved in DB
+------
+Later:
+------
+* Import/Export as Openoffice-Sheet, pdf, whatever
+* Saves in the Table too (where possible, so not calculated)
+* Sync? (owncloud)
+* Sheduler? (regular outgoings, etc)
+
+
+Optimations:
+* find a possibility to set the id in a itemwidget
+* init content on change tab (not all at once)
+* split tabs in separete classes

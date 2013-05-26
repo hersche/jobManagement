@@ -16,16 +16,19 @@ db = sqlite3.connect('jobmanagement.db')
 #aber wir brauchen ja den cursor, um die db initialisieren zu können.
 c = db.cursor()
 if fileExist == False:
-    c.execute("CREATE TABLE company (cid  INTEGER PRIMARY KEY, name text, loan real, loankind text, describtion text)")
+    c.execute("CREATE TABLE company (cid  INTEGER PRIMARY KEY, name text, loanModelId integer, describtion text)")
     #TODO add weekendDays to job (int) - -1 means no weekend
     c.execute("CREATE TABLE job (jid  INTEGER PRIMARY KEY, name text, place text, comment text, hours real, correctionHours real, weekendDays INTEGER, startdate text, enddate text, baustellenleiter text, active integer, companyid integer)")
     c.execute("CREATE TABLE charges (sid  INTEGER PRIMARY KEY, name text, value real, companyid integer)")
     c.execute("CREATE TABLE credit (crid  INTEGER PRIMARY KEY, value real, date text, payed integer, companyid integer)")
     c.execute("CREATE TABLE wcharges (wid  INTEGER PRIMARY KEY, jobid INTEGER, chargesid integer)")
     # if money is false, the measure is in percent..
-    c.execute("CREATE TABLE loanSplits (lsid  INTEGER PRIMARY KEY, name TEXT, value REAL, money INTEGER, companyid INTEGER)")
-    c.execute("CREATE TABLE loanModel (lmid  INTEGER PRIMARY KEY, name TEXT, perHours REAL)")
+    c.execute("CREATE TABLE loanSplit (lsid  INTEGER PRIMARY KEY, name TEXT, value REAL, money INTEGER, companyid INTEGER)")
+    c.execute("CREATE TABLE loanModel (lmid  INTEGER PRIMARY KEY, name TEXT, value REAL, perHours REAL)")
+    c.execute("CREATE TABLE config (coid INTEGER PRIMARY KEY,  key TEXT,  value TEXT)")
+    
     db.commit()
+    
 
 class Controller:
         def __init__(self):
@@ -44,8 +47,38 @@ class Controller:
                 if company.id == id:
                     return company
                 
-
-            
+class loanSplit:
+    #CREATE TABLE loanSplit (lsid  INTEGER PRIMARY KEY, name TEXT, value REAL, money INTEGER, companyid INTEGER)"
+    def __init__(self, id,  name, value,  money):
+        self.id = id
+        self.name = name
+        self.value = value
+        if money == 1:
+            #The value is calcucalted as money (.-)
+            self.money = True
+        else:
+            #The value is calculated as percent (%)
+            self.money = False
+    def save(self, name,  value,  money):
+        tmpMoney = 0
+        if money==True:
+            tmpMoney = 1
+        c.execute("UPDATE loanSplit SET name=?, value=?, money=? WHERE lsid=?",  (name, float(value), tmpMoney,  self.id))
+    
+class loanModel:
+    #CREATE TABLE loanModel (lmid  INTEGER PRIMARY KEY, name TEXT, value REAL, perHours REAL)
+    def __init__(self, id,  name,  value,  perHours):
+        self.id = id
+        self.name = name
+        self.value = value
+        self.perHours = perHours
+    def save(self, name,  value,  perHours):
+        c.execute("UPDATE loanModel SET name=?, value=?, perHours=? WHERE lmid=?",  (name, float(value), perHours,  self.id))
+        db.commit()
+    def delete(self):
+        c.execute("DELETE FROM loanModel WHERE lmid=?",  (self.id, ))
+        db.commit()
+    
 class charges:
     def __init__(self, id,  name,  value):
         self.id = id
@@ -81,15 +114,26 @@ class Credit:
         
 
 class Company:
-    def __init__(self, id,  name,  loan,  loankind, describtion):
+    def __init__(self, id,  name,  loanModelId, describtion):
         self.id = id
         self.name = name
-        self.loan = loan
-        self.loankind =loankind
+        self.loanModelId = loanModelId
         self.describtion = describtion
         self.updateJobList()
         self.updatechargesList()
         self.updateCreditList()
+        self.updateLoanSplitList()
+        self.updateLoanModel()
+        
+    def updateLoanModel(self):
+        c.execute("SELECT * FROM loanModel WHERE lmid = ?", (str(self.loanModelId)))
+        for row in c.fetchall():
+            self.loanModel = loanModel(row[0], row[1], row[2], row[3])
+    def updateLoanSplitList(self):
+        self.loanSplits = []
+        c.execute("SELECT * FROM loanSplit WHERE companyid = ?", (str(self.id)))
+        for row in c.fetchall():
+            self.loanSplits.append(loanSplit(row[0], row[1],row[2],row[3],row[4]))
     def updateCreditList(self):
         self.credits = []
         c.execute('select * from credit WHERE companyid = ?',  (str(self.id), ))

@@ -1,3 +1,7 @@
+#this code is GPL-FORCED so let changes open, pls!!
+#License @ http://www.gnu.org/licenses/gpl.txt
+#Author: skamster
+
 import sqlite3,  os.path,  sys,  re
 from main import Ui_MainWindow
 from PyQt4 import QtGui, QtCore
@@ -12,15 +16,15 @@ db = sqlite3.connect('jobmanagement.db')
 #aber wir brauchen ja den cursor, um die db initialisieren zu können.
 c = db.cursor()
 if fileExist == False:
-    c.execute('''CREATE TABLE company (cid  INTEGER PRIMARY KEY, name text, loan real, loankind text, describtion text)''')
+    c.execute("CREATE TABLE company (cid  INTEGER PRIMARY KEY, name text, loan real, loankind text, describtion text)")
     #TODO add weekendDays to job (int) - -1 means no weekend
-    c.execute('''CREATE TABLE job (jid  INTEGER PRIMARY KEY, name text, place text, comment text, hours real, correctionHours real, weekendDays INTEGER, startdate text, enddate text, baustellenleiter text, active integer, companyid integer)''')
-    c.execute('''CREATE TABLE charges (sid  INTEGER PRIMARY KEY, name text, value real, companyid integer)''')
-    c.execute('''CREATE TABLE credit (crid  INTEGER PRIMARY KEY, value real, date text, payed integer, companyid integer)''')
-    c.execute('''CREATE TABLE wcharges (wid  INTEGER PRIMARY KEY, jobid INTEGER, chargesid integer)''')
+    c.execute("CREATE TABLE job (jid  INTEGER PRIMARY KEY, name text, place text, comment text, hours real, correctionHours real, weekendDays INTEGER, startdate text, enddate text, baustellenleiter text, active integer, companyid integer)")
+    c.execute("CREATE TABLE charges (sid  INTEGER PRIMARY KEY, name text, value real, companyid integer)")
+    c.execute("CREATE TABLE credit (crid  INTEGER PRIMARY KEY, value real, date text, payed integer, companyid integer)")
+    c.execute("CREATE TABLE wcharges (wid  INTEGER PRIMARY KEY, jobid INTEGER, chargesid integer)")
     # if money is false, the measure is in percent..
-    c.execute('''CREATE TABLE loanSplits (lsid  INTEGER PRIMARY KEY, name TEXT, value REAL, money INTEGER, companyid INTEGER)''')
-    c.execute('''CREATE TABLE loanModel (lmid  INTEGER PRIMARY KEY, name TEXT, perHours REAL)''')
+    c.execute("CREATE TABLE loanSplits (lsid  INTEGER PRIMARY KEY, name TEXT, value REAL, money INTEGER, companyid INTEGER)")
+    c.execute("CREATE TABLE loanModel (lmid  INTEGER PRIMARY KEY, name TEXT, perHours REAL)")
     db.commit()
 
 class Controller:

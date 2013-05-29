@@ -130,9 +130,9 @@ class Company:
 
     def updateLoanSplitList(self):
         self.loanSplits = []
-        c.execute("SELECT * FROM loanSplit WHERE companyid = ?", (str(self.id)))
+        c.execute("SELECT * FROM loanSplit WHERE companyid = ?", (str(self.id), ))
         for row in c.fetchall():
-            self.loanSplits.append(loanSplit(row[0], row[1],row[2],row[3],row[4]))
+            self.loanSplits.append(loanSplit(row[0], row[1],row[2],row[3]))
     def updateCreditList(self):
         self.credits = []
         c.execute('select * from credit WHERE companyid = ?',  (str(self.id), ))
@@ -163,7 +163,7 @@ class Company:
             tmpMoney = 1
         else:
             tmpMoney = 0
-        c.execute("INSERT INTO loanSplit (name, value, money, companyid) VALUES (?,?,?,?)",  ( name, value, tmpMoney,   self.id))
+        c.execute("INSERT INTO loanSplit (name, value, money, companyid) VALUES (?,?,?,?)",  ( name, value, tmpMoney,  self.id))
         db.commit()
         
     def createCredit(self, value, date, payed):
@@ -312,6 +312,16 @@ class Gui(QtGui.QMainWindow):
         if selectFirst:
             self.ui.chargesList.setCurrentRow(0)
             self.onSpeseItemClick(self.ui.chargesList.currentItem())
+            
+    def updateLoanSplitList(self,  selectFirst=False,  name=""):
+        self.ui.loanSplitList.clear()
+        self.currentCompany.updateLoanSplitList()
+        for loanSplit in self.currentCompany.loanSplits:
+            self.ui.loanSplitList.addItem(loanSplit.name)
+        if selectFirst:
+            self.ui.loanSplitList.setCurrentRow(0)
+            #self.onLoanSplitItemClick(self.ui.loanSplitList.currentItem())
+            
     def updateCreditList(self,  selectFirst=False, valueDate=""):
         self.ui.creditList.clear()
         self.currentCompany.updateCreditList()
@@ -353,6 +363,7 @@ class Gui(QtGui.QMainWindow):
                 self.updateJobList(True)
                 self.updatechargesList(True)
                 self.updateCreditList(True)
+                self.updateLoanSplitList(True)
     def onSpeseItemClick(self, item):
         for spese in self.currentCompany.charges:
             if spese.name == item.text():

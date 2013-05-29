@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Tue May 28 21:44:05 2013
+# Created: Wed May 29 21:25:28 2013
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -201,15 +201,16 @@ class Ui_MainWindow(object):
         self.loanSplitName = QtGui.QLineEdit(self.formLayoutWidget_6)
         self.loanSplitName.setObjectName(_fromUtf8("loanSplitName"))
         self.formLayout_6.setWidget(2, QtGui.QFormLayout.FieldRole, self.loanSplitName)
-        self.loanSplitValue = QtGui.QLineEdit(self.formLayoutWidget_6)
-        self.loanSplitValue.setObjectName(_fromUtf8("loanSplitValue"))
-        self.formLayout_6.setWidget(3, QtGui.QFormLayout.FieldRole, self.loanSplitValue)
         self.loanSplitMoney = QtGui.QCheckBox(self.formLayoutWidget_6)
         self.loanSplitMoney.setObjectName(_fromUtf8("loanSplitMoney"))
         self.formLayout_6.setWidget(4, QtGui.QFormLayout.SpanningRole, self.loanSplitMoney)
         self.loanSplitList = QtGui.QListWidget(self.formLayoutWidget_6)
         self.loanSplitList.setObjectName(_fromUtf8("loanSplitList"))
         self.formLayout_6.setWidget(1, QtGui.QFormLayout.SpanningRole, self.loanSplitList)
+        self.loanSplitValue = QtGui.QDoubleSpinBox(self.formLayoutWidget_6)
+        self.loanSplitValue.setMaximum(9999.99)
+        self.loanSplitValue.setObjectName(_fromUtf8("loanSplitValue"))
+        self.formLayout_6.setWidget(3, QtGui.QFormLayout.FieldRole, self.loanSplitValue)
         self.createLoanSplit = QtGui.QPushButton(self.tab_2)
         self.createLoanSplit.setGeometry(QtCore.QRect(260, 10, 121, 23))
         self.createLoanSplit.setObjectName(_fromUtf8("createLoanSplit"))
@@ -493,7 +494,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(2)
+        self.tabWidget_2.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

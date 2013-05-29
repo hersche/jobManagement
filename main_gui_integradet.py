@@ -16,7 +16,7 @@ db = sqlite3.connect('jobmanagement.db')
 #aber wir brauchen ja den cursor, um die db initialisieren zu können.
 c = db.cursor()
 if fileExist == False:
-    c.execute("CREATE TABLE company (cid  INTEGER PRIMARY KEY, name text, loanModelId integer, describtion text)")
+    c.execute("CREATE TABLE company (cid  INTEGER PRIMARY KEY, name text, loan REAL, perHours REAL, describtion text)")
     #TODO add weekendDays to job (int) - -1 means no weekend
     c.execute("CREATE TABLE job (jid  INTEGER PRIMARY KEY, name text, place text, comment text, hours real, correctionHours real, weekendDays INTEGER, startdate text, enddate text, baustellenleiter text, active integer, companyid integer)")
     c.execute("CREATE TABLE charges (sid  INTEGER PRIMARY KEY, name text, value real, companyid integer)")
@@ -24,7 +24,6 @@ if fileExist == False:
     c.execute("CREATE TABLE wcharges (wid  INTEGER PRIMARY KEY, jobid INTEGER, chargesid integer)")
     # if money is false, the measure is in percent..
     c.execute("CREATE TABLE loanSplit (lsid  INTEGER PRIMARY KEY, name TEXT, value REAL, money INTEGER, companyid INTEGER)")
-    c.execute("CREATE TABLE loanModel (lmid  INTEGER PRIMARY KEY, name TEXT, value REAL, perHours REAL)")
     c.execute("CREATE TABLE config (coid INTEGER PRIMARY KEY,  key TEXT,  value TEXT)")
     
     db.commit()
@@ -33,8 +32,8 @@ if fileExist == False:
 class Controller:
         def __init__(self):
             self.updateList()
-        def createCompany(self, name,  loan,  loankind,  describtion):
-            c.execute("INSERT INTO company (name, loan,  loankind, describtion) VALUES (?,?,?,?);",  (name, loan,  loankind, describtion))
+        def createCompany(self, name,  loan,  perHours,  describtion):
+            c.execute("INSERT INTO company (name, loan,  perHours, describtion) VALUES (?,?,?,?);",  (name, loan,  perHours, describtion))
             db.commit()
             self.updateList()
         def updateList(self):
@@ -46,6 +45,21 @@ class Controller:
             for company in self.companylist:
                 if company.id == id:
                     return company
+                    
+class config:
+    #"CREATE TABLE config (coid INTEGER PRIMARY KEY,  key TEXT,  value TEXT)
+    def __init__(self,  id,  key,  value):
+        self.id = id
+        self.key = key
+        self.value = value
+        
+    def save(self, key,  value):
+        c.execute("UPDATE config SET key=?, value=? WHERE coid=?",  (key, value,  self.id))
+        db.commit()
+    def delete(self):
+        c.execute("DELETE FROM config WHERE coid=?",  (self.id, ))
+        db.commit()
+        
                 
 class loanSplit:
     #CREATE TABLE loanSplit (lsid  INTEGER PRIMARY KEY, name TEXT, value REAL, money INTEGER, companyid INTEGER)"
@@ -64,19 +78,8 @@ class loanSplit:
         if money==True:
             tmpMoney = 1
         c.execute("UPDATE loanSplit SET name=?, value=?, money=? WHERE lsid=?",  (name, float(value), tmpMoney,  self.id))
-    
-class loanModel:
-    #CREATE TABLE loanModel (lmid  INTEGER PRIMARY KEY, name TEXT, value REAL, perHours REAL)
-    def __init__(self, id,  name,  value,  perHours):
-        self.id = id
-        self.name = name
-        self.value = value
-        self.perHours = perHours
-    def save(self, name,  value,  perHours):
-        c.execute("UPDATE loanModel SET name=?, value=?, perHours=? WHERE lmid=?",  (name, float(value), perHours,  self.id))
-        db.commit()
     def delete(self):
-        c.execute("DELETE FROM loanModel WHERE lmid=?",  (self.id, ))
+        c.execute("DELETE FROM loanSplit WHERE lsid=?",  (self.id, ))
         db.commit()
     
 class charges:
@@ -114,21 +117,17 @@ class Credit:
         
 
 class Company:
-    def __init__(self, id,  name,  loanModelId, describtion):
+    def __init__(self, id,  name,  loan, perHours,  describtion):
         self.id = id
         self.name = name
-        self.loanModelId = loanModelId
+        self.loan = loan
+        self.perHours = perHours
         self.describtion = describtion
         self.updateJobList()
         self.updatechargesList()
         self.updateCreditList()
         self.updateLoanSplitList()
-        self.updateLoanModel()
-        
-    def updateLoanModel(self):
-        c.execute("SELECT * FROM loanModel WHERE lmid = ?", (str(self.loanModelId)))
-        for row in c.fetchall():
-            self.loanModel = loanModel(row[0], row[1], row[2], row[3])
+
     def updateLoanSplitList(self):
         self.loanSplits = []
         c.execute("SELECT * FROM loanSplit WHERE companyid = ?", (str(self.id)))
@@ -159,6 +158,14 @@ class Company:
             db.commit()
             self.updatechargesList()
             
+    def createLoanSplit(self, name, value, money):
+        if money == True:
+            tmpMoney = 1
+        else:
+            tmpMoney = 0
+        c.execute("INSERT INTO loanSplit (name, value, money, companyid) VALUES (?,?,?,?)",  ( name, value, tmpMoney,   self.id))
+        db.commit()
+        
     def createCredit(self, value, date, payed):
         if payed == True:
             tmpPayed = 1
@@ -167,8 +174,8 @@ class Company:
             c.execute("INSERT INTO credit (value, date, payed, companyid) VALUES (?,?,?,?)",  ( value, date, tmpPayed, self.id))
             db.commit()
     
-    def save(self, name,  loan,  loankind, describtion):
-            c.execute("UPDATE company SET name=?, loan=?, loankind=?, describtion=? WHERE cid=?",  (name, loan, loankind, describtion,  self.id))
+    def save(self, name,  loan,  perHours, describtion):
+            c.execute("UPDATE company SET name=?, loan=?, perHours=?, describtion=? WHERE cid=?",  (name, loan, perHours, describtion,  self.id))
             db.commit()
     def delete(self):
         c.execute("DELETE FROM company WHERE cid=?",  (self.id, ))
@@ -224,8 +231,6 @@ class Gui(QtGui.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.updateInfoExel()
-        self.ui.loanmodels.addItem("Std")
-        self.ui.loanmodels.addItem("3/6/12std")
         cd = QtCore.QDate.currentDate()
         self.ui.startdate.setDate(cd)
         self.ui.enddate.setDate(cd)
@@ -240,6 +245,7 @@ class Gui(QtGui.QMainWindow):
         self.ui.jobList.itemClicked.connect(self.onJobItemClick)
         self.ui.creditList.itemClicked.connect(self.onCreditItemClick)
         self.ui.chargesList.itemClicked.connect(self.onSpeseItemClick)
+        self.ui.loanSplitList.itemClicked.connect(self.onLoanSplitItemClick)
         #Company-Actions
         self.ui.createCompany.clicked.connect(self.onCreateCompany)
         self.ui.saveCompany.clicked.connect(self.onSaveCompany)
@@ -249,15 +255,20 @@ class Gui(QtGui.QMainWindow):
         self.ui.saveJob.clicked.connect(self.onSaveJob)
         self.ui.deleteJob.clicked.connect(self.onDeleteJob)
         #Spese-Actions
-        self.ui.createSpese.clicked.connect(self.onCreateSpese)
-        self.ui.saveSpese.clicked.connect(self.onSaveSpese)
-        self.ui.deleteSpese.clicked.connect(self.onDeleteSpese)
+        self.ui.createCharge.clicked.connect(self.onCreateSpese)
+        self.ui.saveCharge.clicked.connect(self.onSaveSpese)
+        self.ui.deleteCharge.clicked.connect(self.onDeleteSpese)
         self.ui.deleteWorkSpese.clicked.connect(self.onDeleteWorkSpese)
-        self.ui.addSpeseToJob.clicked.connect(self.onAddWorkSpese)
+        self.ui.addChargeToJob.clicked.connect(self.onAddWorkSpese)
         #Credit-Actions
         self.ui.createCredit.clicked.connect(self.onCreateCredit)
         self.ui.saveCredit.clicked.connect(self.onSaveCredit)
         self.ui.deleteCredit.clicked.connect(self.onDeleteCredit)
+        
+        #loanSplit-Actions
+        self.ui.createLoanSplit.clicked.connect(self.onCreateLoanSplit)
+        self.ui.saveLoanSplit.clicked.connect(self.onSaveLoanSplit)
+        self.ui.deleteLoanSplit.clicked.connect(self.onDeleteLoanSplit)
         
         #--------------------------
         #Showing Tab
@@ -336,6 +347,7 @@ class Gui(QtGui.QMainWindow):
                 self.currentCompany = company
                 self.ui.companyname.setText(self.currentCompany.name)
                 self.ui.loan.setValue(self.currentCompany.loan)
+                self.ui.perHours.setValue(self.currentCompany.perHours)
                 self.ui.companydescription.clear()
                 self.ui.companydescription.insertPlainText(str(self.currentCompany.describtion))
                 self.updateJobList(True)
@@ -346,6 +358,12 @@ class Gui(QtGui.QMainWindow):
             if spese.name == item.text():
                 self.ui.speseName.setText(spese.name)
                 self.ui.speseValue.setValue(spese.value)
+    def onLoanSplitItemClick(self, item):
+        for loanSplit in self.currentCompany.loanSplits:
+            if loanSplit.name == item.text():
+                self.ui.loanSplitName.setText(loanSplit.name)
+                self.ui.loanSplitValue.setValue(loanSplit.value)
+                self.ui.loanSplitMoney.setChecked(loanSplit.money)
     def onCreditItemClick(self, item):
         for credit in self.currentCompany.credits:
             if item is not None and (str(credit.value) +" "+credit.date) == item.text():
@@ -397,6 +415,30 @@ class Gui(QtGui.QMainWindow):
                 spese.delete()
                 self.ui.status.setText("Charge "+cm.text()+" deleted with success")
         self.updatechargesList(True)
+    #-------------
+    # loanSplit-Actions
+    #--------------
+    def onCreateLoanSplit(self):
+        self.currentCompany.createLoanSplit(self.ui.loanSplitName.text(), self.ui.loanSplitValue.text(),  self.ui.loanSplitMoney.isChecked())
+        # @TODO select the created!
+        self.updateLoanSplitList(True)
+    def onSaveLoanSplit(self):
+        cr = self.ui.loanSplitList.currentRow()
+        cm = self.ui.loanSplitList.currentItem()
+        for loanSplit in self.currentCompany.loanSplits:
+            if cm is not None and loanSplit.name == cm.text():
+                loanSplit.save(self.ui.loanSplitName.text(), self.ui.loanSplitValue.text(),  self.ui.loanSplitMoney.isChecked())
+                self.ui.status.setText("LoanSplit "+self.ui.loanSplitName.text()+" saved")
+        self.updatechargesList()
+        self.ui.loanSplitList.setCurrentRow(cr)
+        self.ui.loanSplitList.setCurrentItem(cm)
+    def onDeleteLoanSplit(self):
+        cm = self.ui.loanSplitList.currentItem()
+        for loanSplit in self.currentCompany.loanSplits:
+            if cm is not None and loanSplit.name == cm.text():
+                loanSplit.delete()
+                self.ui.status.setText("Charge "+cm.text()+" deleted")
+        self.updateLoanSplitList(True)
         
     #---------------------------------------
     # Credit-Actions
@@ -428,10 +470,10 @@ class Gui(QtGui.QMainWindow):
     # Company-Actions
     #---------------------
     def onCreateCompany(self):
-        mightyController.createCompany(self.ui.companyname.text(),  self.ui.loan.text(),  self.ui.loanmodels.currentText(),  self.ui.companydescription.toPlainText())
+        mightyController.createCompany(self.ui.companyname.text(),  self.ui.loan.text(),  self.ui.perHours.text(),  self.ui.companydescription.toPlainText())
         self.ui.companyList.addItem(self.ui.companyname.text())
     def onSaveCompany(self):
-        self.currentCompany.save(self.ui.companyname.text(),  self.ui.loan.text(), self.ui.loanmodels.currentText(), self.ui.companydescription.toPlainText())
+        self.currentCompany.save(self.ui.companyname.text(),  self.ui.loan.text(), self.ui.perHours.text(), self.ui.companydescription.toPlainText())
         self.updateCompanyList()
     def onDeleteCompany(self):
         self.currentCompany.delete()

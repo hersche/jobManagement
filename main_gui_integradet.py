@@ -562,10 +562,12 @@ class Gui(QtGui.QMainWindow):
                     if self.ui.filterCalendar.isChecked():
                         if job.startdate.toString("M") != job.enddate.toString("M"):
                             allDays = job.startdate.daysTo(job.enddate)
-                        if job.startdate.toString("M") == str(wcm):
-                            daySpace = allDays - job.enddate.day()+1
+                            if job.startdate.toString("M") == str(wcm):
+                                daySpace = allDays - job.enddate.day()+1
+                            else:
+                                daySpace = allDays - (job.startdate.daysInMonth() - job.startdate.day())
                         else:
-                            daySpace = allDays - (job.startdate.daysInMonth() - job.startdate.day())
+                            allDays = job.startdate.daysTo(job.enddate) + 1
                     if self.ui.filterCalendar.isChecked() and self.ui.filterInactive.isChecked() and infoSearch != "":
                         if ((job.startdate.toString("yyyy") == str(wcy)) or (job.enddate.toString("yyyy") == str(wcy))) and (((job.startdate.toString("M") == str(wcm))) or (job.enddate.toString("M") == str(wcm))) and (re.search(infoSearch,  jobname) is not None  or re.search(infoSearch,  jobplace) is not None or re.search(infoSearch,  jobcomment) is not None or re.search(infoSearch,  jobleader) is not None or re.search(infoSearch, companyname) is not None):
                             self.createJobRow(job, company, rowNr, wcm,  daySpace)  
@@ -606,9 +608,18 @@ class Gui(QtGui.QMainWindow):
         minSpace = daySpace * job.hours * 60
         hrSpace = daySpace * job.hours
         spesenSum = 0
+        
         for spese in job.wcharges:
             spesenSum += spese.value
-        loanSum = company.loan * hrSpace
+        loanSplitSum = 0
+        for loanSplit in company.loanSplits:
+            if loanSplit.money:
+                loanSplitSum += loanSplit.value
+            else:
+                loanSplitSum += (company.loan / 100) * loanSplit.value
+        realLoan = (company.loan - loanSplitSum) 
+        loanSum = realLoan * (hrSpace / company.perHours)
+        
         self.sum = self.sum + loanSum + spesenSum
         self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(company.name) ))
         colNr = colNr + 1
@@ -618,7 +629,7 @@ class Gui(QtGui.QMainWindow):
         colNr = colNr + 1
         self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(job.baustellenleiter) ))
         colNr = colNr + 1
-        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(company.loan * hrSpace) + ".-" ))
+        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(loanSum) + ".-" ))
         colNr = colNr + 1
         self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(hrSpace) +" Std"))
         colNr = colNr + 1

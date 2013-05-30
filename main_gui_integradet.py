@@ -280,7 +280,11 @@ class Gui(QtGui.QMainWindow):
         self.ui.workCalendar.currentPageChanged.connect(self.updateInfoExel)
         self.ui.filterAll.clicked.connect(self.updateInfoExel)
         self.ui.filterCalendar.clicked.connect(self.updateInfoExel)
+        self.ui.filterInactive.clicked.connect(self.updateInfoExel)
         self.ui.infoSearch.textChanged.connect(self.updateInfoExel)
+        #--------------------------
+        # CompanyView
+        #---------------------------
         self.ui.companyViewList.currentIndexChanged.connect(self.updateCompanyView)
         self.ui.companyViewCalendar.currentPageChanged.connect(self.updateCompanyView)
         self.ui.companyViewCalendarFilter.clicked.connect(self.updateCompanyView)
@@ -543,7 +547,7 @@ class Gui(QtGui.QMainWindow):
                         job.addSpese(spese.id)
                         job.updateWchargesList()
         self.updateWorkchargesList()
-    def calcDaySpace(self,  startdate,  enddate,  cm):
+    def calcDaySpace(self,  startdate,  enddate,  cm,  weekendDays):
         if startdate.toString("M") != enddate.toString("M"):
             allDays = startdate.daysTo(enddate)
             if startdate.toString("M") == str(cm):
@@ -552,6 +556,9 @@ class Gui(QtGui.QMainWindow):
                 daySpace = allDays - (startdate.daysInMonth() - startdate.day())
         else:
             daySpace = startdate.daysTo(enddate) + 1
+        if daySpace > 7:
+            weekendPart = (daySpace / 7) * weekendDays
+            daySpace = daySpace - weekendPart
         return daySpace
     #--------------------------
     # Showing-Tab
@@ -577,6 +584,7 @@ class Gui(QtGui.QMainWindow):
                 insertARow = False
                 daySpace = job.startdate.daysTo(job.enddate) + 1
                 if self.ui.filterAll.isChecked():
+                    
                     if self.ui.infoSearch.text() != "":
                         jobname = job.name.lower()
                         jobplace = job.place.lower()
@@ -584,13 +592,22 @@ class Gui(QtGui.QMainWindow):
                         jobcomment = job.comment.lower()
                         companyname = company.name.lower()                
                     if self.ui.filterCalendar.isChecked():
-                        daySpace = self.calcDaySpace(job.startdate,  job.enddate, wcm)
+                        daySpace = self.calcDaySpace(job.startdate,  job.enddate, wcm,  job.weekendDays)
+                    #cal + search
                     if self.ui.filterCalendar.isChecked() and self.ui.filterInactive.isChecked() and infoSearch != "":
-                        if ((job.startdate.toString("yyyy") == str(wcy)) or (job.enddate.toString("yyyy") == str(wcy))) and (((job.startdate.toString("M") == str(wcm))) or (job.enddate.toString("M") == str(wcm))) and (re.search(infoSearch,  jobname) is not None  or re.search(infoSearch,  jobplace) is not None or re.search(infoSearch,  jobcomment) is not None or re.search(infoSearch,  jobleader) is not None or re.search(infoSearch, companyname) is not None):
+                        if (((job.startdate.month() == wcm) and (job.startdate.year() == wcy)) or (((job.enddate.month() == wcm)) and (job.enddate.year()== wcy)))and (re.search(infoSearch,  jobname) is not None  or re.search(infoSearch,  jobplace) is not None or re.search(infoSearch,  jobcomment) is not None or re.search(infoSearch,  jobleader) is not None or re.search(infoSearch, companyname) is not None):
                             self.createJobRow(job, company, rowNr, wcm,  daySpace) 
                             insertARow = True
                             rowNr = rowNr + 1
                             self.ui.infoExel.insertRow(rowNr)
+                    #cal +inactive + search
+                    if self.ui.filterCalendar.isChecked() and self.ui.filterInactive.isChecked() == False and infoSearch != "":
+                        if (((job.startdate.month() == wcm) and (job.startdate.year() == wcy)) or (((job.enddate.month() == wcm)) and (job.enddate.year()== wcy)))and (re.search(infoSearch,  jobname) is not None  or re.search(infoSearch,  jobplace) is not None or re.search(infoSearch,  jobcomment) is not None or re.search(infoSearch,  jobleader) is not None or re.search(infoSearch, companyname) is not None) and job.active == 1:
+                            self.createJobRow(job, company, rowNr, wcm,  daySpace) 
+                            insertARow = True
+                            rowNr = rowNr + 1
+                            self.ui.infoExel.insertRow(rowNr)
+                    #search
                     elif self.ui.filterCalendar.isChecked() == False and self.ui.filterInactive.isChecked() and infoSearch != "":
                         jobname = job.name.lower()
                         jobplace = job.place.lower()
@@ -602,19 +619,36 @@ class Gui(QtGui.QMainWindow):
                             rowNr = rowNr + 1
                             self.ui.infoExel.insertRow(rowNr)
                             insertARow = True
+                    #----- no filters (but filter@all)
                     elif self.ui.filterCalendar.isChecked() == False and self.ui.filterInactive.isChecked() and infoSearch == "":
                         self.createJobRow(job, company, rowNr, wcm,  daySpace)  
                         rowNr = rowNr + 1
                         self.ui.infoExel.insertRow(rowNr)
                         insertARow = True
+                    #calendar
                     elif self.ui.filterCalendar.isChecked() and self.ui.filterInactive.isChecked() and infoSearch == "":
-                        if ((job.startdate.month() == str(wcm)) and (job.startdate.year() == str(wcy))) or ((job.enddate.month() == str(wcm))) and (job.enddate.year()== str(wcy)):
+                        if ((job.startdate.month() == wcm) and (job.startdate.year() == wcy)) or (((job.enddate.month() == wcm)) and (job.enddate.year()== wcy)):
                           self.createJobRow(job, company, rowNr, wcm,  daySpace)  
                           rowNr = rowNr + 1
                           self.ui.infoExel.insertRow(rowNr)
                           insertARow = True
-                    elif self.ui.filterCalendar.isChecked() and self.ui.filterInactive.isChecked() == False:
-                        if (((job.startdate.month() == str(wcm)) and (job.startdate.year() == str(wcy))) or ((job.enddate.month() == str(wcm))) and (job.enddate.year()== str(wcy)) and job.active == 1):
+                    #inactive calendar
+                    elif self.ui.filterCalendar.isChecked() and self.ui.filterInactive.isChecked() == False and infoSearch == "":
+                        if (((job.startdate.month() == wcm) and (job.startdate.year() == wcy)) or ((job.enddate.month() == wcm)) and (job.enddate.year()== wcy) and job.active == 1):
+                            self.createJobRow(job, company, rowNr,  wcm,  daySpace)
+                            rowNr = rowNr + 1
+                            self.ui.infoExel.insertRow(rowNr)
+                            insertARow = True
+                    #inactive
+                    elif self.ui.filterCalendar.isChecked() ==False and self.ui.filterInactive.isChecked() == False and infoSearch == "":
+                        if  job.active == 1:
+                            self.createJobRow(job, company, rowNr,  wcm,  daySpace)
+                            rowNr = rowNr + 1
+                            self.ui.infoExel.insertRow(rowNr)
+                            insertARow = True
+                    #inactive + search
+                    elif self.ui.filterCalendar.isChecked() ==False and self.ui.filterInactive.isChecked() == False and infoSearch != "":
+                        if  (re.search(infoSearch,  jobname) is not None  or re.search(infoSearch,  jobplace) is not None or re.search(infoSearch,  jobcomment) is not None or re.search(infoSearch,  jobleader) is not None or re.search(infoSearch,  companyname) is not None) and job.active == 1:
                             self.createJobRow(job, company, rowNr,  wcm,  daySpace)
                             rowNr = rowNr + 1
                             self.ui.infoExel.insertRow(rowNr)
@@ -729,7 +763,7 @@ class Gui(QtGui.QMainWindow):
                 for job in company.jobs:
                     if self.ui.companyViewCalendarFilter.isChecked():
                         if (job.startdate.month() == ccm and job.startdate.year() == ccy) or (job.enddate.month() == ccm and job.startdate.year() == ccy):
-                            days = self.calcDaySpace(job.startdate,  job.enddate, ccm)
+                            days = self.calcDaySpace(job.startdate,  job.enddate, ccm,  job.weekendDays)
                         else:
                             days = -1
                     else:
@@ -747,14 +781,9 @@ class Gui(QtGui.QMainWindow):
                             text += "<li>"+charge.name+": "+str(charge.value)+".- * "+str(days)+"d = "+str(charge.value * days)+".- </li>"
                         text += "</ul>"
                 text += "</ul> Sum: "+str(jobSum)+".- in "+str(jobHours)+"h / "+str(jobDays )+" d (+ "+str(chargeSum)+".- charges) <hr />"
-                
-                
-                #for charge in company.charges:
-                    #chargeString += charge.name+": "+str(charge.value)+".- <br />"
-
-                #now it's summary-time..
                 loanSplitSumDays = loanSplitSum * jobDays
                 result = jobSum - loanSplitSumDays - creditSum + chargeSum
+                #the end of all results..
                 text += "<ul><li><b>"+str(jobSum)+".-</b> </li><li><b> - "+str(loanSplitSumDays)+".-  </b>(Splits)</li><li><b> - "+str(creditSum)+".- </b> (Credits)</li> <li><b> + "+str(chargeSum)+".- </b> (Charges)</li></ul><hr /> Your Company should pay <b> "+str(result)+".- </b>"
                 self.ui.companyViewText.setText(text)
                 

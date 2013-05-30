@@ -106,10 +106,9 @@ class Credit:
             self.payed = False
         self.company = company
     def save(self, value,  date,  payed):
+        tmpPayed = 0
         if payed == True:
             tmpPayed = 1
-        else:
-            tmpPayed = 0
         c.execute("UPDATE credit SET value=?, date=?, payed=? WHERE crid=?",  (value, date, tmpPayed, str(self.id)))
         db.commit()
     def delete(self):
@@ -237,6 +236,8 @@ class Gui(QtGui.QMainWindow):
         self.ui.enddate.setDate(cd)
         self.ui.creditDate.setDate(cd)
         self.updateCompanyList(True)
+        self.updateInfoExel()
+        self.updateCompanyView()
         
         #-----------------------
         #Data-Tab
@@ -281,6 +282,8 @@ class Gui(QtGui.QMainWindow):
         self.ui.filterCalendar.clicked.connect(self.updateInfoExel)
         self.ui.infoSearch.textChanged.connect(self.updateInfoExel)
         self.ui.companyViewList.currentIndexChanged.connect(self.updateCompanyView)
+        self.ui.companyViewCalendar.currentPageChanged.connect(self.updateCompanyView)
+        self.ui.companyViewCalendarFilter.clicked.connect(self.updateCompanyView)
         
             #for job in company.jobs:
                 #self.ui.jobList.addItem(job.name)
@@ -321,7 +324,7 @@ class Gui(QtGui.QMainWindow):
             self.ui.loanSplitList.addItem(loanSplit.name)
         if selectFirst:
             self.ui.loanSplitList.setCurrentRow(0)
-            #self.onLoanSplitItemClick(self.ui.loanSplitList.currentItem())
+            self.onLoanSplitItemClick(self.ui.loanSplitList.currentItem())
             
     def updateCreditList(self,  selectFirst=False, valueDate=""):
         self.ui.creditList.clear()
@@ -381,6 +384,10 @@ class Gui(QtGui.QMainWindow):
             if item is not None and (str(credit.value) +" "+credit.date.toString(dbDateFormat)) == item.text():
                 self.ui.creditValue.setValue(credit.value)
                 self.ui.creditDate.setDate(credit.date)
+                if credit.payed:
+                    self.ui.creditPayed.setChecked(True)
+                else:
+                    self.ui.creditPayed.setChecked(False)
     def onJobItemClick(self,  item):
         for job in self.currentCompany.jobs:
             if item is not None and item.text() == job.name:
@@ -536,7 +543,16 @@ class Gui(QtGui.QMainWindow):
                         job.addSpese(spese.id)
                         job.updateWchargesList()
         self.updateWorkchargesList()
-        
+    def calcDaySpace(self,  startdate,  enddate,  cm):
+        if startdate.toString("M") != enddate.toString("M"):
+            allDays = startdate.daysTo(enddate)
+            if startdate.toString("M") == str(cm):
+                daySpace = allDays - enddate.day()+1
+            else:
+                daySpace = allDays - (startdate.daysInMonth() - startdate.day())
+        else:
+            daySpace = startdate.daysTo(enddate) + 1
+        return daySpace
     #--------------------------
     # Showing-Tab
     #--------------------------
@@ -566,14 +582,7 @@ class Gui(QtGui.QMainWindow):
                         jobcomment = job.comment.lower()
                         companyname = company.name.lower()                
                     if self.ui.filterCalendar.isChecked():
-                        if job.startdate.toString("M") != job.enddate.toString("M"):
-                            allDays = job.startdate.daysTo(job.enddate)
-                            if job.startdate.toString("M") == str(wcm):
-                                daySpace = allDays - job.enddate.day()+1
-                            else:
-                                daySpace = allDays - (job.startdate.daysInMonth() - job.startdate.day())
-                        else:
-                            daySpace = job.startdate.daysTo(job.enddate) + 1
+                        daySpace = self.calcDaySpace(job.startdate,  job.enddate, wcm)
                     if self.ui.filterCalendar.isChecked() and self.ui.filterInactive.isChecked() and infoSearch != "":
                         if ((job.startdate.toString("yyyy") == str(wcy)) or (job.enddate.toString("yyyy") == str(wcy))) and (((job.startdate.toString("M") == str(wcm))) or (job.enddate.toString("M") == str(wcm))) and (re.search(infoSearch,  jobname) is not None  or re.search(infoSearch,  jobplace) is not None or re.search(infoSearch,  jobcomment) is not None or re.search(infoSearch,  jobleader) is not None or re.search(infoSearch, companyname) is not None):
                             self.createJobRow(job, company, rowNr, wcm,  daySpace)  
@@ -664,56 +673,74 @@ class Gui(QtGui.QMainWindow):
         for company in mightyController.companylist:
             self.ui.companyViewList.addItem(company.name)
     def updateCompanyView(self):
+        ccm = self.ui.companyViewCalendar.monthShown()
+        #ccy = self.ui.companyViewCalendar.yearShown()
         for company in mightyController.companylist:
             if self.ui.companyViewList.currentText() == company.name:
-                self.ui.companyViewBasic.setText("Loan: "+str(company.loan)+" (per "+str(company.perHours)+"h)<br /> Blabla <br /> Blubb")
+                text = ""
+                text += "<h1>"+company.name+"</h1>"+company.describtion+"<br />Loan: "+str(company.loan)+" (per "+str(company.perHours)+"h)<hr />"
                 loanSplitSum = 0
-                loanSplitString = ""
                 #LoanSplits
+                text += "<ul>"
                 for ls in  company.loanSplits:
-                    loanSplitString += ls.name+": "+str(ls.value)
+                    text += "<li>"+ls.name+": "+str(ls.value)
                     if ls.money:
                         loanSplitSum += ls.value
-                        loanSplitString += ".-"
+                        text += ".- </li>"
                     else:
                         inMoney = (company.loan / 100) * ls.value
                         loanSplitSum += inMoney
-                        loanSplitString += "% ("+str(inMoney)+".-)"
-                    loanSplitString += " <br />"
-                loanSplitString += "<hr />Loansplitsum: "+str(loanSplitSum)+".-"
-                self.ui.companyViewLoanSplits.setText(loanSplitString)
-                chargeSum = 0
-                chargeString = ""
-                for charge in company.charges:
-                    chargeSum += charge.value
-                    chargeString += charge.name+": "+str(charge.value)+".- <br />"
-                chargeString += "<hr />Chargesum: "+str(chargeSum) +".-"
-                self.ui.companyViewCharges.setText(chargeString)
+                        text += "% ("+str(inMoney)+".-) </li>"
+                text += "</ul>"
+                if loanSplitSum > 0:
+                    text += "Loansplitsum: "+str(loanSplitSum)+".-<hr />"
                 creditSum = 0
-                creditString = ""
+                text += "<ul>"
                 for credit in company.credits:
-                    creditSum += credit.value
-                    creditString += credit.date.toString(dbDateFormat) + ": "+str(credit.value)
-                    if credit.payed:
-                        creditString +=".- is payed <br />"
-                    else:
-                        creditString +=".- is NOT payed <br />"
-                creditString += "<hr />Creditsum: "+str(creditSum)+".-"
-                self.ui.companyViewCredits.setText(creditString)
-                jobString = ""
+                    if credit.date.month() == ccm or  self.ui.companyViewCalendarFilter.isChecked() == False:
+                        creditSum += credit.value
+                        text += "<li>"+credit.date.toString(dbDateFormat) + ": "+str(credit.value)+""
+                        if credit.payed:
+                            text +=".- is payed </li>"
+                        else:
+                            text +=".- is NOT payed </li>"
+                text += "</ul>"
+                if creditSum > 0:
+                    text += "Creditsum: "+str(creditSum)+".- <hr />"
                 jobSum = 0
                 jobDays = 0
                 jobHours = 0
+                chargeSum = 0
+                text += "<ul>"
                 for job in company.jobs:
-                    days = job.startdate.daysTo(job.enddate) + 1
-                    jobDays += days
-                    hourSpace = days * (job.hours / company.perHours ) +job.correctionHours
-                    jobHours += hourSpace
-                    jobSum += company.loan * hourSpace
-                    jobString += job.name+": "+str(days)+"d * ("+str(job.hours)+"h /"+str(company.perHours)+" )+" +str(job.correctionHours)+"h = "+str(hourSpace)+"h * " + str(company.loan)+".-  ="+str(hourSpace*company.loan)+".- <br />"
-                jobString += "<hr /> Sum: "+str(jobSum)+".- in "+str(jobHours)+"h / "+str(jobDays )+" d"
-                self.ui.companyViewJobs.setText(jobString)
-                    #now it's summary-time..
+                    if self.ui.companyViewCalendarFilter.isChecked():
+                        if job.startdate.month() == ccm or job.enddate.month() == ccm:
+                            days = self.calcDaySpace(job.startdate,  job.enddate, ccm)
+                        else:
+                            days = -1
+                    else:
+                        days = job.startdate.daysTo(job.enddate) + 1
+                    if days != -1:
+                        jobDays += days
+                       
+                        hourSpace = days * (job.hours / company.perHours ) +job.correctionHours
+                        jobHours += hourSpace
+                        jobSum += company.loan * hourSpace
+                        text += "<li>"+job.name+": "+str(days)+"d * ("+str(job.hours)+"h /"+str(company.perHours)+" )+" +str(job.correctionHours)+"h = "+str(hourSpace)+"h * " + str(company.loan)+".-  ="+str(hourSpace*company.loan)+".- </li>"
+                        for charge in job.wcharges:
+                            chargeSum += charge.value *  days
+                            text += "<b>TAB</b> "+charge.name+": "+str(charge.value)+".- * "+str(days)+"d = "+str(charge.value * days)+".-"
+                text += "</ul> Sum: "+str(jobSum)+".- in "+str(jobHours)+"h / "+str(jobDays )+" d<hr />"
+                
+                
+                #for charge in company.charges:
+                    #chargeString += charge.name+": "+str(charge.value)+".- <br />"
+
+                #now it's summary-time..
+                loanSplitSumDays = loanSplitSum * jobDays
+                result = jobSum - loanSplitSumDays - creditSum + chargeSum
+                text += "<ul><li><b>"+str(jobSum)+".-</b> </li><li><b> - "+str(loanSplitSumDays)+".-  </b>(Splits)</li><li><b> - "+str(creditSum)+".- </b> (Credits)</li> <li><b> + "+str(chargeSum)+".- </b> (Charges)</li></ul><hr /> Your Company should pay <b> "+str(result)+".- </b>"
+                self.ui.companyViewText.setText(text)
                 
 
 app = QtGui.QApplication(sys.argv)

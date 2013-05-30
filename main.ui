@@ -1060,100 +1060,38 @@
        <attribute name="title">
         <string>Detailview Company</string>
        </attribute>
-       <widget class="QComboBox" name="companyViewList">
+       <widget class="QTextEdit" name="companyViewText">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>371</width>
-          <height>23</height>
+          <x>240</x>
+          <y>0</y>
+          <width>551</width>
+          <height>511</height>
          </rect>
         </property>
        </widget>
-       <widget class="QWidget" name="formLayoutWidget_8">
+       <widget class="QWidget" name="gridLayoutWidget">
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>30</y>
-          <width>421</width>
-          <height>471</height>
+          <y>0</y>
+          <width>234</width>
+          <height>197</height>
          </rect>
         </property>
-        <layout class="QFormLayout" name="formLayout_8">
-         <property name="fieldGrowthPolicy">
-          <enum>QFormLayout::ExpandingFieldsGrow</enum>
-         </property>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_28">
-           <property name="text">
-            <string>Companydetails</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0" colspan="2">
-          <widget class="QTextEdit" name="companyViewBasic"/>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_29">
-           <property name="text">
-            <string>LoanSplits (Per hour)</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0" colspan="2">
-          <widget class="QTextEdit" name="companyViewLoanSplits"/>
-         </item>
-         <item row="5" column="0">
-          <widget class="QLabel" name="label_30">
-           <property name="text">
-            <string>Charges</string>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="0" colspan="2">
-          <widget class="QTextEdit" name="companyViewCharges"/>
-         </item>
-         <item row="7" column="0">
-          <widget class="QLabel" name="label_31">
-           <property name="text">
-            <string>Credits</string>
-           </property>
-          </widget>
-         </item>
-         <item row="8" column="0" colspan="2">
-          <widget class="QTextEdit" name="companyViewCredits"/>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="formLayoutWidget_9">
-        <property name="geometry">
-         <rect>
-          <x>440</x>
-          <y>30</y>
-          <width>531</width>
-          <height>271</height>
-         </rect>
-        </property>
-        <layout class="QFormLayout" name="formLayout_9">
+        <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
-          <widget class="QLabel" name="label_33">
-           <property name="text">
-            <string>Jobs</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0" colspan="2">
-          <widget class="QTextEdit" name="companyViewJobs"/>
+          <widget class="QComboBox" name="companyViewList"/>
          </item>
          <item row="2" column="0">
-          <widget class="QLabel" name="label_32">
+          <widget class="QCalendarWidget" name="companyViewCalendar"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QCheckBox" name="companyViewCalendarFilter">
            <property name="text">
-            <string>Summary</string>
+            <string>Calendarfilter</string>
            </property>
           </widget>
-         </item>
-         <item row="3" column="0" colspan="2">
-          <widget class="QTextEdit" name="companyViewSummary"/>
          </item>
         </layout>
        </widget>

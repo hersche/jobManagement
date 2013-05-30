@@ -849,7 +849,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_4">
        <attribute name="title">
@@ -1033,9 +1033,9 @@
        <widget class="QWidget" name="horizontalLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>20</x>
+          <x>177</x>
           <y>430</y>
-          <width>271</width>
+          <width>261</width>
           <height>80</height>
          </rect>
         </property>
@@ -1055,6 +1055,19 @@
          </item>
         </layout>
        </widget>
+       <widget class="QTextEdit" name="infoExelCredits">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>430</y>
+          <width>151</width>
+          <height>76</height>
+         </rect>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_5">
        <attribute name="title">
@@ -1068,6 +1081,9 @@
           <width>551</width>
           <height>511</height>
          </rect>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QWidget" name="gridLayoutWidget">

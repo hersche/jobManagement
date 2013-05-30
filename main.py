@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Thu May 30 18:14:17 2013
+# Created: Thu May 30 19:57:11 2013
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -442,7 +442,7 @@ class Ui_MainWindow(object):
         self.graphView.setGeometry(QtCore.QRect(10, 10, 291, 131))
         self.graphView.setObjectName(_fromUtf8("graphView"))
         self.horizontalLayoutWidget = QtGui.QWidget(self.tab_4)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(20, 430, 271, 80))
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(177, 430, 261, 80))
         self.horizontalLayoutWidget.setObjectName(_fromUtf8("horizontalLayoutWidget"))
         self.horizontalLayout = QtGui.QHBoxLayout(self.horizontalLayoutWidget)
         self.horizontalLayout.setMargin(0)
@@ -456,11 +456,16 @@ class Ui_MainWindow(object):
         self.amount = QtGui.QLCDNumber(self.horizontalLayoutWidget)
         self.amount.setObjectName(_fromUtf8("amount"))
         self.horizontalLayout.addWidget(self.amount)
+        self.infoExelCredits = QtGui.QTextEdit(self.tab_4)
+        self.infoExelCredits.setGeometry(QtCore.QRect(20, 430, 151, 76))
+        self.infoExelCredits.setReadOnly(True)
+        self.infoExelCredits.setObjectName(_fromUtf8("infoExelCredits"))
         self.tabWidget_3.addTab(self.tab_4, _fromUtf8(""))
         self.tab_5 = QtGui.QWidget()
         self.tab_5.setObjectName(_fromUtf8("tab_5"))
         self.companyViewText = QtGui.QTextEdit(self.tab_5)
         self.companyViewText.setGeometry(QtCore.QRect(240, 0, 551, 511))
+        self.companyViewText.setReadOnly(True)
         self.companyViewText.setObjectName(_fromUtf8("companyViewText"))
         self.gridLayoutWidget = QtGui.QWidget(self.tab_5)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(0, 0, 234, 197))
@@ -535,7 +540,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(1)
         self.tabWidget_2.setCurrentIndex(2)
-        self.tabWidget_3.setCurrentIndex(1)
+        self.tabWidget_3.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

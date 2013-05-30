@@ -568,11 +568,13 @@ class Gui(QtGui.QMainWindow):
         self.ui.infoExel.setHorizontalHeaderLabels(("Firmenname", "Jobname",  "Ort",  "Leitung",  "Lohn",  "Zeit (ges.)",   "Spesen",  "Abzüge",  "Summe"))
         wcm = self.ui.workCalendar.monthShown()
         wcy = self.ui.workCalendar.yearShown()
+        creditString =""
         for company in mightyController.companylist:
             self.ui.infoExel.insertRow(rowNr)
             infoSearch = self.ui.infoSearch.text()
             infoSearch = infoSearch.lower()
             for job in company.jobs:
+                insertARow = False
                 daySpace = job.startdate.daysTo(job.enddate) + 1
                 if self.ui.filterAll.isChecked():
                     if self.ui.infoSearch.text() != "":
@@ -585,7 +587,8 @@ class Gui(QtGui.QMainWindow):
                         daySpace = self.calcDaySpace(job.startdate,  job.enddate, wcm)
                     if self.ui.filterCalendar.isChecked() and self.ui.filterInactive.isChecked() and infoSearch != "":
                         if ((job.startdate.toString("yyyy") == str(wcy)) or (job.enddate.toString("yyyy") == str(wcy))) and (((job.startdate.toString("M") == str(wcm))) or (job.enddate.toString("M") == str(wcm))) and (re.search(infoSearch,  jobname) is not None  or re.search(infoSearch,  jobplace) is not None or re.search(infoSearch,  jobcomment) is not None or re.search(infoSearch,  jobleader) is not None or re.search(infoSearch, companyname) is not None):
-                            self.createJobRow(job, company, rowNr, wcm,  daySpace)  
+                            self.createJobRow(job, company, rowNr, wcm,  daySpace) 
+                            insertARow = True
                             rowNr = rowNr + 1
                             self.ui.infoExel.insertRow(rowNr)
                     elif self.ui.filterCalendar.isChecked() == False and self.ui.filterInactive.isChecked() and infoSearch != "":
@@ -598,27 +601,39 @@ class Gui(QtGui.QMainWindow):
                             self.createJobRow(job, company, rowNr, wcm,  daySpace)  
                             rowNr = rowNr + 1
                             self.ui.infoExel.insertRow(rowNr)
+                            insertARow = True
                     elif self.ui.filterCalendar.isChecked() == False and self.ui.filterInactive.isChecked() and infoSearch == "":
                         self.createJobRow(job, company, rowNr, wcm,  daySpace)  
                         rowNr = rowNr + 1
                         self.ui.infoExel.insertRow(rowNr)
+                        insertARow = True
                     elif self.ui.filterCalendar.isChecked() and self.ui.filterInactive.isChecked() and infoSearch == "":
                         if ((job.startdate.toString("yyyy") == str(wcy)) or (job.enddate.toString("yyyy") == str(wcy))) and ((job.startdate.toString("M") == str(wcm))) or (job.enddate.toString("M") == str(wcm)):
                           self.createJobRow(job, company, rowNr, wcm,  daySpace)  
                           rowNr = rowNr + 1
                           self.ui.infoExel.insertRow(rowNr)
+                          insertARow = True
                     elif self.ui.filterCalendar.isChecked() and self.ui.filterInactive.isChecked() == False:
-                        if ((job.startdate.toString("yyyy") == str(wcy)) or (job.enddate.toString("yyyy") == str(wcy))) and ((job.startdate.toString("M") == str(wcm)) or (job.enddate.toString("M") == str(wcm)) and job.active == 1):
+                        if ((job.startdate.year() == str(wcy)) or (job.enddate.year() == str(wcy))) and ((job.startdate.month() == str(wcm)) or (job.enddate.month() == str(wcm)) and job.active == 1):
                             self.createJobRow(job, company, rowNr,  wcm,  daySpace)
                             rowNr = rowNr + 1
                             self.ui.infoExel.insertRow(rowNr)
+                            insertARow = True
                 else:
                     self.createJobRow(job, company,rowNr,  wcm,  daySpace)
                     rowNr = rowNr + 1
                     self.ui.infoExel.insertRow(rowNr)
+                    insertARow = True
             creditSum = 0
-            for credit in company.credits:
-                creditSum += credit.value
+            if insertARow:
+                #change to check credit-list-size
+                for credit in company.credits:
+                    if (self.ui.filterCalendar.isChecked() and credit.date.month() == wcm and credit.date.year() == wcy) or self.ui.filterCalendar.isChecked() == False:
+                        creditSum += credit.value
+                        creditString += "- "+credit.date.toString(dbDateFormat)+": "+str(credit.value)+"<br />"
+                if creditSum > 0:
+                    creditString += "------------<br />Sum: "+str(creditSum)
+            self.ui.infoExelCredits.setText(creditString)
             self.sum -= creditSum
             self.ui.amount.display(self.sum)
     def createJobRow(self,  job, company, rowNr,  wcm,  daySpace):
@@ -727,10 +742,12 @@ class Gui(QtGui.QMainWindow):
                         jobHours += hourSpace
                         jobSum += company.loan * hourSpace
                         text += "<li>"+job.name+": "+str(days)+"d * ("+str(job.hours)+"h /"+str(company.perHours)+" )+" +str(job.correctionHours)+"h = "+str(hourSpace)+"h * " + str(company.loan)+".-  ="+str(hourSpace*company.loan)+".- </li>"
+                        text += "<ul>"
                         for charge in job.wcharges:
                             chargeSum += charge.value *  days
-                            text += "<b>TAB</b> "+charge.name+": "+str(charge.value)+".- * "+str(days)+"d = "+str(charge.value * days)+".-"
-                text += "</ul> Sum: "+str(jobSum)+".- in "+str(jobHours)+"h / "+str(jobDays )+" d<hr />"
+                            text += "<li>"+charge.name+": "+str(charge.value)+".- * "+str(days)+"d = "+str(charge.value * days)+".- </li>"
+                        text += "</ul>"
+                text += "</ul> Sum: "+str(jobSum)+".- in "+str(jobHours)+"h / "+str(jobDays )+" d (+ "+str(chargeSum)+".- charges) <hr />"
                 
                 
                 #for charge in company.charges:

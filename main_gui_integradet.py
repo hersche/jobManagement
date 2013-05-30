@@ -78,6 +78,7 @@ class loanSplit:
         if money==True:
             tmpMoney = 1
         c.execute("UPDATE loanSplit SET name=?, value=?, money=? WHERE lsid=?",  (name, float(value), tmpMoney,  self.id))
+        db.commit()
     def delete(self):
         c.execute("DELETE FROM loanSplit WHERE lsid=?",  (self.id, ))
         db.commit()
@@ -279,7 +280,7 @@ class Gui(QtGui.QMainWindow):
         self.ui.filterAll.clicked.connect(self.updateInfoExel)
         self.ui.filterCalendar.clicked.connect(self.updateInfoExel)
         self.ui.infoSearch.textChanged.connect(self.updateInfoExel)
-
+        self.ui.companyViewList.currentIndexChanged.connect(self.updateCompanyView)
         
             #for job in company.jobs:
                 #self.ui.jobList.addItem(job.name)
@@ -340,7 +341,7 @@ class Gui(QtGui.QMainWindow):
                 for wspese in job.wcharges:
                     self.ui.workChargesList.addItem(wspese.name)
         if selectFirst:
-            self.ui.workchargesList.setCurrentRow(0)
+            self.ui.workChargesList.setCurrentRow(0)
             
     def onShowInactive(self):
         self.showInactive = self.ui.showInactive.isChecked()
@@ -367,8 +368,8 @@ class Gui(QtGui.QMainWindow):
     def onSpeseItemClick(self, item):
         for spese in self.currentCompany.charges:
             if spese.name == item.text():
-                self.ui.speseName.setText(spese.name)
-                self.ui.speseValue.setValue(spese.value)
+                self.ui.chargesName.setText(spese.name)
+                self.ui.chargesValue.setValue(spese.value)
     def onLoanSplitItemClick(self, item):
         for loanSplit in self.currentCompany.loanSplits:
             if loanSplit.name == item.text():
@@ -406,7 +407,7 @@ class Gui(QtGui.QMainWindow):
     # Charges-Actions
     #--------------
     def onCreateSpese(self):
-        self.currentCompany.createSpese(self.ui.speseName.text(), self.ui.speseValue.text())
+        self.currentCompany.createSpese(self.ui.chargesName.text(), self.ui.chargesValue.text())
         # @TODO select the created!
         self.updatechargesList(True)
     def onSaveSpese(self):
@@ -414,9 +415,11 @@ class Gui(QtGui.QMainWindow):
         cm = self.ui.chargesList.currentItem()
         for spese in self.currentCompany.charges:
             if cm is not None and spese.name == cm.text():
-                spese.save(self.ui.chargesName.text(), self.ui.speseValue.text())
-                self.ui.status.setText("Charge "+self.ui.chargesName.text()+" saved with success")
-        self.updatechargesList()
+                spese.save(self.ui.chargesName.text(), self.ui.chargesValue.text())
+                self.ui.status.setText("Charge "+self.ui.chargesName.text()+" saveds")
+        self.updatechargesList(True)
+        
+        self.updateWorkchargesList(True)
         self.ui.chargesList.setCurrentRow(cr)
         self.ui.chargesList.setCurrentItem(cm)
     def onDeleteSpese(self):
@@ -432,6 +435,7 @@ class Gui(QtGui.QMainWindow):
     def onCreateLoanSplit(self):
         self.currentCompany.createLoanSplit(self.ui.loanSplitName.text(), self.ui.loanSplitValue.text(),  self.ui.loanSplitMoney.isChecked())
         # @TODO select the created!
+        self.ui.status.setText("LoanSplit "+self.ui.loanSplitName.text()+" created")
         self.updateLoanSplitList(True)
     def onSaveLoanSplit(self):
         cr = self.ui.loanSplitList.currentRow()
@@ -440,7 +444,7 @@ class Gui(QtGui.QMainWindow):
             if cm is not None and loanSplit.name == cm.text():
                 loanSplit.save(self.ui.loanSplitName.text(), self.ui.loanSplitValue.text(),  self.ui.loanSplitMoney.isChecked())
                 self.ui.status.setText("LoanSplit "+self.ui.loanSplitName.text()+" saved")
-        self.updatechargesList()
+        self.updateLoanSplitList()
         self.ui.loanSplitList.setCurrentRow(cr)
         self.ui.loanSplitList.setCurrentItem(cm)
     def onDeleteLoanSplit(self):
@@ -456,7 +460,7 @@ class Gui(QtGui.QMainWindow):
     #---------------------------------------
     def onCreateCredit(self):
         self.currentCompany.createCredit(self.ui.creditValue.value(), self.ui.creditDate.text(), self.ui.creditPayed.isChecked())
-        self.ui.status.setText("credit created?!?"+str(self.ui.creditValue.value()))
+        self.ui.status.setText("credit created:"+str(self.ui.creditValue.value()))
         # @TODO select the created!
         self.updateCreditList(selectFirst=True)
     def onSaveCredit(self):
@@ -465,7 +469,7 @@ class Gui(QtGui.QMainWindow):
         for credit in self.currentCompany.credits:
             if cm is not None and (str(credit.value) +" "+credit.date) == cm.text():
                 credit.save(self.ui.creditValue.text(), self.ui.creditDate.text(),   self.ui.creditPayed.isChecked())
-                self.ui.status.setText("Credit "+self.ui.creditValue.text()+" saved with success")
+                self.ui.status.setText("Credit "+self.ui.creditValue.text()+" saved")
         self.updateCreditList()
         self.ui.creditList.setCurrentRow(cr)
     def onDeleteCredit(self):
@@ -473,7 +477,7 @@ class Gui(QtGui.QMainWindow):
         for credit in self.currentCompany.credits:
             if cm is not None and (str(credit.value) +" "+credit.date) == cm.text():
                 credit.delete()
-                self.ui.status.setText("Credit "+self.ui.creditValue.text()+" deleted with success")
+                self.ui.status.setText("Credit "+self.ui.creditValue.text()+" deleted")
         self.updateCreditList(True)
         
         
@@ -516,7 +520,7 @@ class Gui(QtGui.QMainWindow):
                 job.delete()
         self.updateJobList(True)
     def onDeleteWorkSpese(self):
-        cs = self.ui.workchargesList.currentItem()
+        cs = self.ui.workChargesList.currentItem()
         cm = self.ui.jobList.currentItem()
         for job in self.currentCompany.jobs: 
             if  cm is not None and job.name == str(cm.text()):
@@ -528,8 +532,9 @@ class Gui(QtGui.QMainWindow):
         for job in self.currentCompany.jobs:
             if  cm is not None and job.name == cm.text():
                 for spese in self.currentCompany.charges:
-                    if spese.name == cs.text():
+                    if cs is not None and spese.name == cs.text():
                         job.addSpese(spese.id)
+                        job.updateWchargesList()
         self.updateWorkchargesList()
         
     #--------------------------
@@ -541,9 +546,10 @@ class Gui(QtGui.QMainWindow):
         self.ui.infoExel.clear()
         #proof of concept, have to move..
         self.updateGraphicView()
+        self.updateCompanyViewList()
         rowNr = 0
         self.sum = 0
-        self.ui.infoExel.setHorizontalHeaderLabels(("Firmenname", "Jobname",  "Ort",  "Leitung",  "Lohn",  "Zeit (ges.)",  "Tage",  "Min",  "Spesen",  "Summe"))
+        self.ui.infoExel.setHorizontalHeaderLabels(("Firmenname", "Jobname",  "Ort",  "Leitung",  "Lohn",  "Zeit (ges.)",   "Spesen",  "Abzüge",  "Summe"))
         wcm = self.ui.workCalendar.monthShown()
         wcy = self.ui.workCalendar.yearShown()
         for company in mightyController.companylist:
@@ -601,16 +607,20 @@ class Gui(QtGui.QMainWindow):
                     self.createJobRow(job, company,rowNr,  wcm,  daySpace)
                     rowNr = rowNr + 1
                     self.ui.infoExel.insertRow(rowNr)
-                    
+            creditSum = 0
+            for credit in company.credits:
+                creditSum += credit.value
+            self.sum -= creditSum
             self.ui.amount.display(self.sum)
     def createJobRow(self,  job, company, rowNr,  wcm,  daySpace):
         colNr = 0
-        minSpace = daySpace * job.hours * 60
+        #minSpace = daySpace * job.hours * 60
         hrSpace = daySpace * job.hours
+
         spesenSum = 0
-        
         for spese in job.wcharges:
             spesenSum += spese.value
+        spesenSum = daySpace * spesenSum
         loanSplitSum = 0
         for loanSplit in company.loanSplits:
             if loanSplit.money:
@@ -618,9 +628,10 @@ class Gui(QtGui.QMainWindow):
             else:
                 loanSplitSum += (company.loan / 100) * loanSplit.value
         realLoan = (company.loan - loanSplitSum) 
-        loanSum = realLoan * (hrSpace / company.perHours)
+        realLoanSplitSum = loanSplitSum * (hrSpace / company.perHours)
+        loanSum = realLoan * (hrSpace / company.perHours) + spesenSum
         
-        self.sum = self.sum + loanSum + spesenSum
+        self.sum = self.sum + loanSum
         self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(company.name) ))
         colNr = colNr + 1
         self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(job.name) ))
@@ -629,15 +640,13 @@ class Gui(QtGui.QMainWindow):
         colNr = colNr + 1
         self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(job.baustellenleiter) ))
         colNr = colNr + 1
-        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(loanSum) + ".-" ))
+        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(loanSum) + ".- ("+str(realLoan)+"/std)" ))
         colNr = colNr + 1
-        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(hrSpace) +" Std"))
-        colNr = colNr + 1
-        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(daySpace)+ "d (*"+str(job.hours)+"h)"))
-        colNr = colNr + 1
-        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(minSpace)+" Min" ))
+        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(hrSpace) +" Std / "+str(daySpace)+ "d (*"+str(job.hours)+"h)"))
         colNr = colNr + 1
         self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(spesenSum)+".- " ))
+        colNr = colNr + 1
+        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(int(loanSplitSum))+".- ("+str(int(realLoanSplitSum))+".- @all)" ))
         colNr = colNr + 1
         self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(self.sum)+".-" ))
     def updateGraphicView(self):
@@ -650,7 +659,26 @@ class Gui(QtGui.QMainWindow):
         pen.setStyle(QtCore.Qt.DotLine)
         scene.addRect(40.00, 40.00, 40.00, 40.00, pen)
         self.ui.graphView.setScene(scene)
-        
+    def updateCompanyViewList(self):
+        self.ui.companyViewList.clear()
+        for company in mightyController.companylist:
+            self.ui.companyViewList.addItem(company.name)
+    def updateCompanyView(self):
+        for company in mightyController.companylist:
+            if self.ui.companyViewList.currentText() == company.name:
+                self.ui.companyViewBasic.setText("Loan: "+str(company.loan)+" (per "+str(company.perHours)+"h)<br /> Blabla <br /> Blubb")
+                loanSplitSum = 0
+                loanSplitString = ""
+                for ls in  company.loanSplits:
+                    loanSplitSum += ls.value
+                    loanSplitString += ls.name+": "+str(ls.value)
+                    if ls.money:
+                        loanSplitString += ".-"
+                    else:
+                        loanSplitString += "%"
+                    loanSplitString += " <br />"
+                self.ui.companyViewLoanSplits.setText(loanSplitString)
+            
 
 app = QtGui.QApplication(sys.argv)
 jobman = Gui()

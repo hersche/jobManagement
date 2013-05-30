@@ -6,8 +6,8 @@
 * Diagramms
 * Things live AHV or holiday-money which go directly away
 	* Maybe as "Special Credits"
-	* ...or loanSplits
-* Configs saved in DB
+	* ...or loanSplits [mostly done]
+* Configs saved in DB [dbStructure, Model & Gui done]
 ------
 Later:
 ------

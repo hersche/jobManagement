@@ -31,7 +31,7 @@
      <rect>
       <x>0</x>
       <y>40</y>
-      <width>1071</width>
+      <width>1091</width>
       <height>591</height>
      </rect>
     </property>
@@ -42,7 +42,7 @@
      </sizepolicy>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="data">
      <property name="sizePolicy">
@@ -286,7 +286,7 @@
         </rect>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
@@ -535,10 +535,10 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="speseName"/>
+           <widget class="QLineEdit" name="chargesName"/>
           </item>
           <item row="1" column="1">
-           <widget class="QDoubleSpinBox" name="speseValue"/>
+           <widget class="QDoubleSpinBox" name="chargesValue"/>
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_18">
@@ -839,209 +839,302 @@
      <attribute name="title">
       <string>Logics - Checks</string>
      </attribute>
-     <widget class="QTableWidget" name="infoExel">
+     <widget class="QTabWidget" name="tabWidget_3">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>160</y>
-        <width>1041</width>
-        <height>271</height>
+        <x>0</x>
+        <y>10</y>
+        <width>1071</width>
+        <height>541</height>
        </rect>
       </property>
-      <property name="editTriggers">
-       <set>QAbstractItemView::NoEditTriggers</set>
+      <property name="currentIndex">
+       <number>1</number>
       </property>
-      <property name="horizontalScrollMode">
-       <enum>QAbstractItemView::ScrollPerPixel</enum>
-      </property>
-      <property name="columnCount">
-       <number>10</number>
-      </property>
-      <column>
-       <property name="text">
-        <string>Firmenname</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Jobname</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Ort</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Leitung</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Lohn</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Zeit (ges)</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Std</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Min</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Spesen</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Summe</string>
-       </property>
-      </column>
-     </widget>
-     <widget class="QWidget" name="horizontalLayoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>170</x>
-        <y>440</y>
-        <width>271</width>
-        <height>80</height>
-       </rect>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="KLed" name="kled"/>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_10">
+      <widget class="QWidget" name="tab_4">
+       <attribute name="title">
+        <string>Overview</string>
+       </attribute>
+       <widget class="QTableWidget" name="infoExel">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>150</y>
+          <width>941</width>
+          <height>271</height>
+         </rect>
+        </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <property name="horizontalScrollMode">
+         <enum>QAbstractItemView::ScrollPerPixel</enum>
+        </property>
+        <property name="columnCount">
+         <number>9</number>
+        </property>
+        <column>
          <property name="text">
-          <string>Summe (gesammt)</string>
+          <string>Firmenname</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Jobname</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Ort</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Leitung</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Lohn</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Zeit (ges)</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Spesen</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Abzüge</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Summe</string>
+         </property>
+        </column>
+       </widget>
+       <widget class="QFrame" name="frame_7">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>591</width>
+          <height>151</height>
+         </rect>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QWidget" name="formLayoutWidget_5">
+         <property name="geometry">
+          <rect>
+           <x>260</x>
+           <y>20</y>
+           <width>271</width>
+           <height>82</height>
+          </rect>
+         </property>
+         <layout class="QFormLayout" name="formLayout_5">
+          <property name="labelAlignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="filterAll">
+            <property name="text">
+             <string> Filter @All</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QCheckBox" name="filterCalendar">
+            <property name="text">
+             <string>Filter Calendar</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_19">
+            <property name="text">
+             <string>Search</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="infoSearch">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QCheckBox" name="filterInactive">
+            <property name="text">
+             <string>Show Inactive</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QCalendarWidget" name="workCalendar">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>221</width>
+           <height>131</height>
+          </rect>
          </property>
         </widget>
-       </item>
-       <item>
-        <widget class="QLCDNumber" name="amount"/>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QFrame" name="frame_7">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>0</y>
-        <width>591</width>
-        <height>151</height>
-       </rect>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QWidget" name="formLayoutWidget_5">
-       <property name="geometry">
-        <rect>
-         <x>260</x>
-         <y>20</y>
-         <width>271</width>
-         <height>82</height>
-        </rect>
-       </property>
-       <layout class="QFormLayout" name="formLayout_5">
-        <property name="labelAlignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </widget>
+       <widget class="QFrame" name="graphFrame">
+        <property name="geometry">
+         <rect>
+          <x>590</x>
+          <y>0</y>
+          <width>311</width>
+          <height>151</height>
+         </rect>
         </property>
-        <item row="0" column="0">
-         <widget class="QCheckBox" name="filterAll">
-          <property name="text">
-           <string> Filter @All</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QCheckBox" name="filterCalendar">
-          <property name="text">
-           <string>Filter Calendar</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_19">
-          <property name="text">
-           <string>Search</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLineEdit" name="infoSearch">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QCheckBox" name="filterInactive">
-          <property name="text">
-           <string>Show Inactive</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QGraphicsView" name="graphView">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>291</width>
+           <height>131</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="horizontalLayoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>430</y>
+          <width>271</width>
+          <height>80</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="KLed" name="kled"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_10">
+           <property name="text">
+            <string>Summe (gesammt)</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLCDNumber" name="amount"/>
+         </item>
+        </layout>
+       </widget>
       </widget>
-      <widget class="QCalendarWidget" name="workCalendar">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>221</width>
-         <height>131</height>
-        </rect>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QFrame" name="graphFrame">
-      <property name="geometry">
-       <rect>
-        <x>620</x>
-        <y>0</y>
-        <width>311</width>
-        <height>151</height>
-       </rect>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QGraphicsView" name="graphView">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>291</width>
-         <height>131</height>
-        </rect>
-       </property>
+      <widget class="QWidget" name="tab_5">
+       <attribute name="title">
+        <string>Detailview Company</string>
+       </attribute>
+       <widget class="QComboBox" name="companyViewList">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>371</width>
+          <height>23</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QWidget" name="formLayoutWidget_8">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>30</y>
+          <width>421</width>
+          <height>471</height>
+         </rect>
+        </property>
+        <layout class="QFormLayout" name="formLayout_8">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::ExpandingFieldsGrow</enum>
+         </property>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_28">
+           <property name="text">
+            <string>Companydetails</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="2">
+          <widget class="QTextEdit" name="companyViewBasic"/>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_29">
+           <property name="text">
+            <string>LoanSplits</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0" colspan="2">
+          <widget class="QTextEdit" name="companyViewLoanSplits"/>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="label_30">
+           <property name="text">
+            <string>Charges</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0" colspan="2">
+          <widget class="QTextEdit" name="companyViewCharges"/>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="label_31">
+           <property name="text">
+            <string>Credits</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="0" colspan="2">
+          <widget class="QTextEdit" name="companyViewCredits"/>
+         </item>
+         <item row="9" column="0">
+          <widget class="QLabel" name="label_32">
+           <property name="text">
+            <string>Summary</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="0" colspan="2">
+          <widget class="QTextEdit" name="companyViewSummary"/>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </widget>
     </widget>
@@ -1049,53 +1142,89 @@
      <attribute name="title">
       <string comment="en">Settings</string>
      </attribute>
-     <widget class="QLineEdit" name="loanModelMinH">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>120</y>
-        <width>113</width>
-        <height>22</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="loanModelMaxH">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>150</y>
-        <width>113</width>
-        <height>22</height>
-       </rect>
-      </property>
-     </widget>
      <widget class="QWidget" name="formLayoutWidget_7">
       <property name="geometry">
        <rect>
-        <x>189</x>
-        <y>70</y>
-        <width>201</width>
-        <height>161</height>
+        <x>20</x>
+        <y>10</y>
+        <width>281</width>
+        <height>251</height>
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_7">
-       <property name="fieldGrowthPolicy">
-        <enum>QFormLayout::ExpandingFieldsGrow</enum>
-       </property>
-       <item row="2" column="1">
-        <widget class="QLineEdit" name="loanModelName"/>
-       </item>
-       <item row="1" column="1">
-        <widget class="QListWidget" name="loanModelList"/>
-       </item>
-       <item row="0" column="1">
+       <item row="2" column="0">
         <widget class="QLabel" name="label_23">
          <property name="text">
-          <string>Loanmodels</string>
+          <string>Configs</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QListWidget" name="configList"/>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_26">
+         <property name="text">
+          <string>Key</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_27">
+         <property name="text">
+          <string>Value</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="configKey"/>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="configValue"/>
+       </item>
+       <item row="6" column="0">
+        <widget class="QPushButton" name="createConfig">
+         <property name="text">
+          <string>Create</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QPushButton" name="saveConfig">
+         <property name="text">
+          <string>Save</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QPushButton" name="deleteConfig">
+         <property name="text">
+          <string>Delete</string>
          </property>
         </widget>
        </item>
       </layout>
+     </widget>
+     <widget class="QTextEdit" name="textEdit">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>10</y>
+        <width>421</width>
+        <height>261</height>
+       </rect>
+      </property>
+      <property name="undoRedoEnabled">
+       <bool>false</bool>
+      </property>
+      <property name="html">
+       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:18pt; text-decoration: underline;&quot;&gt;Avaible Config-Keys&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;dbDateFormat - look in &amp;quot;website&amp;quot; for format-possibilitys&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
      </widget>
     </widget>
    </widget>
@@ -1104,7 +1233,7 @@
      <rect>
       <x>760</x>
       <y>10</y>
-      <width>121</width>
+      <width>271</width>
       <height>16</height>
      </rect>
     </property>

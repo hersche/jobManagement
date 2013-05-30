@@ -1096,7 +1096,7 @@
          <item row="3" column="0">
           <widget class="QLabel" name="label_29">
            <property name="text">
-            <string>LoanSplits</string>
+            <string>LoanSplits (Per hour)</string>
            </property>
           </widget>
          </item>
@@ -1123,14 +1123,36 @@
          <item row="8" column="0" colspan="2">
           <widget class="QTextEdit" name="companyViewCredits"/>
          </item>
-         <item row="9" column="0">
+        </layout>
+       </widget>
+       <widget class="QWidget" name="formLayoutWidget_9">
+        <property name="geometry">
+         <rect>
+          <x>440</x>
+          <y>30</y>
+          <width>531</width>
+          <height>271</height>
+         </rect>
+        </property>
+        <layout class="QFormLayout" name="formLayout_9">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_33">
+           <property name="text">
+            <string>Jobs</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="QTextEdit" name="companyViewJobs"/>
+         </item>
+         <item row="2" column="0">
           <widget class="QLabel" name="label_32">
            <property name="text">
             <string>Summary</string>
            </property>
           </widget>
          </item>
-         <item row="10" column="0" colspan="2">
+         <item row="3" column="0" colspan="2">
           <widget class="QTextEdit" name="companyViewSummary"/>
          </item>
         </layout>

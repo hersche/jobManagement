@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Thu May 30 09:16:17 2013
+# Created: Thu May 30 10:28:38 2013
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -493,12 +493,24 @@ class Ui_MainWindow(object):
         self.companyViewCredits = QtGui.QTextEdit(self.formLayoutWidget_8)
         self.companyViewCredits.setObjectName(_fromUtf8("companyViewCredits"))
         self.formLayout_8.setWidget(8, QtGui.QFormLayout.SpanningRole, self.companyViewCredits)
-        self.label_32 = QtGui.QLabel(self.formLayoutWidget_8)
+        self.formLayoutWidget_9 = QtGui.QWidget(self.tab_5)
+        self.formLayoutWidget_9.setGeometry(QtCore.QRect(440, 30, 531, 271))
+        self.formLayoutWidget_9.setObjectName(_fromUtf8("formLayoutWidget_9"))
+        self.formLayout_9 = QtGui.QFormLayout(self.formLayoutWidget_9)
+        self.formLayout_9.setMargin(0)
+        self.formLayout_9.setObjectName(_fromUtf8("formLayout_9"))
+        self.label_33 = QtGui.QLabel(self.formLayoutWidget_9)
+        self.label_33.setObjectName(_fromUtf8("label_33"))
+        self.formLayout_9.setWidget(0, QtGui.QFormLayout.LabelRole, self.label_33)
+        self.companyViewJobs = QtGui.QTextEdit(self.formLayoutWidget_9)
+        self.companyViewJobs.setObjectName(_fromUtf8("companyViewJobs"))
+        self.formLayout_9.setWidget(1, QtGui.QFormLayout.SpanningRole, self.companyViewJobs)
+        self.label_32 = QtGui.QLabel(self.formLayoutWidget_9)
         self.label_32.setObjectName(_fromUtf8("label_32"))
-        self.formLayout_8.setWidget(9, QtGui.QFormLayout.LabelRole, self.label_32)
-        self.companyViewSummary = QtGui.QTextEdit(self.formLayoutWidget_8)
+        self.formLayout_9.setWidget(2, QtGui.QFormLayout.LabelRole, self.label_32)
+        self.companyViewSummary = QtGui.QTextEdit(self.formLayoutWidget_9)
         self.companyViewSummary.setObjectName(_fromUtf8("companyViewSummary"))
-        self.formLayout_8.setWidget(10, QtGui.QFormLayout.SpanningRole, self.companyViewSummary)
+        self.formLayout_9.setWidget(3, QtGui.QFormLayout.SpanningRole, self.companyViewSummary)
         self.tabWidget_3.addTab(self.tab_5, _fromUtf8(""))
         self.tabWidget.addTab(self.logic, _fromUtf8(""))
         self.settings = QtGui.QWidget()
@@ -641,9 +653,10 @@ class Ui_MainWindow(object):
         self.label_10.setText(_translate("MainWindow", "Summe (gesammt)", None))
         self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_4), _translate("MainWindow", "Overview", None))
         self.label_28.setText(_translate("MainWindow", "Companydetails", None))
-        self.label_29.setText(_translate("MainWindow", "LoanSplits", None))
+        self.label_29.setText(_translate("MainWindow", "LoanSplits (Per hour)", None))
         self.label_30.setText(_translate("MainWindow", "Charges", None))
         self.label_31.setText(_translate("MainWindow", "Credits", None))
+        self.label_33.setText(_translate("MainWindow", "Jobs", None))
         self.label_32.setText(_translate("MainWindow", "Summary", None))
         self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_5), _translate("MainWindow", "Detailview Company", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.logic), _translate("MainWindow", "Logics - Checks", None))

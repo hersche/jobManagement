@@ -42,7 +42,7 @@
      </sizepolicy>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="data">
      <property name="sizePolicy">
@@ -1128,6 +1128,9 @@
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_7">
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
        <item row="2" column="0">
         <widget class="QLabel" name="label_23">
          <property name="text">
@@ -1192,6 +1195,9 @@
       </property>
       <property name="undoRedoEnabled">
        <bool>false</bool>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
       <property name="html">
        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;

@@ -608,13 +608,13 @@ class Gui(QtGui.QMainWindow):
                         self.ui.infoExel.insertRow(rowNr)
                         insertARow = True
                     elif self.ui.filterCalendar.isChecked() and self.ui.filterInactive.isChecked() and infoSearch == "":
-                        if ((job.startdate.toString("yyyy") == str(wcy)) or (job.enddate.toString("yyyy") == str(wcy))) and ((job.startdate.toString("M") == str(wcm))) or (job.enddate.toString("M") == str(wcm)):
+                        if ((job.startdate.month() == str(wcm)) and (job.startdate.year() == str(wcy))) or ((job.enddate.month() == str(wcm))) and (job.enddate.year()== str(wcy)):
                           self.createJobRow(job, company, rowNr, wcm,  daySpace)  
                           rowNr = rowNr + 1
                           self.ui.infoExel.insertRow(rowNr)
                           insertARow = True
                     elif self.ui.filterCalendar.isChecked() and self.ui.filterInactive.isChecked() == False:
-                        if ((job.startdate.year() == str(wcy)) or (job.enddate.year() == str(wcy))) and ((job.startdate.month() == str(wcm)) or (job.enddate.month() == str(wcm)) and job.active == 1):
+                        if (((job.startdate.month() == str(wcm)) and (job.startdate.year() == str(wcy))) or ((job.enddate.month() == str(wcm))) and (job.enddate.year()== str(wcy)) and job.active == 1):
                             self.createJobRow(job, company, rowNr,  wcm,  daySpace)
                             rowNr = rowNr + 1
                             self.ui.infoExel.insertRow(rowNr)
@@ -640,7 +640,6 @@ class Gui(QtGui.QMainWindow):
         colNr = 0
         #minSpace = daySpace * job.hours * 60
         hrSpace = daySpace * job.hours
-
         spesenSum = 0
         for spese in job.wcharges:
             spesenSum += spese.value
@@ -654,8 +653,8 @@ class Gui(QtGui.QMainWindow):
         realLoan = (company.loan - loanSplitSum) 
         realLoanSplitSum = loanSplitSum * (hrSpace / company.perHours)
         loanSum = realLoan * (hrSpace / company.perHours) + spesenSum
-        
         self.sum = self.sum + loanSum
+        #building table..
         self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(company.name) ))
         colNr = colNr + 1
         self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(job.name) ))
@@ -689,7 +688,7 @@ class Gui(QtGui.QMainWindow):
             self.ui.companyViewList.addItem(company.name)
     def updateCompanyView(self):
         ccm = self.ui.companyViewCalendar.monthShown()
-        #ccy = self.ui.companyViewCalendar.yearShown()
+        ccy = self.ui.companyViewCalendar.yearShown()
         for company in mightyController.companylist:
             if self.ui.companyViewList.currentText() == company.name:
                 text = ""
@@ -712,7 +711,7 @@ class Gui(QtGui.QMainWindow):
                 creditSum = 0
                 text += "<ul>"
                 for credit in company.credits:
-                    if credit.date.month() == ccm or  self.ui.companyViewCalendarFilter.isChecked() == False:
+                    if (credit.date.month() == ccm and credit.date.year() == ccy) or  self.ui.companyViewCalendarFilter.isChecked() == False:
                         creditSum += credit.value
                         text += "<li>"+credit.date.toString(dbDateFormat) + ": "+str(credit.value)+""
                         if credit.payed:
@@ -729,7 +728,7 @@ class Gui(QtGui.QMainWindow):
                 text += "<ul>"
                 for job in company.jobs:
                     if self.ui.companyViewCalendarFilter.isChecked():
-                        if job.startdate.month() == ccm or job.enddate.month() == ccm:
+                        if (job.startdate.month() == ccm and job.startdate.year() == ccy) or (job.enddate.month() == ccm and job.startdate.year() == ccy):
                             days = self.calcDaySpace(job.startdate,  job.enddate, ccm)
                         else:
                             days = -1

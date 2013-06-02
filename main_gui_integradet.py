@@ -442,8 +442,8 @@ class Gui(QtGui.QMainWindow):
                 self.ui.weekendDays.setValue(job.weekendDays)
                 self.ui.startdate.setDate(job.startdate)
                 self.ui.enddate.setDate(job.enddate)
-                self.ui.daysCalc.setText(str(job.startdate.daysTo(job.enddate)+1)+  tr("days"))
-                self.ui.hoursCalc.setText(str((job.startdate.daysTo(job.enddate)+1)*job.hours)+ tr(" hours"))
+                self.ui.daysCalc.setText(str(job.startdate.daysTo(job.enddate)+1)+ " "+ tr("days"))
+                self.ui.hoursCalc.setText(str((job.startdate.daysTo(job.enddate)+1)*job.hours)+" "+ tr(" hours"))
                 self.updateWorkchargesList()
                 if job.active == 1:
                     self.ui.active.setChecked(True)
@@ -867,7 +867,10 @@ app = QtGui.QApplication(sys.argv)
 lang = ""
 for config in mightyController.configlist:
     if config.key == "lang" or config.key == "language":
-        lang=config.value
+        if os.path.isfile(config.value):
+            lang=config.value
+        elif os.path.isfile(config.value+".qm"):
+            lang=config.value+".qm"
 translator = QtCore.QTranslator()
 translator.load(lang,"./")
 app.installTranslator(translator)

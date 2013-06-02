@@ -167,17 +167,20 @@ class Company:
         db.commit()
         
     def createCredit(self, value, date, payed):
-        if payed == True:
+        if payed:
             tmpPayed = 1
         else:
             tmpPayed = 0
-            c.execute("INSERT INTO credit (value, date, payed, companyid) VALUES (?,?,?,?)",  ( value, date, tmpPayed, self.id))
-            db.commit()
+        c.execute("INSERT INTO credit (value, date, payed, companyid) VALUES (?,?,?,?)",  ( value, date, tmpPayed, self.id))
+        db.commit()
     
     def save(self, name,  loan,  perHours, describtion):
             c.execute("UPDATE company SET name=?, loan=?, perHours=?, describtion=? WHERE cid=?",  (name, loan, perHours, describtion,  self.id))
             db.commit()
     def delete(self):
+        c.execute("DELETE FROM job WHERE companyid=?",  (self.id, ))
+        c.execute("DELETE FROM charges WHERE companyid=?",  (self.id, ))
+        c.execute("DELETE FROM loanSplit WHERE companyid=?",  (self.id, ))
         c.execute("DELETE FROM company WHERE cid=?",  (self.id, ))
         db.commit()
             
@@ -219,6 +222,7 @@ class Job:
             c.execute("UPDATE job SET name=?, place=?, comment=?, hours=?, correctionHours=?, weekendDays=?, startdate=?, enddate=?, baustellenleiter=?, active=?, companyid=? WHERE jid=?",  (name, place,  comment, hours, correctionHours, weekendDays,  startdate, enddate, baustellenleiter, tmpActive, companyid, self.id))
             db.commit()
     def delete(self):
+        c.execute("DELETE FROM wcharges WHERE jobid=?",  (self.id, ))
         c.execute("DELETE FROM job WHERE jid=?",  (self.id, ))
         db.commit()
         
@@ -288,9 +292,7 @@ class Gui(QtGui.QMainWindow):
         self.ui.companyViewList.currentIndexChanged.connect(self.updateCompanyView)
         self.ui.companyViewCalendar.currentPageChanged.connect(self.updateCompanyView)
         self.ui.companyViewCalendarFilter.clicked.connect(self.updateCompanyView)
-        
-            #for job in company.jobs:
-                #self.ui.jobList.addItem(job.name)
+    
     
     #----------------------
     # Updaters
@@ -547,6 +549,20 @@ class Gui(QtGui.QMainWindow):
                         job.addSpese(spese.id)
                         job.updateWchargesList()
         self.updateWorkchargesList()
+    def rounder(self, nr):
+        origNr = nr
+        intNr = int(nr)
+        afterComma = nr - intNr
+        stringComma = str(afterComma)
+        if len(stringComma) > 5:
+            if int(stringComma[4:5]) > 5:
+                correctAfterComma = int(stringComma[2:4]) + 1
+            else:
+                correctAfterComma = int(stringComma[2:4])
+            floatString = str(intNr)+"."+str(correctAfterComma)
+            return floatString
+        else:
+            return str(origNr)
     def calcDaySpace(self,  startdate,  enddate,  cm,  weekendDays):
         if startdate.toString("M") != enddate.toString("M"):
             allDays = startdate.daysTo(enddate)
@@ -697,15 +713,15 @@ class Gui(QtGui.QMainWindow):
         colNr = colNr + 1
         self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(job.baustellenleiter) ))
         colNr = colNr + 1
-        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(loanSum) + ".- ("+str(realLoan)+"/std)" ))
+        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(self.rounder(loanSum) + ".- ("+self.rounder(realLoan)+"/std)" ))
         colNr = colNr + 1
-        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(hrSpace) +" Std / "+str(daySpace)+ "d (*"+str(job.hours)+"h)"))
+        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(self.rounder(hrSpace) +" Std / "+self.rounder(daySpace)+ "d (*"+str(job.hours)+"h)"))
         colNr = colNr + 1
-        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(spesenSum)+".- " ))
+        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(self.rounder(spesenSum)+".- " ))
         colNr = colNr + 1
-        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(int(loanSplitSum))+".- ("+str(int(realLoanSplitSum))+".- @all)" ))
+        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(self.rounder(loanSplitSum)+".- ("+self.rounder(realLoanSplitSum)+".- @all)" ))
         colNr = colNr + 1
-        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(self.sum)+".-" ))
+        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(self.rounder(self.sum)+".-" ))
     def updateGraphicView(self):
         pen= QtGui.QPen(QtCore.Qt.red)
         pen.setCapStyle(QtCore.Qt.RoundCap)
@@ -738,10 +754,10 @@ class Gui(QtGui.QMainWindow):
                     else:
                         inMoney = (company.loan / 100) * ls.value
                         loanSplitSum += inMoney
-                        text += "% ("+str(inMoney)+".-) </li>"
+                        text += "% ("+self.rounder(inMoney)+".-) </li>"
                 text += "</ul>"
                 if loanSplitSum > 0:
-                    text += "Loansplitsum: "+str(loanSplitSum)+".-<hr />"
+                    text += "Loansplitsum: "+self.rounder(loanSplitSum)+".-<hr />"
                 creditSum = 0
                 text += "<ul>"
                 for credit in company.credits:
@@ -754,7 +770,7 @@ class Gui(QtGui.QMainWindow):
                             text +=".- is NOT payed </li>"
                 text += "</ul>"
                 if creditSum > 0:
-                    text += "Creditsum: "+str(creditSum)+".- <hr />"
+                    text += "Creditsum: "+self.rounder(creditSum)+".- <hr />"
                 jobSum = 0
                 jobDays = 0
                 jobHours = 0
@@ -784,7 +800,7 @@ class Gui(QtGui.QMainWindow):
                 loanSplitSumDays = loanSplitSum * jobDays
                 result = jobSum - loanSplitSumDays - creditSum + chargeSum
                 #the end of all results..
-                text += "<ul><li><b>"+str(jobSum)+".-</b> </li><li><b> - "+str(loanSplitSumDays)+".-  </b>(Splits)</li><li><b> - "+str(creditSum)+".- </b> (Credits)</li> <li><b> + "+str(chargeSum)+".- </b> (Charges)</li></ul><hr /> Your Company should pay <b> "+str(result)+".- </b>"
+                text += "<ul><li><b>"+self.rounder(jobSum)+".-</b> </li><li><b> - "+self.rounder(loanSplitSumDays)+".-  </b>(Splits)</li><li><b> - "+self.rounder(creditSum)+".- </b> (Credits)</li> <li><b> + "+self.rounder(chargeSum)+".- </b> (Charges)</li></ul><hr /> Your Company should pay <b> "+self.rounder(result)+".- </b>"
                 self.ui.companyViewText.setText(text)
                 
 

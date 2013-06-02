@@ -239,9 +239,9 @@
        <widget class="QPushButton" name="createCompany">
         <property name="geometry">
          <rect>
-          <x>70</x>
+          <x>10</x>
           <y>170</y>
-          <width>61</width>
+          <width>91</width>
           <height>23</height>
          </rect>
         </property>
@@ -252,9 +252,9 @@
        <widget class="QPushButton" name="saveCompany">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>110</x>
           <y>170</y>
-          <width>51</width>
+          <width>91</width>
           <height>23</height>
          </rect>
         </property>
@@ -265,9 +265,9 @@
        <widget class="QPushButton" name="deleteCompany">
         <property name="geometry">
          <rect>
-          <x>170</x>
+          <x>210</x>
           <y>170</y>
-          <width>51</width>
+          <width>91</width>
           <height>23</height>
          </rect>
         </property>
@@ -286,7 +286,7 @@
         </rect>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
@@ -376,7 +376,7 @@
         <widget class="QPushButton" name="createCredit">
          <property name="geometry">
           <rect>
-           <x>10</x>
+           <x>0</x>
            <y>110</y>
            <width>99</width>
            <height>23</height>
@@ -389,7 +389,7 @@
         <widget class="QPushButton" name="saveCredit">
          <property name="geometry">
           <rect>
-           <x>170</x>
+           <x>100</x>
            <y>110</y>
            <width>99</width>
            <height>23</height>
@@ -402,7 +402,7 @@
         <widget class="QPushButton" name="deleteCredit">
          <property name="geometry">
           <rect>
-           <x>310</x>
+           <x>200</x>
            <y>110</y>
            <width>99</width>
            <height>23</height>
@@ -420,10 +420,10 @@
         <widget class="QWidget" name="formLayoutWidget_6">
          <property name="geometry">
           <rect>
-           <x>10</x>
+           <x>0</x>
            <y>0</y>
-           <width>241</width>
-           <height>181</height>
+           <width>181</width>
+           <height>108</height>
           </rect>
          </property>
          <layout class="QFormLayout" name="formLayout_6">
@@ -434,80 +434,92 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_21">
-            <property name="text">
-             <string>Name</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_22">
-            <property name="text">
-             <string>Value</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="loanSplitName"/>
-          </item>
-          <item row="4" column="0" colspan="2">
-           <widget class="QCheckBox" name="loanSplitMoney">
-            <property name="text">
-             <string>on=money,off=percent</string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="0" colspan="2">
            <widget class="QListWidget" name="loanSplitList"/>
-          </item>
-          <item row="3" column="1">
-           <widget class="QDoubleSpinBox" name="loanSplitValue">
-            <property name="maximum">
-             <double>9999.989999999999782</double>
-            </property>
-           </widget>
           </item>
          </layout>
         </widget>
         <widget class="QPushButton" name="createLoanSplit">
          <property name="geometry">
           <rect>
-           <x>260</x>
-           <y>10</y>
-           <width>121</width>
+           <x>0</x>
+           <y>110</y>
+           <width>91</width>
            <height>23</height>
           </rect>
          </property>
          <property name="text">
-          <string>Create loanSplit</string>
+          <string>Create</string>
          </property>
         </widget>
         <widget class="QPushButton" name="saveLoanSplit">
          <property name="geometry">
           <rect>
-           <x>260</x>
-           <y>50</y>
-           <width>99</width>
+           <x>90</x>
+           <y>110</y>
+           <width>91</width>
            <height>23</height>
           </rect>
          </property>
          <property name="text">
-          <string>Save LoanSplit</string>
+          <string>Save</string>
          </property>
         </widget>
         <widget class="QPushButton" name="deleteLoanSplit">
          <property name="geometry">
           <rect>
-           <x>260</x>
-           <y>80</y>
-           <width>111</width>
+           <x>180</x>
+           <y>110</y>
+           <width>101</width>
            <height>23</height>
           </rect>
          </property>
          <property name="text">
-          <string>Delete Loansplit</string>
+          <string>Delete</string>
          </property>
+        </widget>
+        <widget class="QWidget" name="formLayoutWidget_8">
+         <property name="geometry">
+          <rect>
+           <x>180</x>
+           <y>0</y>
+           <width>231</width>
+           <height>101</height>
+          </rect>
+         </property>
+         <layout class="QFormLayout" name="formLayout_8">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_21">
+            <property name="text">
+             <string>Name</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="loanSplitName"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_22">
+            <property name="text">
+             <string>Value</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QDoubleSpinBox" name="loanSplitValue">
+            <property name="maximum">
+             <double>9999.989999999999782</double>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QCheckBox" name="loanSplitMoney">
+            <property name="text">
+             <string>on=money,off=percent</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </widget>
        <widget class="QWidget" name="tab_3">
@@ -517,13 +529,16 @@
         <widget class="QWidget" name="formLayoutWidget_4">
          <property name="geometry">
           <rect>
-           <x>200</x>
+           <x>210</x>
            <y>0</y>
            <width>191</width>
-           <height>104</height>
+           <height>101</height>
           </rect>
          </property>
          <layout class="QFormLayout" name="formLayout_4">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::ExpandingFieldsGrow</enum>
+          </property>
           <property name="labelAlignment">
            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
           </property>
@@ -537,9 +552,6 @@
           <item row="0" column="1">
            <widget class="QLineEdit" name="chargesName"/>
           </item>
-          <item row="1" column="1">
-           <widget class="QDoubleSpinBox" name="chargesValue"/>
-          </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_18">
             <property name="text">
@@ -547,33 +559,8 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QPushButton" name="createCharge">
-            <property name="text">
-             <string>Create</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QPushButton" name="saveCharge">
-            <property name="text">
-             <string>Save</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QPushButton" name="deleteCharge">
-            <property name="text">
-             <string>Delete</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QPushButton" name="addChargeToJob">
-            <property name="text">
-             <string>Add to job</string>
-            </property>
-           </widget>
+          <item row="1" column="1">
+           <widget class="QDoubleSpinBox" name="chargesValue"/>
           </item>
          </layout>
         </widget>
@@ -583,7 +570,7 @@
            <x>0</x>
            <y>0</y>
            <width>201</width>
-           <height>111</height>
+           <height>101</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -598,6 +585,71 @@
            <widget class="QListWidget" name="chargesList"/>
           </item>
          </layout>
+        </widget>
+        <widget class="QPushButton" name="createCharge">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>110</y>
+           <width>91</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Create</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="saveCharge">
+         <property name="geometry">
+          <rect>
+           <x>90</x>
+           <y>110</y>
+           <width>81</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Save</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="deleteCharge">
+         <property name="geometry">
+          <rect>
+           <x>170</x>
+           <y>110</y>
+           <width>91</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Delete</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="addChargeToJob">
+         <property name="geometry">
+          <rect>
+           <x>269</x>
+           <y>110</y>
+           <width>141</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Add to job</string>
+         </property>
+        </widget>
+        <widget class="QPlainTextEdit" name="plainTextEdit">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>130</y>
+           <width>401</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="plainText">
+          <string>A static charge doesn't get active till you add it to a job. Don't forget to tell the job, how many time u used the charge effective..</string>
+         </property>
         </widget>
        </widget>
       </widget>
@@ -781,7 +833,7 @@
       <widget class="QLabel" name="daysCalc">
        <property name="geometry">
         <rect>
-         <x>230</x>
+         <x>30</x>
          <y>390</y>
          <width>101</width>
          <height>16</height>
@@ -794,7 +846,7 @@
       <widget class="QLabel" name="hoursCalc">
        <property name="geometry">
         <rect>
-         <x>190</x>
+         <x>30</x>
          <y>410</y>
          <width>141</width>
          <height>16</height>
@@ -808,7 +860,7 @@
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>390</y>
+         <y>430</y>
          <width>161</width>
          <height>61</height>
         </rect>
@@ -818,13 +870,36 @@
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>450</y>
+         <y>490</y>
          <width>151</width>
          <height>23</height>
         </rect>
        </property>
        <property name="text">
         <string>Delete WorkSpese</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="wSpeseTimes">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>450</y>
+         <width>56</width>
+         <height>22</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_28">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>430</y>
+         <width>211</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Workchargetime (0=daily)</string>
        </property>
       </widget>
      </widget>
@@ -1121,9 +1196,9 @@
      <widget class="QWidget" name="formLayoutWidget_7">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>10</x>
         <y>10</y>
-        <width>281</width>
+        <width>291</width>
         <height>251</height>
        </rect>
       </property>
@@ -1205,7 +1280,7 @@
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:18pt; text-decoration: underline;&quot;&gt;Avaible Config-Keys&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;dbDateFormat - look in &amp;quot;website&amp;quot; for format-possibilitys&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;lang / language = language - put the right filename (*.qm in your folder) there and restart&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </widget>

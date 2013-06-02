@@ -34,6 +34,7 @@ if fileExist == False:
 class Controller:
         def __init__(self):
             self.updateList()
+            self.updateConfigList()
         def createCompany(self, name,  loan,  perHours,  describtion):
             c.execute("INSERT INTO company (name, loan,  perHours, describtion) VALUES (?,?,?,?);",  (name, loan,  perHours, describtion))
             db.commit()
@@ -138,6 +139,7 @@ class Company:
         self.updatechargesList()
         self.updateCreditList()
         self.updateLoanSplitList()
+        
 
     def updateLoanSplitList(self):
         self.loanSplits = []
@@ -253,6 +255,7 @@ class Gui(QtGui.QMainWindow):
         self.updateCompanyList(True)
         self.updateInfoExel()
         self.updateCompanyView()
+        self.updateConfigList()
         
         #-----------------------
         #Data-Tab
@@ -263,6 +266,7 @@ class Gui(QtGui.QMainWindow):
         self.ui.creditList.itemClicked.connect(self.onCreditItemClick)
         self.ui.chargesList.itemClicked.connect(self.onSpeseItemClick)
         self.ui.loanSplitList.itemClicked.connect(self.onLoanSplitItemClick)
+        self.ui.configList.itemClicked.connect(self.onConfigItemClick)
         #Company-Actions
         self.ui.createCompany.clicked.connect(self.onCreateCompany)
         self.ui.saveCompany.clicked.connect(self.onSaveCompany)
@@ -286,6 +290,11 @@ class Gui(QtGui.QMainWindow):
         self.ui.createLoanSplit.clicked.connect(self.onCreateLoanSplit)
         self.ui.saveLoanSplit.clicked.connect(self.onSaveLoanSplit)
         self.ui.deleteLoanSplit.clicked.connect(self.onDeleteLoanSplit)
+        
+        #config-Actions
+        self.ui.createConfig.clicked.connect(self.onCreateConfig)
+        self.ui.saveConfig.clicked.connect(self.onSaveConfig)
+        self.ui.deleteConfig.clicked.connect(self.onDeleteConfig)
         
         #--------------------------
         #Showing Tab
@@ -342,6 +351,14 @@ class Gui(QtGui.QMainWindow):
         if selectFirst:
             self.ui.loanSplitList.setCurrentRow(0)
             self.onLoanSplitItemClick(self.ui.loanSplitList.currentItem())
+    def updateConfigList(self,  selectFirst=False,  name=""):
+        self.ui.configList.clear()
+        mightyController.updateConfigList()
+        for config in mightyController.configlist:
+            self.ui.configList.addItem(config.key)
+        if selectFirst:
+            self.ui.configList.setCurrentRow(0)
+            self.onConfigItemClick(self.ui.configList.currentItem())
             
     def updateCreditList(self,  selectFirst=False, valueDate=""):
         self.ui.creditList.clear()
@@ -396,6 +413,11 @@ class Gui(QtGui.QMainWindow):
                 self.ui.loanSplitName.setText(loanSplit.name)
                 self.ui.loanSplitValue.setValue(loanSplit.value)
                 self.ui.loanSplitMoney.setChecked(loanSplit.money)
+    def onConfigItemClick(self, item):
+        for config in mightyController.configlist:
+            if config.key == item.text():
+                self.ui.configKey.setText(config.key)
+                self.ui.configValue.setText(config.value)
     def onCreditItemClick(self, item):
         for credit in self.currentCompany.credits:
             if item is not None and (str(credit.value) +" "+credit.date.toString(dbDateFormat)) == item.text():
@@ -483,27 +505,27 @@ class Gui(QtGui.QMainWindow):
     # config-Actions
     #--------------
     def onCreateConfig(self):
-        mightyController.createConfig(self.ui.loanSplitName.text(), self.ui.loanSplitValue.text(),  self.ui.loanSplitMoney.isChecked())
+        mightyController.createConfig(self.ui.configKey.text(), self.ui.configValue.text())
         # @TODO select the created!
-        self.ui.status.setText(tr("LoanSplit")+" "+self.ui.loanSplitName.text()+" "+tr("created"))
-        self.updateLoanSplitList(True)
+        self.ui.status.setText(tr("Config")+" "+self.ui.configKey.text()+" "+tr("created"))
+        self.updateConfigList(True)
     def onSaveConfig(self):
-        cr = self.ui.loanSplitList.currentRow()
-        cm = self.ui.loanSplitList.currentItem()
-        for loanSplit in self.currentCompany.loanSplits:
-            if cm is not None and loanSplit.name == cm.text():
-                loanSplit.save(self.ui.loanSplitName.text(), self.ui.loanSplitValue.text(),  self.ui.loanSplitMoney.isChecked())
-                self.ui.status.setText("LoanSplit "+self.ui.loanSplitName.text()+" "+tr("saved"))
-        self.updateLoanSplitList()
-        self.ui.loanSplitList.setCurrentRow(cr)
-        self.ui.loanSplitList.setCurrentItem(cm)
+        cr = self.ui.configList.currentRow()
+        cm = self.ui.configList.currentItem()
+        for config in mightyController.configlist:
+            if cm is not None and config.key == cm.text():
+                config.save(self.ui.configKey.text(), self.ui.configValue.text())
+                self.ui.status.setText("LoanSplit "+self.ui.configKey.text()+" "+tr("saved"))
+        self.updateConfigList()
+        self.ui.configList.setCurrentRow(cr)
+        self.ui.configList.setCurrentItem(cm)
     def onDeleteConfig(self):
-        cm = self.ui.loanSplitList.currentItem()
-        for loanSplit in self.currentCompany.loanSplits:
-            if cm is not None and loanSplit.name == cm.text():
-                loanSplit.delete()
+        cm = self.ui.configList.currentItem()
+        for config in mightyController.configlist:
+            if cm is not None and config.key == cm.text():
+                config.delete()
                 self.ui.status.setText("Charge "+cm.text()+" "+tr("deleted"))
-        self.updateLoanSplitList(True)
+        self.updateConfigList(True)
         
     #---------------------------------------
     # Credit-Actions
@@ -842,9 +864,12 @@ class Gui(QtGui.QMainWindow):
                 
 
 app = QtGui.QApplication(sys.argv)
-
+lang = ""
+for config in mightyController.configlist:
+    if config.key == "lang" or config.key == "language":
+        lang=config.value
 translator = QtCore.QTranslator()
-translator.load("de.qm","/home/skamster/code/python/jobverwaltung")
+translator.load(lang,"./")
 app.installTranslator(translator)
 jobman = Gui()
 jobman.show()

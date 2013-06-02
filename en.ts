@@ -1,72 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="de_DE">
+<TS version="2.0" language="de_CH">
+<context>
+    <name>@default</name>
+    <message>
+        <location filename="main_gui_integradet.py" line="445"/>
+        <source>days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="446"/>
+        <source> hours</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="518"/>
+        <source>saved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="527"/>
+        <source>deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="535"/>
+        <source>created</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="510"/>
+        <source>Config</source>
+        <translation type="unfinished">Konfiguration</translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="650"/>
+        <source>Companyname</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="650"/>
+        <source>Jobname</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="650"/>
+        <source>Place</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="650"/>
+        <source>Leader</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="650"/>
+        <source>Loan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="650"/>
+        <source>Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="650"/>
+        <source>Spesen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="862"/>
+        <source>Splits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="650"/>
+        <source>Summe</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="744"/>
+        <source>Creditsum</source>
+        <comment>Creditsum</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="804"/>
+        <source>Loan</source>
+        <comment>Loan</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="819"/>
+        <source>Loansplitsum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="829"/>
+        <source>payed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="832"/>
+        <source>Creditsum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="862"/>
+        <source>Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="862"/>
+        <source>Charges</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="862"/>
+        <source>Your company should pay</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 <context>
     <name>MainWindow</name>
     <message>
         <location filename="main.py" line="547"/>
         <source>MainWindow</source>
-        <translation type="unfinished">Hauptfenster</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="main.py" line="548"/>
         <source>Companys</source>
-        <translation type="unfinished">Firmen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="main.py" line="549"/>
         <source>Jobs</source>
-        <translation type="unfinished">Jobs</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="main.py" line="623"/>
         <source>Show Inactive</source>
-        <translation type="unfinished">Zeige inaktive</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="main.py" line="551"/>
         <source>Companyname</source>
-        <translation type="unfinished">Firmenname</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="main.py" line="552"/>
         <source>Loan</source>
-        <translation type="unfinished">Lohn</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="main.py" line="553"/>
         <source>Per Hours</source>
-        <translation type="unfinished">per Stunden</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="main.py" line="632"/>
         <source>Create</source>
-        <translation type="unfinished">Erstellen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="main.py" line="633"/>
         <source>Save</source>
-        <translation type="unfinished">Speichern</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="main.py" line="634"/>
         <source>Delete</source>
-        <translation type="unfinished">Löschen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="main.py" line="557"/>
         <source>Credits (to Company)</source>
-        <translation type="unfinished">Kredite</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="main.py" line="575"/>
         <source>Money</source>
-        <translation type="unfinished">Geld</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="main.py" line="559"/>
         <source>Date</source>
-        <translation type="unfinished">Datum</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="main.py" line="588"/>
@@ -76,12 +196,12 @@
     <message>
         <location filename="main.py" line="561"/>
         <source>Payed</source>
-        <translation type="unfinished">Gezahlt</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="main.py" line="565"/>
         <source>Credits</source>
-        <translation type="unfinished">Kredite</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="main.py" line="573"/>
@@ -96,7 +216,7 @@
     <message>
         <location filename="main.py" line="631"/>
         <source>Value</source>
-        <translation type="unfinished">Wert</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="main.py" line="569"/>

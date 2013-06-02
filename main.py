@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Sun Jun  2 22:27:13 2013
+# Created: Sun Jun  2 22:59:31 2013
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -171,16 +171,16 @@ class Ui_MainWindow(object):
         self.creditPayed = QtGui.QCheckBox(self.formLayoutWidget_3)
         self.creditPayed.setObjectName(_fromUtf8("creditPayed"))
         self.formLayout_3.setWidget(4, QtGui.QFormLayout.FieldRole, self.creditPayed)
-        self.lineEdit = QtGui.QLineEdit(self.formLayoutWidget_3)
-        self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
-        self.formLayout_3.setWidget(0, QtGui.QFormLayout.FieldRole, self.lineEdit)
+        self.creditName = QtGui.QLineEdit(self.formLayoutWidget_3)
+        self.creditName.setObjectName(_fromUtf8("creditName"))
+        self.formLayout_3.setWidget(0, QtGui.QFormLayout.FieldRole, self.creditName)
         self.label_30 = QtGui.QLabel(self.formLayoutWidget_3)
         self.label_30.setObjectName(_fromUtf8("label_30"))
         self.formLayout_3.setWidget(0, QtGui.QFormLayout.LabelRole, self.label_30)
-        self.checkBox = QtGui.QCheckBox(self.formLayoutWidget_3)
-        self.checkBox.setChecked(True)
-        self.checkBox.setObjectName(_fromUtf8("checkBox"))
-        self.formLayout_3.setWidget(4, QtGui.QFormLayout.LabelRole, self.checkBox)
+        self.creditActive = QtGui.QCheckBox(self.formLayoutWidget_3)
+        self.creditActive.setChecked(True)
+        self.creditActive.setObjectName(_fromUtf8("creditActive"))
+        self.formLayout_3.setWidget(4, QtGui.QFormLayout.LabelRole, self.creditActive)
         self.createCredit = QtGui.QPushButton(self.tab)
         self.createCredit.setGeometry(QtCore.QRect(0, 110, 99, 23))
         self.createCredit.setObjectName(_fromUtf8("createCredit"))
@@ -391,12 +391,12 @@ class Ui_MainWindow(object):
         self.workChargesList = QtGui.QListWidget(self.formLayoutWidget_9)
         self.workChargesList.setObjectName(_fromUtf8("workChargesList"))
         self.formLayout_9.setWidget(2, QtGui.QFormLayout.SpanningRole, self.workChargesList)
-        self.pushButton = QtGui.QPushButton(self.formLayoutWidget_9)
-        self.pushButton.setObjectName(_fromUtf8("pushButton"))
-        self.formLayout_9.setWidget(4, QtGui.QFormLayout.FieldRole, self.pushButton)
-        self.wSpeseTimes = QtGui.QSpinBox(self.formLayoutWidget_9)
-        self.wSpeseTimes.setObjectName(_fromUtf8("wSpeseTimes"))
-        self.formLayout_9.setWidget(3, QtGui.QFormLayout.FieldRole, self.wSpeseTimes)
+        self.wChargeSave = QtGui.QPushButton(self.formLayoutWidget_9)
+        self.wChargeSave.setObjectName(_fromUtf8("wChargeSave"))
+        self.formLayout_9.setWidget(4, QtGui.QFormLayout.FieldRole, self.wChargeSave)
+        self.wChargeTimes = QtGui.QSpinBox(self.formLayoutWidget_9)
+        self.wChargeTimes.setObjectName(_fromUtf8("wChargeTimes"))
+        self.formLayout_9.setWidget(3, QtGui.QFormLayout.FieldRole, self.wChargeTimes)
         self.label_29 = QtGui.QLabel(self.formLayoutWidget_9)
         self.label_29.setObjectName(_fromUtf8("label_29"))
         self.formLayout_9.setWidget(1, QtGui.QFormLayout.LabelRole, self.label_29)
@@ -580,7 +580,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(2)
+        self.tabWidget_2.setCurrentIndex(0)
         self.tabWidget_3.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -601,7 +601,7 @@ class Ui_MainWindow(object):
         self.creditDate.setDisplayFormat(_translate("MainWindow", "dd.MM.yyyy", None))
         self.creditPayed.setText(_translate("MainWindow", "Payed", None))
         self.label_30.setText(_translate("MainWindow", "Name/Comment", None))
-        self.checkBox.setText(_translate("MainWindow", "Active", None))
+        self.creditActive.setText(_translate("MainWindow", "Active", None))
         self.createCredit.setText(_translate("MainWindow", "Create", None))
         self.saveCredit.setText(_translate("MainWindow", "Save", None))
         self.deleteCredit.setText(_translate("MainWindow", "Delete", None))
@@ -642,7 +642,7 @@ class Ui_MainWindow(object):
         self.hoursCalc.setText(_translate("MainWindow", "how many hours @all..", None))
         self.deleteWorkSpese.setText(_translate("MainWindow", "Delete", None))
         self.label_28.setText(_translate("MainWindow", "Workchargetime (0=daily)", None))
-        self.pushButton.setText(_translate("MainWindow", "Save", None))
+        self.wChargeSave.setText(_translate("MainWindow", "Save", None))
         self.label_29.setText(_translate("MainWindow", "Workcharge", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.data), _translate("MainWindow", "Data", None))
         self.tabWidget.setTabToolTip(self.tabWidget.indexOf(self.data), _translate("MainWindow", "Here u could put in ur stuff", None))

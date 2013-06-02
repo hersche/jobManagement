@@ -286,7 +286,7 @@
         </rect>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
@@ -372,7 +372,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="lineEdit"/>
+           <widget class="QLineEdit" name="creditName"/>
           </item>
           <item row="0" column="0">
            <widget class="QLabel" name="label_30">
@@ -382,7 +382,7 @@
            </widget>
           </item>
           <item row="4" column="0">
-           <widget class="QCheckBox" name="checkBox">
+           <widget class="QCheckBox" name="creditActive">
             <property name="text">
              <string>Active</string>
             </property>
@@ -895,14 +895,14 @@
          <widget class="QListWidget" name="workChargesList"/>
         </item>
         <item row="4" column="1">
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="wChargeSave">
           <property name="text">
            <string>Save</string>
           </property>
          </widget>
         </item>
         <item row="3" column="1">
-         <widget class="QSpinBox" name="wSpeseTimes"/>
+         <widget class="QSpinBox" name="wChargeTimes"/>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_29">

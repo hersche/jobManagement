@@ -22,8 +22,8 @@ if fileExist == False:
     #TODO add weekendDays to job (int) - -1 means no weekend
     c.execute("CREATE TABLE job (jid  INTEGER PRIMARY KEY, name text, place text, comment text, hours real, correctionHours real, weekendDays INTEGER, startdate text, enddate text, baustellenleiter text, active integer, companyid integer)")
     c.execute("CREATE TABLE charges (sid  INTEGER PRIMARY KEY, name text, value real, companyid integer)")
-    c.execute("CREATE TABLE credit (crid  INTEGER PRIMARY KEY, value real, date text, payed integer, companyid integer)")
-    c.execute("CREATE TABLE wcharges (wid  INTEGER PRIMARY KEY, jobid INTEGER, chargesid integer)")
+    c.execute("CREATE TABLE credit (crid  INTEGER PRIMARY KEY, name TEXT, value real, date text, payed integer, active integer, companyid integer)")
+    c.execute("CREATE TABLE wcharges (wid  INTEGER PRIMARY KEY, jobid INTEGER, chargesid integer, howManyTimes real)")
     # if money is false, the measure is in percent..
     c.execute("CREATE TABLE loanSplit (lsid  INTEGER PRIMARY KEY, name TEXT, value REAL, money INTEGER, companyid INTEGER)")
     c.execute("CREATE TABLE config (coid INTEGER PRIMARY KEY,  key TEXT,  value TEXT)")
@@ -96,32 +96,43 @@ class loanSplit:
         db.commit()
     
 class charges:
-    def __init__(self, id,  name,  value):
+    def __init__(self, id,  name,  value, wchargeid=-1, howManyTimes=-1):
         self.id = id
         self.name = name
         self.value = value
-    def save(self, name, value):
-        c.execute("UPDATE charges SET name=?, value=? WHERE sid=?",  (name, float(value), self.id))
+        #just used in workcharges
+        self.wchargeId = wchargeid
+        self.howManyTimes = howManyTimes
+    def save(self, name, value,  howManyTimes=-1):
+        c.execute("UPDATE charges SET name=?, value=? WHERE sid=?",  (name, float(value),howManyTimes,  self.id))
         db.commit()
     def delete(self):
         c.execute("DELETE FROM charges WHERE sid=?",  (self.id, ))
         db.commit()
         
 class Credit:
-    def __init__(self, id,  value,  date, payed,  company):
+    def __init__(self, id, name,  value,  date, payed, active,  company):
         self.id = id
+        self.name = name
         self.value = value
         self.date = QtCore.QDate.fromString(date, dbDateFormat)
+        if active == 1:
+            self.active = True
+        else: 
+            self.active = False       
         if payed == 1:
             self.payed = True
         else: 
             self.payed = False
         self.company = company
-    def save(self, value,  date,  payed):
+    def save(self, name,  value,  date,  payed, active):
         tmpPayed = 0
-        if payed == True:
-            tmpPayed = 1
-        c.execute("UPDATE credit SET value=?, date=?, payed=? WHERE crid=?",  (value, date, tmpPayed, str(self.id)))
+        tmpActive = 0
+        if payed:
+            tmpPayed=1
+        if active:
+            tmpActive=1
+        c.execute("UPDATE credit SET name=?,value=?, date=?, payed=?,active=? WHERE crid=?",  (name, value, date, tmpPayed, tmpActive, str(self.id)))
         db.commit()
     def delete(self):
         c.execute("DELETE FROM credit WHERE crid=?",  (self.id, ))
@@ -150,7 +161,7 @@ class Company:
         self.credits = []
         c.execute('select * from credit WHERE companyid = ?',  (str(self.id), ))
         for row in c.fetchall():
-            self.credits.append(Credit(row[0], row[1], row[2],  row[3],  row[4]))
+            self.credits.append(Credit(row[0], row[1], row[2],  row[3],  row[4], row[5], row[6]))
     def updateJobList(self):
         self.jobs = []
         c.execute('select * from job WHERE companyid = ?',  (str(self.id), ))
@@ -179,12 +190,16 @@ class Company:
         c.execute("INSERT INTO loanSplit (name, value, money, companyid) VALUES (?,?,?,?)",  ( name, value, tmpMoney,  self.id))
         db.commit()
         
-    def createCredit(self, value, date, payed):
+    def createCredit(self, name,  value, date, payed,  active):
+        if active:
+            tmpActive = 1
+        else:
+            tmpActive = 0
         if payed:
             tmpPayed = 1
         else:
             tmpPayed = 0
-        c.execute("INSERT INTO credit (value, date, payed, companyid) VALUES (?,?,?,?)",  ( value, date, tmpPayed, self.id))
+        c.execute("INSERT INTO credit (name, value, date, payed,active, companyid) VALUES (?,?,?,?,?,?)",  ( name,  value, date, tmpPayed,tmpActive,  self.id))
         db.commit()
     
     def save(self, name,  loan,  perHours, describtion):
@@ -219,14 +234,20 @@ class Job:
         for co in c.fetchall():
             c.execute('select * from charges WHERE sid = ?',  (str(co[2])))
             for row in c.fetchall():
-                self.wcharges.append(charges(row[0], row[1], row[2]))
-    def addSpese(self,  chargesid):
-        c.execute("INSERT INTO wcharges (jobid, chargesid) VALUES (?,?)",  ( self.id, chargesid))
+                self.wcharges.append(charges(row[0], row[1], row[2], co[0], co[3]))
+    def addSpese(self,  chargesid, howManyTimes):
+        c.execute("INSERT INTO wcharges (jobid, chargesid, howManyTimes) VALUES (?,?,?)",  ( self.id, chargesid, howManyTimes))
     def removeSpese(self, name,  company):
         for spese in company.charges:
             if spese.name == name:
                 c.execute("DELETE FROM wcharges WHERE chargesid=?",  (spese.id, ))
                 db.commit()
+    def saveCharge(self, name,  howManyTimes):
+        for wcharge in self.wcharges:
+            if wcharge.name == name:
+                c.execute("UPDATE wcharges SET howManyTimes=? WHERE wid=?",  (howManyTimes,  wcharge.id))
+                db.commit()
+                self.updateWchargesList()
         
     def save(self, name,  place, comment, hours, correctionHours, weekendDays,  startdate, enddate, baustellenleiter, active, companyid):
             tmpActive = 0
@@ -267,6 +288,7 @@ class Gui(QtGui.QMainWindow):
         self.ui.chargesList.itemClicked.connect(self.onSpeseItemClick)
         self.ui.loanSplitList.itemClicked.connect(self.onLoanSplitItemClick)
         self.ui.configList.itemClicked.connect(self.onConfigItemClick)
+        self.ui.workChargesList.itemClicked.connect(self.onWChargeItemClick)
         #Company-Actions
         self.ui.createCompany.clicked.connect(self.onCreateCompany)
         self.ui.saveCompany.clicked.connect(self.onSaveCompany)
@@ -275,12 +297,13 @@ class Gui(QtGui.QMainWindow):
         self.ui.createJob.clicked.connect(self.onCreateJob)
         self.ui.saveJob.clicked.connect(self.onSaveJob)
         self.ui.deleteJob.clicked.connect(self.onDeleteJob)
-        #Spese-Actions
+        #Charge-Actions
         self.ui.createCharge.clicked.connect(self.onCreateSpese)
         self.ui.saveCharge.clicked.connect(self.onSaveSpese)
         self.ui.deleteCharge.clicked.connect(self.onDeleteSpese)
         self.ui.deleteWorkSpese.clicked.connect(self.onDeleteWorkSpese)
         self.ui.addChargeToJob.clicked.connect(self.onAddWorkSpese)
+        self.ui.wChargeSave.clicked.connect(self.onSaveWorkSpese)
         #Credit-Actions
         self.ui.createCredit.clicked.connect(self.onCreateCredit)
         self.ui.saveCredit.clicked.connect(self.onSaveCredit)
@@ -407,6 +430,13 @@ class Gui(QtGui.QMainWindow):
             if spese.name == item.text():
                 self.ui.chargesName.setText(spese.name)
                 self.ui.chargesValue.setValue(spese.value)
+    def onWChargeItemClick(self, item):
+        jobSelect = self.ui.jobList.currentItem()
+        for  job in self.currentCompany.jobs:
+            if job.name == jobSelect.text():
+                for charge in job.wcharges:
+                    if charge.name == item.text():
+                        self.ui.wChargeTimes.setValue(charge.howManyTimes)
     def onLoanSplitItemClick(self, item):
         for loanSplit in self.currentCompany.loanSplits:
             if loanSplit.name == item.text():
@@ -421,15 +451,21 @@ class Gui(QtGui.QMainWindow):
     def onCreditItemClick(self, item):
         for credit in self.currentCompany.credits:
             if item is not None and (str(credit.value) +" "+credit.date.toString(dbDateFormat)) == item.text():
+                self.ui.creditName.setText(credit.name)
                 self.ui.creditValue.setValue(credit.value)
                 self.ui.creditDate.setDate(credit.date)
                 if credit.payed:
                     self.ui.creditPayed.setChecked(True)
                 else:
                     self.ui.creditPayed.setChecked(False)
+                if credit.active:
+                    self.ui.creditActive.setChecked(True)
+                else:
+                    self.ui.creditActive.setChecked(False)
     def onJobItemClick(self,  item):
         for job in self.currentCompany.jobs:
             if item is not None and item.text() == job.name:
+                self.currentJob = job
                 self.ui.jobname.setText(job.name)
                 self.ui.jobplace.setText(job.place)
                 self.ui.jobComment.setPlainText(job.comment)
@@ -531,7 +567,7 @@ class Gui(QtGui.QMainWindow):
     # Credit-Actions
     #---------------------------------------
     def onCreateCredit(self):
-        self.currentCompany.createCredit(self.ui.creditValue.value(), self.ui.creditDate.text(), self.ui.creditPayed.isChecked())
+        self.currentCompany.createCredit(self.ui.creditName.text(), self.ui.creditValue.value(), self.ui.creditDate.text(), self.ui.creditPayed.isChecked(), self.ui.creditActive.isChecked())
         self.ui.status.setText(tr("Credit")+" "+tr("created")+":"+str(self.ui.creditValue.value()))
         # @TODO select the created!
         self.updateCreditList(selectFirst=True)
@@ -540,8 +576,8 @@ class Gui(QtGui.QMainWindow):
         cm = self.ui.creditList.currentItem()
         for credit in self.currentCompany.credits:
             if cm is not None and (str(credit.value) +" "+credit.date.toString(dbDateFormat)) == cm.text():
-                credit.save(self.ui.creditValue.text(), self.ui.creditDate.text(),   self.ui.creditPayed.isChecked())
-                self.ui.status.setText(tr("Credit")+" "+self.ui.creditValue.text()+" "+tr("saved"))
+                credit.save(self.ui.creditName.text(), self.ui.creditValue.text(), self.ui.creditDate.text(),   self.ui.creditPayed.isChecked(), self.ui.creditActive.isChecked())
+                self.ui.status.setText(tr("Credit")+" "+self.ui.creditName.text()+":"+self.ui.creditValue.text()+" "+tr("saved"))
         self.updateCreditList()
         self.ui.creditList.setCurrentRow(cr)
     def onDeleteCredit(self):
@@ -598,6 +634,13 @@ class Gui(QtGui.QMainWindow):
             if  cm is not None and job.name == str(cm.text()):
                 job.removeSpese(cs.text(),  self.currentCompany)
         self.updateWorkchargesList(True)
+    def onSaveWorkSpese(self):
+        cs = self.ui.workChargesList.currentItem()
+        cm = self.ui.jobList.currentItem()
+        for job in self.currentCompany.jobs: 
+            if  cm is not None and job.name == str(cm.text()):
+                job.saveCharge(cs.text(),  self.ui.wChargeTimes.value())
+        self.updateWorkchargesList(True)
     def onAddWorkSpese(self):
         cs = self.ui.chargesList.currentItem()
         cm = self.ui.jobList.currentItem()
@@ -605,7 +648,7 @@ class Gui(QtGui.QMainWindow):
             if  cm is not None and job.name == cm.text():
                 for spese in self.currentCompany.charges:
                     if cs is not None and spese.name == cs.text():
-                        job.addSpese(spese.id)
+                        job.addSpese(spese.id,  self.ui.wChargeTimes.value())
                         job.updateWchargesList()
         self.updateWorkchargesList()
     def rounder(self, nr):
@@ -655,6 +698,7 @@ class Gui(QtGui.QMainWindow):
             self.ui.infoExel.insertRow(rowNr)
             infoSearch = self.ui.infoSearch.text()
             infoSearch = infoSearch.lower()
+            insertARow = False
             for job in company.jobs:
                 insertARow = False
                 daySpace = job.startdate.daysTo(job.enddate) + 1
@@ -850,13 +894,17 @@ class Gui(QtGui.QMainWindow):
                         hourSpace = days * (job.hours / company.perHours ) +job.correctionHours
                         jobHours += hourSpace
                         jobSum += company.loan * hourSpace
-                        text += "<li>"+job.name+": "+str(days)+"d * ("+str(job.hours)+"h /"+str(company.perHours)+" )+" +str(job.correctionHours)+"h = "+str(hourSpace)+"h * " + str(company.loan)+".-  ="+str(hourSpace*company.loan)+".- </li>"
+                        text += "<li>"+job.name+": "+self.rounder(days)+"d * ("+self.rounder(job.hours)+"h /"+str(company.perHours)+" )+" +str(job.correctionHours)+"h = "+self.rounder(hourSpace)+"h * " + str(company.loan)+".-  ="+self.rounder(hourSpace*company.loan)+".- </li>"
                         text += "<ul>"
                         for charge in job.wcharges:
-                            chargeSum += charge.value *  days
-                            text += "<li>"+charge.name+": "+str(charge.value)+".- * "+str(days)+"d = "+str(charge.value * days)+".- </li>"
+                            if charge.howManyTimes > 0:
+                                chargeSum += charge.value * charge.howManyTimes
+                                text += "<li>"+charge.name+": "+str(charge.value)+".- * "+str(charge.howManyTimes)+" times = "+self.rounder(charge.value * days)+".- </li>"
+                            else:
+                                chargeSum += charge.value * days
+                                text += "<li>"+charge.name+": "+str(charge.value)+".- * "+self.rounder(days)+"d = "+self.rounder(chargeSum)+".- </li>"
                         text += "</ul>"
-                text += "</ul> Sum: "+str(jobSum)+".- in "+str(jobHours)+"h / "+str(jobDays )+" d (+ "+str(chargeSum)+".- charges) <hr />"
+                text += "</ul> Sum: "+self.rounder(jobSum)+".- in "+self.rounder(jobHours)+"h / "+self.rounder(jobDays )+" d (+ "+self.rounder(chargeSum)+".- charges) <hr />"
                 loanSplitSumDays = loanSplitSum * jobDays
                 result = jobSum - loanSplitSumDays - creditSum + chargeSum
                 #the end of all results..

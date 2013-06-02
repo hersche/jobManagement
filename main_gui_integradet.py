@@ -462,7 +462,7 @@ class Gui(QtGui.QMainWindow):
         for spese in self.currentCompany.charges:
             if cm is not None and spese.name == cm.text():
                 spese.save(self.ui.chargesName.text(), self.ui.chargesValue.text())
-                self.ui.status.setText("Charge "+self.ui.chargesName.text()+tr("saved"))
+                self.ui.status.setText(tr("Charge")+" "+self.ui.chargesName.text()+" "+tr("saved"))
         self.updatechargesList(True)
         
         self.updateWorkchargesList(True)
@@ -473,7 +473,7 @@ class Gui(QtGui.QMainWindow):
         for spese in self.currentCompany.charges:
             if cm is not None and spese.name == cm.text():
                 spese.delete()
-                self.ui.status.setText("Charge "+cm.text()+tr("deleted"))
+                self.ui.status.setText(tr("Charge")+" "+cm.text()+" "+tr("deleted"))
         self.updatechargesList(True)
     #-------------
     # loanSplit-Actions
@@ -481,7 +481,7 @@ class Gui(QtGui.QMainWindow):
     def onCreateLoanSplit(self):
         self.currentCompany.createLoanSplit(self.ui.loanSplitName.text(), self.ui.loanSplitValue.text(),  self.ui.loanSplitMoney.isChecked())
         # @TODO select the created!
-        self.ui.status.setText("LoanSplit "+self.ui.loanSplitName.text()+tr("created"))
+        self.ui.status.setText(tr("LoanSplit")+" "+self.ui.loanSplitName.text()+" "+tr("created"))
         self.updateLoanSplitList(True)
     def onSaveLoanSplit(self):
         cr = self.ui.loanSplitList.currentRow()
@@ -489,7 +489,7 @@ class Gui(QtGui.QMainWindow):
         for loanSplit in self.currentCompany.loanSplits:
             if cm is not None and loanSplit.name == cm.text():
                 loanSplit.save(self.ui.loanSplitName.text(), self.ui.loanSplitValue.text(),  self.ui.loanSplitMoney.isChecked())
-                self.ui.status.setText("LoanSplit "+self.ui.loanSplitName.text()+tr("saved"))
+                self.ui.status.setText(tr("LoanSplit")+" "+self.ui.loanSplitName.text()+" "+tr("saved"))
         self.updateLoanSplitList()
         self.ui.loanSplitList.setCurrentRow(cr)
         self.ui.loanSplitList.setCurrentItem(cm)
@@ -498,7 +498,7 @@ class Gui(QtGui.QMainWindow):
         for loanSplit in self.currentCompany.loanSplits:
             if cm is not None and loanSplit.name == cm.text():
                 loanSplit.delete()
-                self.ui.status.setText("Charge "+cm.text()+tr("deleted"))
+                self.ui.status.setText(tr("LoanSplit")+" "+cm.text()+" "+tr("deleted"))
         self.updateLoanSplitList(True)
         
     #-------------
@@ -515,7 +515,7 @@ class Gui(QtGui.QMainWindow):
         for config in mightyController.configlist:
             if cm is not None and config.key == cm.text():
                 config.save(self.ui.configKey.text(), self.ui.configValue.text())
-                self.ui.status.setText("LoanSplit "+self.ui.configKey.text()+" "+tr("saved"))
+                self.ui.status.setText(tr("Config")+" "+self.ui.configKey.text()+" "+tr("saved"))
         self.updateConfigList()
         self.ui.configList.setCurrentRow(cr)
         self.ui.configList.setCurrentItem(cm)
@@ -524,7 +524,7 @@ class Gui(QtGui.QMainWindow):
         for config in mightyController.configlist:
             if cm is not None and config.key == cm.text():
                 config.delete()
-                self.ui.status.setText("Charge "+cm.text()+" "+tr("deleted"))
+                self.ui.status.setText(tr("Charge")+" "+cm.text()+" "+tr("deleted"))
         self.updateConfigList(True)
         
     #---------------------------------------
@@ -532,7 +532,7 @@ class Gui(QtGui.QMainWindow):
     #---------------------------------------
     def onCreateCredit(self):
         self.currentCompany.createCredit(self.ui.creditValue.value(), self.ui.creditDate.text(), self.ui.creditPayed.isChecked())
-        self.ui.status.setText("credit"+tr("created")+":"+str(self.ui.creditValue.value()))
+        self.ui.status.setText(tr("Credit")+" "+tr("created")+":"+str(self.ui.creditValue.value()))
         # @TODO select the created!
         self.updateCreditList(selectFirst=True)
     def onSaveCredit(self):
@@ -541,7 +541,7 @@ class Gui(QtGui.QMainWindow):
         for credit in self.currentCompany.credits:
             if cm is not None and (str(credit.value) +" "+credit.date.toString(dbDateFormat)) == cm.text():
                 credit.save(self.ui.creditValue.text(), self.ui.creditDate.text(),   self.ui.creditPayed.isChecked())
-                self.ui.status.setText("Credit "+self.ui.creditValue.text()+" saved")
+                self.ui.status.setText(tr("Credit")+" "+self.ui.creditValue.text()+" "+tr("saved"))
         self.updateCreditList()
         self.ui.creditList.setCurrentRow(cr)
     def onDeleteCredit(self):
@@ -549,7 +549,7 @@ class Gui(QtGui.QMainWindow):
         for credit in self.currentCompany.credits:
             if cm is not None and (str(credit.value) +" "+credit.date.toString(dbDateFormat)) == cm.text():
                 credit.delete()
-                self.ui.status.setText("Credit "+self.ui.creditValue.text()+" deleted")
+                self.ui.status.setText(tr("Credit")+" "+self.ui.creditValue.text()+" "+tr("deleted"))
         self.updateCreditList(True)
         
         
@@ -583,7 +583,7 @@ class Gui(QtGui.QMainWindow):
             if  cm is not None and job.name == str(cm.text()):
                 # name,  place,  startdate, enddate, baustellenleiter, active, companyid
                 job.save(self.ui.jobname.text(),  self.ui.jobplace.text(),self.ui.jobComment.toPlainText(),   self.ui.hours.text(),self.ui.correctionHours.text(),  self.ui.weekendDays.value(),  self.ui.startdate.text(),  self.ui.enddate.text(),  self.ui.baustellenleiter.text(),  self.ui.active.isChecked(), self.currentCompany.id)
-                self.ui.status.setText("Job "+job.name+" saved")
+                self.ui.status.setText("Job "+job.name+" "+tr("saved"))
         self.updateJobList()
     def onDeleteJob(self):
         cm = self.ui.jobList.currentItem()
@@ -623,9 +623,9 @@ class Gui(QtGui.QMainWindow):
         else:
             return str(origNr)
     def calcDaySpace(self,  startdate,  enddate,  cm,  weekendDays):
-        if startdate.toString("M") != enddate.toString("M"):
+        if startdate.month() != enddate.month():
             allDays = startdate.daysTo(enddate)
-            if startdate.toString("M") == str(cm):
+            if startdate.month() == cm:
                 daySpace = allDays - enddate.day()+1
             else:
                 daySpace = allDays - (startdate.daysInMonth() - startdate.day())
@@ -647,7 +647,7 @@ class Gui(QtGui.QMainWindow):
         self.updateCompanyViewList()
         rowNr = 0
         self.sum = 0
-        self.ui.infoExel.setHorizontalHeaderLabels((tr( "Companyname"),tr( "Jobname"),tr( "Place"), tr( "Leader"), tr( "Loan"),tr( "Time"), tr(  "Spesen", ""), tr( "Splits", ""), tr( "Summe", "")))
+        self.ui.infoExel.setHorizontalHeaderLabels((tr( "Companyname"),tr( "Jobname"),tr( "Place"), tr( "Leader"), tr( "Loan"),tr( "Time"), tr(  "Charges"), tr( "Splits"), tr( "Summe")))
         wcm = self.ui.workCalendar.monthShown()
         wcy = self.ui.workCalendar.yearShown()
         creditString =""
@@ -741,7 +741,7 @@ class Gui(QtGui.QMainWindow):
                         creditSum += credit.value
                         creditString += "- "+credit.date.toString(dbDateFormat)+": "+str(credit.value)+"<br />"
                 if creditSum > 0:
-                    creditString += "------------<br />"+tr("Creditsum", "Creditsum")+ ":"+str(creditSum)
+                    creditString += "------------<br />"+tr("Creditsum")+ ":"+str(creditSum)
             self.ui.infoExelCredits.setText(creditString)
             self.sum -= creditSum
             self.ui.amount.display(self.sum)
@@ -801,10 +801,10 @@ class Gui(QtGui.QMainWindow):
         for company in mightyController.companylist:
             if self.ui.companyViewList.currentText() == company.name:
                 text = ""
-                text += "<h1>"+company.name+"</h1>"+company.describtion+"<br />"+tr("Loan", "Loan")+": "+str(company.loan)+" (per "+str(company.perHours)+"h)<hr />"
+                text += "<h1>"+company.name+"</h1>"+company.describtion+"<br />"+tr("Loan")+": "+str(company.loan)+" (per "+str(company.perHours)+tr("h")+")<hr />"
                 loanSplitSum = 0
                 #LoanSplits
-                text += "<ul>"
+                text += "<h4>"+tr("LoanSplits")+"</h4><ul>"
                 for ls in  company.loanSplits:
                     text += "<li>"+ls.name+": "+str(ls.value)
                     if ls.money:
@@ -816,24 +816,25 @@ class Gui(QtGui.QMainWindow):
                         text += "% ("+self.rounder(inMoney)+".-) </li>"
                 text += "</ul>"
                 if loanSplitSum > 0:
-                    text += tr("Loansplitsum", "")+": "+self.rounder(loanSplitSum)+".-<hr />"
+                    text += tr("Loansplitsum")+": "+self.rounder(loanSplitSum)+".-/"+str(company.perHours)+tr("h")+"<hr />"
                 creditSum = 0
-                text += "<ul>"
+                text += "<h4>"+tr("Credits")+"</h4><ul>"
                 for credit in company.credits:
                     if (credit.date.month() == ccm and credit.date.year() == ccy) or  self.ui.companyViewCalendarFilter.isChecked() == False:
                         creditSum += credit.value
                         text += "<li>"+credit.date.toString(dbDateFormat) + ": "+str(credit.value)+""
                         if credit.payed:
-                            text +=".- is"+tr("payed", "")+"</li>"
+                            text +=".- "+ tr("is")+" "+tr("payed")+"</li>"
                         else:
-                            text +=".- is"+tr("payed", "")+"</li>"
+                            text +=".- "+ tr("is NOT")+" "+tr("payed")+"</li>"
                 text += "</ul>"
                 if creditSum > 0:
-                    text += tr("Creditsum", "")+": "+self.rounder(creditSum)+".- <hr />"
+                    text += tr("Creditsum")+": "+self.rounder(creditSum)+".- <hr />"
                 jobSum = 0
                 jobDays = 0
                 jobHours = 0
                 chargeSum = 0
+                text += "<h4>"+tr("Jobs")+"</h4>"
                 text += "<ul>"
                 for job in company.jobs:
                     if self.ui.companyViewCalendarFilter.isChecked():
@@ -859,7 +860,8 @@ class Gui(QtGui.QMainWindow):
                 loanSplitSumDays = loanSplitSum * jobDays
                 result = jobSum - loanSplitSumDays - creditSum + chargeSum
                 #the end of all results..
-                text += "<ul><li><b>"+self.rounder(jobSum)+".-</b> </li><li><b> - "+self.rounder(loanSplitSumDays)+".-  </b>"+tr("Splits", "")+"</li><li><b> - "+self.rounder(creditSum)+".- </b>"+tr(  "Credits", "")+"</li> <li><b> + "+self.rounder(chargeSum)+".- </b> "+tr("Charges", "")+"</li></ul><hr /> "+tr("Your company should pay", "")+"<b> "+self.rounder(result)+".- </b>"
+                text += "<h4>"+tr("Summary")+"</h4>"
+                text += "<ul><li><b>"+self.rounder(jobSum)+".-</b> </li><li><b> - "+self.rounder(loanSplitSumDays)+".-  </b>"+tr("Splits")+"</li><li><b> - "+self.rounder(creditSum)+".- </b>"+tr(  "Credits")+"</li> <li><b> + "+self.rounder(chargeSum)+".- </b> "+tr("Charges")+"</li></ul><hr /> "+tr("Your company should pay")+"<b> "+self.rounder(result)+".- </b>"
                 self.ui.companyViewText.setText(text)
                 
 

@@ -66,7 +66,7 @@
     <message>
         <location filename="main_gui_integradet.py" line="650"/>
         <source>Spesen</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Charges</translation>
     </message>
     <message>
         <location filename="main_gui_integradet.py" line="862"/>
@@ -341,22 +341,22 @@
     <message>
         <location filename="main.py" line="611"/>
         <source>Lohn</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Loan</translation>
     </message>
     <message>
         <location filename="main.py" line="613"/>
         <source>Zeit (ges)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Time</translation>
     </message>
     <message>
         <location filename="main.py" line="615"/>
         <source>Spesen</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Charges</translation>
     </message>
     <message>
         <location filename="main.py" line="617"/>
         <source>AbzÃ¼ge</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Splits</translation>
     </message>
     <message>
         <location filename="main.py" line="619"/>
@@ -381,7 +381,7 @@
     <message>
         <location filename="main.py" line="624"/>
         <source>Summe (gesammt)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sum (@all)</translation>
     </message>
     <message>
         <location filename="main.py" line="625"/>

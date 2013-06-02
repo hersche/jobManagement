@@ -1,20 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="de_DE">
+<!DOCTYPE TS><TS version="2.0">
 <context>
-    <name>Charges</name>
+    <name>@default</name>
     <message>
-        <location filename="main_gui_integradet.py" line="838"/>
-        <source>Charges</source>
-        <translation type="unfinished">Spesen</translation>
+        <location filename="main_gui_integradet.py" line="423"/>
+        <source>days</source>
+        <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>Credits</name>
     <message>
-        <location filename="main_gui_integradet.py" line="838"/>
+        <location filename="main_gui_integradet.py" line="424"/>
+        <source> hours</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="496"/>
+        <source>saved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="505"/>
+        <source>deleted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="513"/>
+        <source>created</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="488"/>
+        <source>LoanSplit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="628"/>
+        <source>Companyname</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="628"/>
+        <source>Jobname</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="628"/>
+        <source>Place</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="628"/>
+        <source>Leader</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="628"/>
+        <source>Loan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="628"/>
+        <source>Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="628"/>
+        <source>Spesen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="840"/>
+        <source>Splits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="628"/>
+        <source>Summe</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="722"/>
+        <source>Creditsum</source>
+        <comment>Creditsum</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="782"/>
+        <source>Loan</source>
+        <comment>Loan</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="797"/>
+        <source>Loansplitsum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="807"/>
+        <source>payed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="810"/>
+        <source>Creditsum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="840"/>
         <source>Credits</source>
-        <translation type="unfinished">Vorschüsse</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="840"/>
+        <source>Charges</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="main_gui_integradet.py" line="840"/>
+        <source>Your company should pay</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -251,7 +354,7 @@
     </message>
     <message>
         <location filename="main.py" line="617"/>
-        <source>AbzÃ¼ge</source>
+        <source>Abz&#xc3;&#xbc;ge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -329,73 +432,6 @@ p, li { white-space: pre-wrap; }
         <location filename="main.py" line="642"/>
         <source>Status..</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Splits</name>
-    <message>
-        <location filename="main_gui_integradet.py" line="838"/>
-        <source>Splits</source>
-        <translation type="unfinished">Lohnaufteilungen</translation>
-    </message>
-</context>
-<context>
-    <name>Your company should pay</name>
-    <message>
-        <location filename="main_gui_integradet.py" line="838"/>
-        <source>yourcompanyshouldpay</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>jm</name>
-    <message>
-        <location filename="main_gui_integradet.py" line="626"/>
-        <source>Companyname</source>
-        <translation type="unfinished">FirmennameDE</translation>
-    </message>
-    <message>
-        <location filename="main_gui_integradet.py" line="626"/>
-        <source>Jobname</source>
-        <translation type="unfinished">JobnameDE</translation>
-    </message>
-    <message>
-        <location filename="main_gui_integradet.py" line="626"/>
-        <source>Place</source>
-        <translation type="unfinished">PlaceWork</translation>
-    </message>
-    <message>
-        <location filename="main_gui_integradet.py" line="626"/>
-        <source>Loan</source>
-        <translation type="unfinished">Lohn</translation>
-    </message>
-    <message>
-        <location filename="main_gui_integradet.py" line="626"/>
-        <source>Time</source>
-        <translation type="unfinished">Zeit</translation>
-    </message>
-    <message>
-        <location filename="main_gui_integradet.py" line="626"/>
-        <source>Spesen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="main_gui_integradet.py" line="626"/>
-        <source>Splits</source>
-        <translation type="unfinished">Aufteilungen</translation>
-    </message>
-    <message>
-        <location filename="main_gui_integradet.py" line="626"/>
-        <source>Summe</source>
-        <translation type="unfinished">SummeDe</translation>
-    </message>
-</context>
-<context>
-    <name>m</name>
-    <message>
-        <location filename="main_gui_integradet.py" line="626"/>
-        <source>Leader</source>
-        <translation type="unfinished">Leiter</translation>
     </message>
 </context>
 </TS>

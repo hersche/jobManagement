@@ -7,6 +7,8 @@ from main import Ui_MainWindow
 from PyQt4 import QtGui, QtCore
 dbDateFormat = "dd.MM.yyyy"
 fileExist = True
+def tr(name, bla=""):
+    return QtCore.QCoreApplication.translate("@default",  name)
 #...dann wird das überprüft..
 if os.path.isfile('jobmanagement.db') == False:
     #..und ggf umgestellt..
@@ -418,8 +420,8 @@ class Gui(QtGui.QMainWindow):
                 self.ui.weekendDays.setValue(job.weekendDays)
                 self.ui.startdate.setDate(job.startdate)
                 self.ui.enddate.setDate(job.enddate)
-                self.ui.daysCalc.setText(str(job.startdate.daysTo(job.enddate)+1)+ " days")
-                self.ui.hoursCalc.setText(str((job.startdate.daysTo(job.enddate)+1)*job.hours)+ " hours")
+                self.ui.daysCalc.setText(str(job.startdate.daysTo(job.enddate)+1)+  tr("days"))
+                self.ui.hoursCalc.setText(str((job.startdate.daysTo(job.enddate)+1)*job.hours)+ tr(" hours"))
                 self.updateWorkchargesList()
                 if job.active == 1:
                     self.ui.active.setChecked(True)
@@ -438,7 +440,7 @@ class Gui(QtGui.QMainWindow):
         for spese in self.currentCompany.charges:
             if cm is not None and spese.name == cm.text():
                 spese.save(self.ui.chargesName.text(), self.ui.chargesValue.text())
-                self.ui.status.setText("Charge "+self.ui.chargesName.text()+" saveds")
+                self.ui.status.setText("Charge "+self.ui.chargesName.text()+tr("saved"))
         self.updatechargesList(True)
         
         self.updateWorkchargesList(True)
@@ -449,7 +451,7 @@ class Gui(QtGui.QMainWindow):
         for spese in self.currentCompany.charges:
             if cm is not None and spese.name == cm.text():
                 spese.delete()
-                self.ui.status.setText("Charge "+cm.text()+" deleted with success")
+                self.ui.status.setText("Charge "+cm.text()+tr("deleted"))
         self.updatechargesList(True)
     #-------------
     # loanSplit-Actions
@@ -457,7 +459,7 @@ class Gui(QtGui.QMainWindow):
     def onCreateLoanSplit(self):
         self.currentCompany.createLoanSplit(self.ui.loanSplitName.text(), self.ui.loanSplitValue.text(),  self.ui.loanSplitMoney.isChecked())
         # @TODO select the created!
-        self.ui.status.setText("LoanSplit "+self.ui.loanSplitName.text()+" created")
+        self.ui.status.setText("LoanSplit "+self.ui.loanSplitName.text()+tr("created"))
         self.updateLoanSplitList(True)
     def onSaveLoanSplit(self):
         cr = self.ui.loanSplitList.currentRow()
@@ -465,7 +467,7 @@ class Gui(QtGui.QMainWindow):
         for loanSplit in self.currentCompany.loanSplits:
             if cm is not None and loanSplit.name == cm.text():
                 loanSplit.save(self.ui.loanSplitName.text(), self.ui.loanSplitValue.text(),  self.ui.loanSplitMoney.isChecked())
-                self.ui.status.setText("LoanSplit "+self.ui.loanSplitName.text()+" saved")
+                self.ui.status.setText("LoanSplit "+self.ui.loanSplitName.text()+tr("saved"))
         self.updateLoanSplitList()
         self.ui.loanSplitList.setCurrentRow(cr)
         self.ui.loanSplitList.setCurrentItem(cm)
@@ -474,7 +476,7 @@ class Gui(QtGui.QMainWindow):
         for loanSplit in self.currentCompany.loanSplits:
             if cm is not None and loanSplit.name == cm.text():
                 loanSplit.delete()
-                self.ui.status.setText("Charge "+cm.text()+" deleted")
+                self.ui.status.setText("Charge "+cm.text()+tr("deleted"))
         self.updateLoanSplitList(True)
         
     #-------------
@@ -483,7 +485,7 @@ class Gui(QtGui.QMainWindow):
     def onCreateConfig(self):
         mightyController.createConfig(self.ui.loanSplitName.text(), self.ui.loanSplitValue.text(),  self.ui.loanSplitMoney.isChecked())
         # @TODO select the created!
-        self.ui.status.setText("LoanSplit "+self.ui.loanSplitName.text()+" created")
+        self.ui.status.setText(tr("LoanSplit")+" "+self.ui.loanSplitName.text()+" "+tr("created"))
         self.updateLoanSplitList(True)
     def onSaveConfig(self):
         cr = self.ui.loanSplitList.currentRow()
@@ -491,7 +493,7 @@ class Gui(QtGui.QMainWindow):
         for loanSplit in self.currentCompany.loanSplits:
             if cm is not None and loanSplit.name == cm.text():
                 loanSplit.save(self.ui.loanSplitName.text(), self.ui.loanSplitValue.text(),  self.ui.loanSplitMoney.isChecked())
-                self.ui.status.setText("LoanSplit "+self.ui.loanSplitName.text()+" saved")
+                self.ui.status.setText("LoanSplit "+self.ui.loanSplitName.text()+" "+tr("saved"))
         self.updateLoanSplitList()
         self.ui.loanSplitList.setCurrentRow(cr)
         self.ui.loanSplitList.setCurrentItem(cm)
@@ -500,7 +502,7 @@ class Gui(QtGui.QMainWindow):
         for loanSplit in self.currentCompany.loanSplits:
             if cm is not None and loanSplit.name == cm.text():
                 loanSplit.delete()
-                self.ui.status.setText("Charge "+cm.text()+" deleted")
+                self.ui.status.setText("Charge "+cm.text()+" "+tr("deleted"))
         self.updateLoanSplitList(True)
         
     #---------------------------------------
@@ -508,7 +510,7 @@ class Gui(QtGui.QMainWindow):
     #---------------------------------------
     def onCreateCredit(self):
         self.currentCompany.createCredit(self.ui.creditValue.value(), self.ui.creditDate.text(), self.ui.creditPayed.isChecked())
-        self.ui.status.setText("credit created:"+str(self.ui.creditValue.value()))
+        self.ui.status.setText("credit"+tr("created")+":"+str(self.ui.creditValue.value()))
         # @TODO select the created!
         self.updateCreditList(selectFirst=True)
     def onSaveCredit(self):
@@ -623,7 +625,7 @@ class Gui(QtGui.QMainWindow):
         self.updateCompanyViewList()
         rowNr = 0
         self.sum = 0
-        self.ui.infoExel.setHorizontalHeaderLabels((QtCore.QCoreApplication.translate("jm", "Companyname"),QtCore.QCoreApplication.translate("jm", "Jobname"), QtCore.QCoreApplication.translate("jm", "Place"), QtCore.QCoreApplication.translate("m", "Leader"), QtCore.QCoreApplication.translate("jm", "Loan"),QtCore.QCoreApplication.translate( "jm",  "Time"), QtCore.QCoreApplication.translate("jm",  "Spesen"), QtCore.QCoreApplication.translate("jm", "Splits"), QtCore.QCoreApplication.translate("jm", "Summe")))
+        self.ui.infoExel.setHorizontalHeaderLabels((tr( "Companyname"),tr( "Jobname"),tr( "Place"), tr( "Leader"), tr( "Loan"),tr( "Time"), tr(  "Spesen", ""), tr( "Splits", ""), tr( "Summe", "")))
         wcm = self.ui.workCalendar.monthShown()
         wcy = self.ui.workCalendar.yearShown()
         creditString =""
@@ -717,7 +719,7 @@ class Gui(QtGui.QMainWindow):
                         creditSum += credit.value
                         creditString += "- "+credit.date.toString(dbDateFormat)+": "+str(credit.value)+"<br />"
                 if creditSum > 0:
-                    creditString += "------------<br />Creditsum: "+str(creditSum)
+                    creditString += "------------<br />"+tr("Creditsum", "Creditsum")+ ":"+str(creditSum)
             self.ui.infoExelCredits.setText(creditString)
             self.sum -= creditSum
             self.ui.amount.display(self.sum)
@@ -777,7 +779,7 @@ class Gui(QtGui.QMainWindow):
         for company in mightyController.companylist:
             if self.ui.companyViewList.currentText() == company.name:
                 text = ""
-                text += "<h1>"+company.name+"</h1>"+company.describtion+"<br />Loan: "+str(company.loan)+" (per "+str(company.perHours)+"h)<hr />"
+                text += "<h1>"+company.name+"</h1>"+company.describtion+"<br />"+tr("Loan", "Loan")+": "+str(company.loan)+" (per "+str(company.perHours)+"h)<hr />"
                 loanSplitSum = 0
                 #LoanSplits
                 text += "<ul>"
@@ -792,7 +794,7 @@ class Gui(QtGui.QMainWindow):
                         text += "% ("+self.rounder(inMoney)+".-) </li>"
                 text += "</ul>"
                 if loanSplitSum > 0:
-                    text += "Loansplitsum: "+self.rounder(loanSplitSum)+".-<hr />"
+                    text += tr("Loansplitsum", "")+": "+self.rounder(loanSplitSum)+".-<hr />"
                 creditSum = 0
                 text += "<ul>"
                 for credit in company.credits:
@@ -800,12 +802,12 @@ class Gui(QtGui.QMainWindow):
                         creditSum += credit.value
                         text += "<li>"+credit.date.toString(dbDateFormat) + ": "+str(credit.value)+""
                         if credit.payed:
-                            text +=".- is payed </li>"
+                            text +=".- is"+tr("payed", "")+"</li>"
                         else:
-                            text +=".- is NOT payed </li>"
+                            text +=".- is"+tr("payed", "")+"</li>"
                 text += "</ul>"
                 if creditSum > 0:
-                    text += "Creditsum: "+self.rounder(creditSum)+".- <hr />"
+                    text += tr("Creditsum", "")+": "+self.rounder(creditSum)+".- <hr />"
                 jobSum = 0
                 jobDays = 0
                 jobHours = 0
@@ -835,7 +837,7 @@ class Gui(QtGui.QMainWindow):
                 loanSplitSumDays = loanSplitSum * jobDays
                 result = jobSum - loanSplitSumDays - creditSum + chargeSum
                 #the end of all results..
-                text += "<ul><li><b>"+self.rounder(jobSum)+".-</b> </li><li><b> - "+self.rounder(loanSplitSumDays)+".-  </b>"+QtCore.QCoreApplication.translate("Splits",  "Splits")+"</li><li><b> - "+self.rounder(creditSum)+".- </b>"+QtCore.QCoreApplication.translate("Credits",  "Credits")+"</li> <li><b> + "+self.rounder(chargeSum)+".- </b> "+QtCore.QCoreApplication.translate("Charges",  "Charges")+"</li></ul><hr /> "+QtCore.QCoreApplication.translate("Your company should pay",  "yourcompanyshouldpay")+"<b> "+self.rounder(result)+".- </b>"
+                text += "<ul><li><b>"+self.rounder(jobSum)+".-</b> </li><li><b> - "+self.rounder(loanSplitSumDays)+".-  </b>"+tr("Splits", "")+"</li><li><b> - "+self.rounder(creditSum)+".- </b>"+tr(  "Credits", "")+"</li> <li><b> + "+self.rounder(chargeSum)+".- </b> "+tr("Charges", "")+"</li></ul><hr /> "+tr("Your company should pay", "")+"<b> "+self.rounder(result)+".- </b>"
                 self.ui.companyViewText.setText(text)
                 
 

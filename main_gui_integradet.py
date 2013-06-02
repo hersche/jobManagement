@@ -44,6 +44,16 @@ class Controller:
             c.execute('select * from company;') 
             for row in c.fetchall():
                 self.companylist.append(Company(row[0], row[1], row[2], row[3], row[4]))
+        def updatePersonalCreditList(self):
+            self.personalCredits = []
+            c.execute('select * from credit WHERE companyid = ?',  (str(-1), ))
+            for row in c.fetchall():
+                self.personalCredits.append(Credit(row[0], row[1], row[2],  row[3],  row[4], row[5], row[6]))
+        def updatePersonalChargesList(self):
+            self.personalCharges = []
+            c.execute('select * from charges WHERE companyid = ?',  (str(-1), ))
+            for row in c.fetchall():
+                self.personalCharges.append(charges(row[0], row[1], row[2]))
         def createConfig(self, key,  value):
             c.execute("INSERT INTO config (key, value) VALUES (?,?);",  (key, value))
             db.commit()
@@ -177,8 +187,11 @@ class Company:
             c.execute("INSERT INTO job (name, place, comment,hours, correctionHours, weekendDays, startdate, enddate,  baustellenleiter, active, companyid) VALUES (?,?,?,?,?,?,?,?,?,?,?)",  (name, place,  comment, hours,correctionHours,  weekendDays,  startdate, enddate,  baustellenleiter, active,   self.id))
             db.commit()
             self.updateJobList()
-    def createSpese(self,  name, value):
-            c.execute("INSERT INTO charges (name, value, companyid) VALUES (?,?,?)",  ( name, value,  self.id))
+    def createSpese(self,  name, value, companyid = -10):
+            if companyid != -10:
+                c.execute("INSERT INTO charges (name, value, companyid) VALUES (?,?,?)",  ( name, value,  companyid))
+            else:
+                c.execute("INSERT INTO charges (name, value, companyid) VALUES (?,?,?)",  ( name, value,  self.id))
             db.commit()
             self.updatechargesList()
             
@@ -190,7 +203,7 @@ class Company:
         c.execute("INSERT INTO loanSplit (name, value, money, companyid) VALUES (?,?,?,?)",  ( name, value, tmpMoney,  self.id))
         db.commit()
         
-    def createCredit(self, name,  value, date, payed,  active):
+    def createCredit(self, name,  value, date, payed,  active,  companyid = -10):
         if active:
             tmpActive = 1
         else:
@@ -199,7 +212,10 @@ class Company:
             tmpPayed = 1
         else:
             tmpPayed = 0
-        c.execute("INSERT INTO credit (name, value, date, payed,active, companyid) VALUES (?,?,?,?,?,?)",  ( name,  value, date, tmpPayed,tmpActive,  self.id))
+        if companyid != -10:
+            c.execute("INSERT INTO credit (name, value, date, payed,active, companyid) VALUES (?,?,?,?,?,?)",  ( name,  value, date, tmpPayed,tmpActive,  companyid))
+        else:
+            c.execute("INSERT INTO credit (name, value, date, payed,active, companyid) VALUES (?,?,?,?,?,?)",  ( name,  value, date, tmpPayed,tmpActive,  self.id))
         db.commit()
     
     def save(self, name,  loan,  perHours, describtion):
@@ -318,6 +334,19 @@ class Gui(QtGui.QMainWindow):
         self.ui.createConfig.clicked.connect(self.onCreateConfig)
         self.ui.saveConfig.clicked.connect(self.onSaveConfig)
         self.ui.deleteConfig.clicked.connect(self.onDeleteConfig)
+        #---------------------
+        #personal tab
+        #---------------------
+        #Charge-Actions
+        self.ui.createPersonalCharge.clicked.connect(self.onCreatePersonalCharge)
+        self.ui.savePersonalCharge.clicked.connect(self.onSavePersonalCharge)
+        self.ui.deletePersonalCharge.clicked.connect(self.onDeletePersonalCharge)
+
+        #Credit-Actions
+        self.ui.createPersonalCredit.clicked.connect(self.onCreatePersonalCredit)
+        self.ui.savePersonalCredit.clicked.connect(self.onSavePersonalCredit)
+        self.ui.deletePersonalCredit.clicked.connect(self.onDeletePersonalCredit)
+        
         
         #--------------------------
         #Showing Tab
@@ -365,7 +394,14 @@ class Gui(QtGui.QMainWindow):
         if selectFirst:
             self.ui.chargesList.setCurrentRow(0)
             self.onSpeseItemClick(self.ui.chargesList.currentItem())
-            
+    def updatePersonalChargesList(self,  selectFirst=False,  name=""):
+        self.ui.personalChargesList.clear()
+        mightyController.updatePersonalChargesList()
+        for spese in mightyController.personalCharges:
+            self.ui.personalChargesList.addItem(spese.name)
+        if selectFirst:
+            self.ui.personalChargesList.setCurrentRow(0)
+            self.onPersonalChargeItemClick(self.ui.personalChargesList.currentItem())
     def updateLoanSplitList(self,  selectFirst=False,  name=""):
         self.ui.loanSplitList.clear()
         self.currentCompany.updateLoanSplitList()
@@ -387,6 +423,15 @@ class Gui(QtGui.QMainWindow):
         self.ui.creditList.clear()
         self.currentCompany.updateCreditList()
         for credit in self.currentCompany.credits:
+            #if valueDate is not "" and valueDate == str(credit.value) +" "+credit.date:
+            self.ui.creditList.addItem(str(credit.value) +" "+credit.date.toString(dbDateFormat))
+        if selectFirst:
+            self.ui.creditList.setCurrentRow(0)
+            self.onCreditItemClick(self.ui.chargesList.currentItem())
+    def updatePersonalCreditList(self,  selectFirst=False, valueDate=""):
+        self.ui.personalCreditList.clear()
+        self.currentCompany.updatePersonalCreditList()
+        for credit in mightyController.personalCredits:
             #if valueDate is not "" and valueDate == str(credit.value) +" "+credit.date:
             self.ui.creditList.addItem(str(credit.value) +" "+credit.date.toString(dbDateFormat))
         if selectFirst:
@@ -430,6 +475,11 @@ class Gui(QtGui.QMainWindow):
             if spese.name == item.text():
                 self.ui.chargesName.setText(spese.name)
                 self.ui.chargesValue.setValue(spese.value)
+    def onPersonalChargeItemClick(self, item):
+        for spese in mightyController.personalCharges:
+            if spese.name == item.text():
+                self.ui.personalChargesName.setText(spese.name)
+                self.ui.personalChargesValue.setValue(spese.value)
     def onWChargeItemClick(self, item):
         jobSelect = self.ui.jobList.currentItem()
         for  job in self.currentCompany.jobs:
@@ -462,6 +512,20 @@ class Gui(QtGui.QMainWindow):
                     self.ui.creditActive.setChecked(True)
                 else:
                     self.ui.creditActive.setChecked(False)
+    def onPersonalCreditItemClick(self, item):
+        for credit in mightyController.personalCredits:
+            if item is not None and (str(credit.value) +" "+credit.date.toString(dbDateFormat)) == item.text():
+                self.ui.personalCreditName.setText(credit.name)
+                self.ui.personalCreditValue.setValue(credit.value)
+                self.ui.personalCreditDate.setDate(credit.date)
+                if credit.payed:
+                    self.ui.personalCreditPayed.setChecked(True)
+                else:
+                    self.ui.personalCreditPayed.setChecked(False)
+                if credit.active:
+                    self.ui.personalCreditActive.setChecked(True)
+                else:
+                    self.ui.personalCreditActive.setChecked(False)
     def onJobItemClick(self,  item):
         for job in self.currentCompany.jobs:
             if item is not None and item.text() == job.name:
@@ -511,6 +575,30 @@ class Gui(QtGui.QMainWindow):
                 spese.delete()
                 self.ui.status.setText(tr("Charge")+" "+cm.text()+" "+tr("deleted"))
         self.updatechargesList(True)
+    #-------------
+    # Charges-Actions
+    #--------------
+    def onCreatePersonalCharge(self):
+        self.currentCompany.createSpese(self.ui.chargesName.text(), self.ui.chargesValue.text(), -1)
+        # @TODO select the created!
+        self.updatePersonalChargesList(True)
+    def onSavePersonalCharge(self):
+        cr = self.ui.personalChargesList.currentRow()
+        cm = self.ui.personalChargesList.currentItem()
+        for spese in mightyController.personalCharges:
+            if cm is not None and spese.name == cm.text():
+                spese.save(self.ui.chargesName.text(), self.ui.chargesValue.text())
+                self.ui.status.setText(tr("Charge")+" "+self.ui.chargesName.text()+" "+tr("saved"))
+        self.updatePersonalChargesList(True)
+        self.ui.personalChargesList.setCurrentRow(cr)
+        self.ui.personalChargesList.setCurrentItem(cm)
+    def onDeletePersonalCharge(self):
+        cm = self.ui.personalChargesList.currentItem()
+        for spese in mightyController.personalCharges:
+            if cm is not None and spese.name == cm.text():
+                spese.delete()
+                self.ui.status.setText(tr("Charge")+" "+cm.text()+" "+tr("deleted"))
+        self.updatePersonalChargesList(True)
     #-------------
     # loanSplit-Actions
     #--------------
@@ -587,6 +675,31 @@ class Gui(QtGui.QMainWindow):
                 credit.delete()
                 self.ui.status.setText(tr("Credit")+" "+self.ui.creditValue.text()+" "+tr("deleted"))
         self.updateCreditList(True)
+        
+    #---------------------------------------
+    # personalCredit-Actions
+    #---------------------------------------
+    def onCreatePersonalCredit(self):
+        self.currentCompany.createCredit(self.ui.personalCreditName.text(), self.ui.personalCreditValue.value(), self.ui.personalCreditDate.text(), self.ui.personalCreditPayed.isChecked(), self.ui.personalCreditActive.isChecked(), -1)
+        self.ui.status.setText(tr("Credit")+" "+tr("created")+":"+str(self.ui.personalCreditValue.value()))
+        # @TODO select the created!
+        self.updateCreditList(selectFirst=True)
+    def onSavePersonalCredit(self):
+        cr = self.ui.personalCreditList.currentRow()
+        cm = self.ui.personalCreditList.currentItem()
+        for credit in mightyController.personalCredits:
+            if cm is not None and (str(credit.value) +" "+credit.date.toString(dbDateFormat)) == cm.text():
+                credit.save(self.ui.personalCreditName.text(), self.ui.personalCreditValue.text(), self.ui.personalCreditDate.text(),   self.ui.personalCreditPayed.isChecked(), self.ui.personalCreditActive.isChecked())
+                self.ui.status.setText(tr("Credit")+" "+self.ui.creditName.text()+":"+self.ui.creditValue.text()+" "+tr("saved"))
+        self.updatePersonalCreditList()
+        self.ui.personalCreditList.setCurrentRow(cr)
+    def onDeletePersonalCredit(self):
+        cm = self.ui.personalCreditList.currentItem()
+        for credit in mightyController.personalCredits:
+            if cm is not None and (str(credit.value) +" "+credit.date.toString(dbDateFormat)) == cm.text():
+                credit.delete()
+                self.ui.status.setText(tr("Credit")+" "+self.ui.personalCreditValue.text()+" "+tr("deleted"))
+        self.updatePersonalCreditList(True)
         
         
     #--------------------

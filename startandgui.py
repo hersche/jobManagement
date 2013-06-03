@@ -17,16 +17,15 @@ for config in mightyController.configlist:
     if (config.key.lower() == "single" or config.key.lower() == "singleview") and (config.value.lower() == "true" or config.value.lower() == "1"):
         singleView = True
         from gui_single import Ui_MainWindowSingle
-    elif config.key.lower()== "singleciewcname":
+    elif config.key.lower()== "singleviewcname":
         singleViewName = config.value
-    elif config.key.lower()== "singleciewcid":
+    elif config.key.lower()== "singleviewcid":
         singleViewId = config.value
 if True is not singleView:
     from gui import Ui_MainWindow
 class Gui(QtGui.QMainWindow):
     def __init__(self, parent=None):
         # INIT
-
         self.showInactive = True
         QtGui.QWidget.__init__(self, parent)
         if singleView:
@@ -651,8 +650,8 @@ class Gui(QtGui.QMainWindow):
                 daySpace = allDays - (startdate.daysInMonth() - startdate.day())
         else:
             daySpace = startdate.daysTo(enddate) + 1
-        if daySpace > 7:
-            weekendPart = (daySpace / 7) * weekendDays
+        if daySpace >= 7:
+            weekendPart = int(daySpace / 7) * weekendDays
             daySpace = daySpace - weekendPart
         return daySpace
     #--------------------------
@@ -706,9 +705,11 @@ class Gui(QtGui.QMainWindow):
         self.ui.amount.display(self.sum)
     def filterJobs(self, company, infoSearch, wcm, wcy, rowNr):
         for job in company.jobs:
+            
             #insertARow = False
             if singleView:
-                daySpace = 30
+                dater = QtCore.QDate.fromString(str(wcm)+"."+str(wcy), "M.yyyy")
+                daySpace = dater.daysInMonth() - (job.weekendDays * 4)
             else:
                 daySpace = job.startdate.daysTo(job.enddate) + 1
             if self.ui.filterAll.isChecked():
@@ -721,7 +722,7 @@ class Gui(QtGui.QMainWindow):
                     companyname = company.name.lower()                
                 if self.ui.filterCalendar.isChecked():
                     if singleView:
-                        daySpace = 30
+                        daySpace = dater.daysInMonth() - (job.weekendDays * 4)
                     else:
                         daySpace = self.calcDaySpace(job.startdate,  job.enddate, wcm,  job.weekendDays)
                 #cal + search

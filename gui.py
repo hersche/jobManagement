@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gui.ui'
 #
-# Created: Mon Jun  3 12:12:15 2013
+# Created: Mon Jun  3 13:10:16 2013
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -146,7 +146,7 @@ class Ui_MainWindow(object):
         self.creditList.setObjectName(_fromUtf8("creditList"))
         self.verticalLayout.addWidget(self.creditList)
         self.formLayoutWidget_3 = QtGui.QWidget(self.tab)
-        self.formLayoutWidget_3.setGeometry(QtCore.QRect(180, 10, 213, 91))
+        self.formLayoutWidget_3.setGeometry(QtCore.QRect(180, 10, 213, 105))
         self.formLayoutWidget_3.setObjectName(_fromUtf8("formLayoutWidget_3"))
         self.formLayout_3 = QtGui.QFormLayout(self.formLayoutWidget_3)
         self.formLayout_3.setFieldGrowthPolicy(QtGui.QFormLayout.ExpandingFieldsGrow)
@@ -481,7 +481,7 @@ class Ui_MainWindow(object):
         self.graphView.setGeometry(QtCore.QRect(10, 10, 291, 131))
         self.graphView.setObjectName(_fromUtf8("graphView"))
         self.horizontalLayoutWidget = QtGui.QWidget(self.tab_4)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(177, 430, 261, 80))
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(350, 430, 261, 80))
         self.horizontalLayoutWidget.setObjectName(_fromUtf8("horizontalLayoutWidget"))
         self.horizontalLayout = QtGui.QHBoxLayout(self.horizontalLayoutWidget)
         self.horizontalLayout.setMargin(0)
@@ -496,7 +496,7 @@ class Ui_MainWindow(object):
         self.amount.setObjectName(_fromUtf8("amount"))
         self.horizontalLayout.addWidget(self.amount)
         self.infoExelCredits = QtGui.QTextEdit(self.tab_4)
-        self.infoExelCredits.setGeometry(QtCore.QRect(20, 430, 151, 76))
+        self.infoExelCredits.setGeometry(QtCore.QRect(20, 430, 291, 76))
         self.infoExelCredits.setReadOnly(True)
         self.infoExelCredits.setObjectName(_fromUtf8("infoExelCredits"))
         self.tabWidget_3.addTab(self.tab_4, _fromUtf8(""))
@@ -692,7 +692,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.mainTab.setCurrentIndex(2)
+        self.mainTab.setCurrentIndex(1)
         self.tabWidget_2.setCurrentIndex(0)
         self.tabWidget_3.setCurrentIndex(0)
         self.tabWidget_4.setCurrentIndex(0)

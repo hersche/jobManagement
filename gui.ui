@@ -45,7 +45,7 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Personal finances&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="data">
      <property name="sizePolicy">
@@ -323,7 +323,7 @@
            <x>180</x>
            <y>10</y>
            <width>213</width>
-           <height>91</height>
+           <height>105</height>
           </rect>
          </property>
          <layout class="QFormLayout" name="formLayout_3">
@@ -1122,7 +1122,7 @@
        <widget class="QWidget" name="horizontalLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>177</x>
+          <x>350</x>
           <y>430</y>
           <width>261</width>
           <height>80</height>
@@ -1149,7 +1149,7 @@
          <rect>
           <x>20</x>
           <y>430</y>
-          <width>151</width>
+          <width>291</width>
           <height>76</height>
          </rect>
         </property>

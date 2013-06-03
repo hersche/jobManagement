@@ -59,6 +59,10 @@ class Controller:
             for company in self.companylist:
                 if company.id == id:
                     return company
+        def getCompanyByName(self, name):
+            for company in self.companylist:
+                if company.name == name:
+                    return company
                     
 class Config:
     #"CREATE TABLE config (coid INTEGER PRIMARY KEY,  key TEXT,  value TEXT)

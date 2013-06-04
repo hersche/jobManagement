@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gui.ui'
 #
-# Created: Mon Jun  3 16:41:52 2013
+# Created: Tue Jun  4 18:13:42 2013
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -408,9 +408,9 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.logic.sizePolicy().hasHeightForWidth())
         self.logic.setSizePolicy(sizePolicy)
         self.logic.setObjectName(_fromUtf8("logic"))
-        self.tabWidget_3 = QtGui.QTabWidget(self.logic)
-        self.tabWidget_3.setGeometry(QtCore.QRect(0, 10, 1071, 541))
-        self.tabWidget_3.setObjectName(_fromUtf8("tabWidget_3"))
+        self.viewTabs = QtGui.QTabWidget(self.logic)
+        self.viewTabs.setGeometry(QtCore.QRect(0, 10, 1071, 541))
+        self.viewTabs.setObjectName(_fromUtf8("viewTabs"))
         self.tab_4 = QtGui.QWidget()
         self.tab_4.setObjectName(_fromUtf8("tab_4"))
         self.infoExel = QtGui.QTableWidget(self.tab_4)
@@ -499,7 +499,7 @@ class Ui_MainWindow(object):
         self.infoExelCredits.setGeometry(QtCore.QRect(20, 430, 291, 76))
         self.infoExelCredits.setReadOnly(True)
         self.infoExelCredits.setObjectName(_fromUtf8("infoExelCredits"))
-        self.tabWidget_3.addTab(self.tab_4, _fromUtf8(""))
+        self.viewTabs.addTab(self.tab_4, _fromUtf8(""))
         self.tab_5 = QtGui.QWidget()
         self.tab_5.setObjectName(_fromUtf8("tab_5"))
         self.companyViewText = QtGui.QTextEdit(self.tab_5)
@@ -521,7 +521,7 @@ class Ui_MainWindow(object):
         self.companyViewCalendarFilter = QtGui.QCheckBox(self.gridLayoutWidget)
         self.companyViewCalendarFilter.setObjectName(_fromUtf8("companyViewCalendarFilter"))
         self.gridLayout.addWidget(self.companyViewCalendarFilter, 1, 0, 1, 1)
-        self.tabWidget_3.addTab(self.tab_5, _fromUtf8(""))
+        self.viewTabs.addTab(self.tab_5, _fromUtf8(""))
         self.mainTab.addTab(self.logic, _fromUtf8(""))
         self.tab_6 = QtGui.QWidget()
         self.tab_6.setObjectName(_fromUtf8("tab_6"))
@@ -697,7 +697,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.mainTab.setCurrentIndex(1)
         self.tabWidget_2.setCurrentIndex(0)
-        self.tabWidget_3.setCurrentIndex(0)
+        self.viewTabs.setCurrentIndex(0)
         self.tabWidget_4.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -787,9 +787,9 @@ class Ui_MainWindow(object):
         self.label_19.setText(_translate("MainWindow", "Search", None))
         self.filterInactive.setText(_translate("MainWindow", "Show Inactive", None))
         self.label_10.setText(_translate("MainWindow", "Summe (gesammt)", None))
-        self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_4), _translate("MainWindow", "Overview", None))
+        self.viewTabs.setTabText(self.viewTabs.indexOf(self.tab_4), _translate("MainWindow", "Overview", None))
         self.companyViewCalendarFilter.setText(_translate("MainWindow", "Calendarfilter", None))
-        self.tabWidget_3.setTabText(self.tabWidget_3.indexOf(self.tab_5), _translate("MainWindow", "Detailview Company", None))
+        self.viewTabs.setTabText(self.viewTabs.indexOf(self.tab_5), _translate("MainWindow", "Detailview Company", None))
         self.mainTab.setTabText(self.mainTab.indexOf(self.logic), _translate("MainWindow", "Logics - Checks", None))
         self.label_31.setText(_translate("MainWindow", "Credits (to Company)", None))
         self.label_32.setText(_translate("MainWindow", "Money", None))

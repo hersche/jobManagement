@@ -15,10 +15,13 @@ for config in mightyController.configlist:
         singleViewId = config.value
 if True is not singleView:
     from gui import Ui_MainWindow
-def tr(name, bla=""):
+def tr(name):
     return QtCore.QCoreApplication.translate("@default",  name)
+    
+#the whole gui...
 class Gui(QtGui.QMainWindow):
     def __init__(self, parent=None):
+        self.roundSum = 0
         # INIT
         self.showInactive = True
         QtGui.QWidget.__init__(self, parent)
@@ -30,20 +33,22 @@ class Gui(QtGui.QMainWindow):
         if singleView:
             #init self.currentCompany
             self.onCompanyItemClick("singleView")
-        self.updateInfoExel()
         cd = QtCore.QDate.currentDate()
         if singleView == False:
             self.ui.startdate.setDate(cd)
             self.ui.enddate.setDate(cd)
         self.ui.creditDate.setDate(cd)
-        self.updateCompanyList(True)
-        self.updateInfoExel()
-        self.updateCompanyView()
-        self.updateConfigList()
-        self.updatePersonalChargesList()
-        self.updatePersonalCreditList()
+#        self.updateCompanyList(True)
+#        self.updateInfoExel()
+#        self.updateCompanyView()
+#        self.updateConfigList()
+#        self.updatePersonalChargesList()
+#        self.updatePersonalCreditList()
+        self.tabUpdater()
         self.alertBox = QtGui.QMessageBox()
         
+        self.ui.mainTab.currentChanged.connect(self.tabUpdater)
+        self.ui.viewTabs.currentChanged.connect(self.tabUpdater)
         #-----------------------
         #Data-Tab
         #-----------------------
@@ -122,7 +127,21 @@ class Gui(QtGui.QMainWindow):
         self.ui.companyViewCalendar.currentPageChanged.connect(self.updateCompanyView)
         self.ui.companyViewCalendarFilter.clicked.connect(self.updateCompanyView)
     
-    
+    def tabUpdater(self,  index=0):
+        ci = self.ui.mainTab.currentIndex()
+        if ci == 0:
+            self.updateCompanyList(True)
+        elif ci == 1:
+            vci = self.ui.viewTabs.currentIndex()
+            if vci == 0:
+                self.updateInfoExel()
+            elif vci == 1:
+                self.updateCompanyView()
+        elif ci == 2:
+            self.updatePersonalChargesList();
+            self.updatePersonalCreditList();
+        elif ci == 3:
+            self.updateConfigList(True)
     #----------------------
     # Updaters
     #-----------------------
@@ -620,34 +639,6 @@ class Gui(QtGui.QMainWindow):
                         job.addSpese(spese.id,  self.ui.wChargeTimes.value())
                         job.updateWchargesList()
         self.updateWorkchargesList()
-    def rounder(self, nr):
-        origNr = nr
-        intNr = int(nr)
-        afterComma = nr - intNr
-        stringComma = str(afterComma)
-        if len(stringComma) > 6:
-            stringComma = str(abs(float(stringComma)))
-            if int(stringComma[4:5]) > 5:
-                correctAfterComma = int(stringComma[2:4]) + 1
-            else:
-                correctAfterComma = int(stringComma[2:4]) 
-            floatString = str(intNr)+"."+str(correctAfterComma)
-            return floatString
-        else:
-            return str(origNr)
-    def calcDaySpace(self,  startdate,  enddate,  cm,  weekendDays):
-        if startdate.month() != enddate.month():
-            allDays = startdate.daysTo(enddate)
-            if startdate.month() == cm:
-                daySpace = allDays - enddate.day()+1
-            else:
-                daySpace = allDays - (startdate.daysInMonth() - startdate.day())
-        else:
-            daySpace = startdate.daysTo(enddate) + 1
-        #if daySpace >= 7:
-            #weekendPart = int(daySpace / 7) * weekendDays
-            #daySpace = daySpace - weekendPart
-        return daySpace
     #--------------------------
     # Showing-Tab
     #--------------------------
@@ -655,28 +646,28 @@ class Gui(QtGui.QMainWindow):
     def updateInfoExel(self):
         self.ui.infoExel.clearContents()
         self.ui.infoExel.clear()
-        #proof of concept, have to move..
-        self.updateGraphicView()
-        self.updateCompanyViewList()
-        rowNr = 0
         self.sum = 0
+        
+        #proof of concept, have to move..
+        sdt.updateGraphicView(self.ui)
+        self.updateCompanyViewList()
         if singleView:
             self.ui.infoExel.setHorizontalHeaderLabels((tr( "Jobname"),tr( "Place"), tr( "Leader"), tr( "Loan"),tr( "Time"), tr(  "Charges"), tr( "Splits"), tr( "Summe")))
         else:
             self.ui.infoExel.setHorizontalHeaderLabels((tr( "Companyname"),tr( "Jobname"),tr( "Place"), tr( "Leader"), tr( "Loan"),tr( "Time"), tr(  "Charges"), tr( "Splits"), tr( "Summe")))
         wcm = self.ui.workCalendar.monthShown()
         wcy = self.ui.workCalendar.yearShown()
+        rowNr = 0
+        self.roundSum += 1
         infoSearch = self.ui.infoSearch.text()
         infoSearch = infoSearch.lower()
         if singleView:
             company = self.currentCompany
-            self.ui.infoExel.insertRow(3)
-            self.filterJobs(self.currentCompany, infoSearch,  wcm, wcy, rowNr)
+            rowNr += self.filterJobs(self.currentCompany, infoSearch,  wcm, wcy, rowNr)
             self.createCreditTextBox(self.currentCompany, wcm, wcy)
         else:
             for company in mightyController.companylist:
-                self.ui.infoExel.insertRow(rowNr)
-                self.filterJobs(company, infoSearch,  wcm, wcy, rowNr)
+                rowNr += self.filterJobs(company, infoSearch,  wcm, wcy, rowNr)
                 self.createCreditTextBox(company, wcm, wcy)
 
 
@@ -693,10 +684,14 @@ class Gui(QtGui.QMainWindow):
         self.ui.infoExelCredits.setText(creditString)
         self.sum -= creditSum
         self.ui.amount.display(self.sum)
+        
+        
     def filterJobs(self, company, infoSearch, wcm, wcy, rowNr):
+        sum = 0
+        self.ui.infoExel.insertRow(rowNr)
         for job in company.jobs:
             #print(company.name+" "+job.name)
-            #insertARow = False
+            insertARow = False
             if singleView:
                 dater = QtCore.QDate.fromString(str(wcm)+"."+str(wcy), "M.yyyy")
                 daySpace = dater.daysInMonth() - (job.weekendDays * 4)
@@ -714,76 +709,88 @@ class Gui(QtGui.QMainWindow):
                     if singleView:
                         daySpace = dater.daysInMonth() - (job.weekendDays * 4)
                     else:
-                        daySpace = self.calcDaySpace(job.startdate,  job.enddate, wcm,  job.weekendDays)
+                        daySpace = sdt.calcDaySpace(job.startdate,  job.enddate, wcm,  job.weekendDays)
                 if daySpace >= 7:
                     weekendPart = int(daySpace / 7) * job.weekendDays
                     daySpace = daySpace - weekendPart
                 #cal + search
                 if self.ui.filterCalendar.isChecked() and self.ui.filterInactive.isChecked() and infoSearch != "":
                     if (((job.startdate.month() == wcm) and (job.startdate.year() == wcy)) or (((job.enddate.month() == wcm)) and (job.enddate.year()== wcy)))and (re.search(infoSearch,  jobname) is not None  or re.search(infoSearch,  jobplace) is not None or re.search(infoSearch,  jobcomment) is not None or re.search(infoSearch,  jobleader) is not None or re.search(infoSearch, companyname) is not None):
-                        self.createJobRow(job, company, rowNr, wcm,  daySpace) 
-                        #insertARow = True
-                        rowNr = rowNr + 1
-                        self.ui.infoExel.insertRow(rowNr)
+                        sum =sdt.createJobRow(job, company, rowNr, wcm,  daySpace, sum) 
+                        insertARow = True
                 #cal +inactive + search
                 if self.ui.filterCalendar.isChecked() and self.ui.filterInactive.isChecked() == False and infoSearch != "":
                     if (((job.startdate.month() == wcm) and (job.startdate.year() == wcy)) or (((job.enddate.month() == wcm)) and (job.enddate.year()== wcy)))and (re.search(infoSearch,  jobname) is not None  or re.search(infoSearch,  jobplace) is not None or re.search(infoSearch,  jobcomment) is not None or re.search(infoSearch,  jobleader) is not None or re.search(infoSearch, companyname) is not None) and job.active == 1:
-                        self.createJobRow(job, company, rowNr, wcm,  daySpace) 
-                        #insertARow = True
-                        rowNr = rowNr + 1
-                        self.ui.infoExel.insertRow(rowNr)
+                        sum =sdt.createJobRow(job, company, rowNr, wcm,  daySpace, sum) 
+                        insertARow = True
                 #search
                 elif self.ui.filterCalendar.isChecked() == False and self.ui.filterInactive.isChecked() and infoSearch != "":
-                    jobname = job.name.lower()
-                    jobplace = job.place.lower()
-                    jobleader = job.baustellenleiter.lower()
-                    jobcomment = job.comment.lower()
-                    companyname = company.name.lower()
                     if (re.search(infoSearch,  jobname) is not None  or re.search(infoSearch,  jobplace) is not None or re.search(infoSearch,  jobcomment) is not None or re.search(infoSearch,  jobleader) is not None or re.search(infoSearch,  companyname) is not None):
-                        self.createJobRow(job, company, rowNr, wcm,  daySpace)  
-                        rowNr = rowNr + 1
-                        self.ui.infoExel.insertRow(rowNr)
-                        #insertARow = True
+                        sum =sdt.createJobRow(job, company, rowNr, wcm,  daySpace, sum)  
+                        insertARow = True
                 #----- no filters (but filter@all)
                 elif self.ui.filterCalendar.isChecked() == False and self.ui.filterInactive.isChecked() and infoSearch == "":
-                    self.createJobRow(job, company, rowNr, wcm,  daySpace)  
-                    rowNr = rowNr + 1
-                    self.ui.infoExel.insertRow(rowNr)
-                    #insertARow = True
+                    sum =sdt.createJobRow(job, company, rowNr, wcm,  daySpace, sum)  
+                    insertARow = True
                 #calendar
                 elif self.ui.filterCalendar.isChecked() and self.ui.filterInactive.isChecked() and infoSearch == "":
                     if ((job.startdate.month() == wcm) and (job.startdate.year() == wcy)) or (((job.enddate.month() == wcm)) and (job.enddate.year()== wcy)):
-                      self.createJobRow(job, company, rowNr, wcm,  daySpace)  
-                      rowNr = rowNr + 1
-                      self.ui.infoExel.insertRow(rowNr)
-                      #insertARow = True
+                      sum =sdt.createJobRow(self.ui, job, company, rowNr, wcm,  daySpace, sum)  
+                      insertARow = True
                 #inactive calendar
                 elif self.ui.filterCalendar.isChecked() and self.ui.filterInactive.isChecked() == False and infoSearch == "":
                     if (((job.startdate.month() == wcm) and (job.startdate.year() == wcy)) or ((job.enddate.month() == wcm)) and (job.enddate.year()== wcy) and job.active == 1):
-                        self.createJobRow(job, company, rowNr,  wcm,  daySpace)
-                        rowNr = rowNr + 1
-                        self.ui.infoExel.insertRow(rowNr)
-                        #insertARow = True
+                        sum =sdt.createJobRow(self.ui, job, company, rowNr,  wcm,  daySpace, sum)
+                        insertARow = True
                 #inactive
                 elif self.ui.filterCalendar.isChecked() ==False and self.ui.filterInactive.isChecked() == False and infoSearch == "":
                     if  job.active == 1:
-                        self.createJobRow(job, company, rowNr,  wcm,  daySpace)
-                        rowNr = rowNr + 1
-                        self.ui.infoExel.insertRow(rowNr)
-                        #insertARow = True
+                        sum =sdt.createJobRow(self.ui, job, company, rowNr,  wcm,  daySpace, sum)
+                        insertARow = True
                 #inactive + search
                 elif self.ui.filterCalendar.isChecked() ==False and self.ui.filterInactive.isChecked() == False and infoSearch != "":
                     if  (re.search(infoSearch,  jobname) is not None  or re.search(infoSearch,  jobplace) is not None or re.search(infoSearch,  jobcomment) is not None or re.search(infoSearch,  jobleader) is not None or re.search(infoSearch,  companyname) is not None) and job.active == 1:
-                        self.createJobRow(job, company, rowNr,  wcm,  daySpace)
-                        rowNr = rowNr + 1
-                        self.ui.infoExel.insertRow(rowNr)
-                        #insertARow = True
+                        sum=sdt.createJobRow(self.ui, job, company, rowNr,  wcm,  daySpace, sum)
+                        insertARow = True
             else:
-                self.createJobRow(job, company,rowNr,  wcm,  daySpace)
-                rowNr = rowNr + 1
+                self.sum=sdt.createJobRow(self.ui, job, company,rowNr,  wcm,  daySpace, sum)
+                insertARow = True
+            if insertARow:
+                print(company.name + " RowNr:"+str(rowNr)+ " [R:"+str(self.roundSum)+"]")
+                rowNr += 1
                 self.ui.infoExel.insertRow(rowNr)
-                #insertARow = True
-    def createJobRow(self,  job, company, rowNr,  wcm,  daySpace):
+        self.sum += sum
+        return rowNr
+
+    def updateCompanyViewList(self):
+        if singleView == False:
+            self.ui.companyViewList.clear()
+            for company in mightyController.companylist:
+                self.ui.companyViewList.addItem(company.name)
+    def updateCompanyView(self):
+        ccm = self.ui.companyViewCalendar.monthShown()
+        ccy = self.ui.companyViewCalendar.yearShown()
+        if singleView:
+            self.ui.companyViewText.setText(sdt.createDetailText(self.currentCompany, ccm, ccy, self.ui.companyViewCalendarFilter.isChecked()))
+        else:
+            for company in mightyController.companylist:
+                if self.ui.companyViewList.currentText() == company.name:
+                    self.ui.companyViewText.setText(sdt.createDetailText(company, ccm, ccy, self.ui.companyViewCalendarFilter.isChecked()))
+#semantic designer tools
+class sdt:
+    @staticmethod
+    def calcDaySpace(startdate,  enddate,  cm,  weekendDays):
+        if startdate.month() != enddate.month():
+            allDays = startdate.daysTo(enddate)
+            if startdate.month() == cm:
+                daySpace = allDays - enddate.day()+1
+            else:
+                daySpace = allDays - (startdate.daysInMonth() - startdate.day())
+        else:
+            daySpace = startdate.daysTo(enddate) + 1
+        return daySpace
+    @staticmethod
+    def createJobRow(ui,  job, company, rowNr,  wcm,  daySpace, sum):
         colNr = 0
         #minSpace = daySpace * job.hours * 60
         hrSpace = daySpace * job.hours
@@ -800,27 +807,30 @@ class Gui(QtGui.QMainWindow):
         realLoan = (company.loan - loanSplitSum) 
         realLoanSplitSum = loanSplitSum * (hrSpace / company.perHours)
         loanSum = realLoan * (hrSpace / company.perHours) + spesenSum
-        self.sum = self.sum + loanSum
         #building table..
+        sumReturn = float(sum) + loanSum
         if not singleView:
-            self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(company.name) ))
+            ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(company.name) ))
             colNr = colNr + 1
-        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(job.name) ))
+        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(job.name) ))
         colNr = colNr + 1
-        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(job.place) ))
+        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(job.place) ))
         colNr = colNr + 1
-        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(job.baustellenleiter) ))
+        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(job.baustellenleiter) ))
         colNr = colNr + 1
-        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(self.rounder(loanSum) + ".- ("+self.rounder(realLoan)+"/std)" ))
+        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(loanSum) + ".- ("+sdt.rounder(realLoan)+"/std)" ))
         colNr = colNr + 1
-        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(self.rounder(hrSpace) +" Std / "+self.rounder(daySpace)+ "d (*"+str(job.hours)+"h)"))
+        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(hrSpace) +" Std / "+sdt.rounder(daySpace)+ "d (*"+str(job.hours)+"h)"))
         colNr = colNr + 1
-        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(self.rounder(spesenSum)+".- " ))
+        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(spesenSum)+".- " ))
         colNr = colNr + 1
-        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(self.rounder(loanSplitSum)+".- ("+self.rounder(realLoanSplitSum)+".- @all)" ))
+        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(loanSplitSum)+".- ("+sdt.rounder(realLoanSplitSum)+".- @all)" ))
         colNr = colNr + 1
-        self.ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(self.rounder(self.sum)+".-" ))
-    def updateGraphicView(self):
+        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(sumReturn)+".-" ))
+        return sumReturn
+
+    @staticmethod
+    def updateGraphicView(ui):
         pen= QtGui.QPen(QtCore.Qt.red)
         pen.setCapStyle(QtCore.Qt.RoundCap)
         scene = QtGui.QGraphicsScene()
@@ -829,24 +839,9 @@ class Gui(QtGui.QMainWindow):
         pen.setColor(QtCore.Qt.green)
         pen.setStyle(QtCore.Qt.DotLine)
         scene.addRect(40.00, 40.00, 40.00, 40.00, pen)
-        self.ui.graphView.setScene(scene)
-    def updateCompanyViewList(self):
-        if singleView == False:
-            self.ui.companyViewList.clear()
-            for company in mightyController.companylist:
-                self.ui.companyViewList.addItem(company.name)
-    def updateCompanyView(self):
-        ccm = self.ui.companyViewCalendar.monthShown()
-        ccy = self.ui.companyViewCalendar.yearShown()
-        if singleView:
-            self.createDetailText(self.currentCompany, ccm,  ccy)
-        else:
-            for company in mightyController.companylist:
-                if self.ui.companyViewList.currentText() == company.name:
-                    self.createDetailText(company, ccm, ccy)
-
-
-    def createDetailText(self, company, ccm,  ccy):
+        ui.graphView.setScene(scene)
+    @staticmethod
+    def createDetailText(company, ccm,  ccy, cvCalIsChecked):
         text = ""
         text += "<h1>"+company.name+"</h1>"+company.describtion+"<br />"+tr("Loan")+": "+str(company.loan)+" (per "+str(company.perHours)+tr("h")+")<hr />"
         loanSplitSum = 0
@@ -860,14 +855,14 @@ class Gui(QtGui.QMainWindow):
             else:
                 inMoney = (company.loan / 100) * ls.value
                 loanSplitSum += inMoney
-                text += "% ("+self.rounder(inMoney)+".-) </li>"
+                text += "% ("+sdt.rounder(inMoney)+".-) </li>"
         text += "</ul>"
         if loanSplitSum > 0:
-            text += tr("Loansplitsum")+": "+self.rounder(loanSplitSum)+".-/"+str(company.perHours)+tr("h")+"<hr />"
+            text += tr("Loansplitsum")+": "+sdt.rounder(loanSplitSum)+".-/"+str(company.perHours)+tr("h")+"<hr />"
         creditSum = 0
         text += "<h4>"+tr("Credits")+"</h4><ul>"
         for credit in company.credits:
-            if (credit.date.month() == ccm and credit.date.year() == ccy) or  self.ui.companyViewCalendarFilter.isChecked() == False:
+            if (credit.date.month() == ccm and credit.date.year() == ccy) or True is not cvCalIsChecked:
                 creditSum += credit.value
                 text += "<li>"+credit.date.toString(dbDateFormat) + ": "+str(credit.value)+""
                 if credit.payed:
@@ -876,7 +871,7 @@ class Gui(QtGui.QMainWindow):
                     text +=".- "+ tr("is NOT")+" "+tr("payed")+"</li>"
         text += "</ul>"
         if creditSum > 0:
-            text += tr("Creditsum")+": "+self.rounder(creditSum)+".- <hr />"
+            text += tr("Creditsum")+": "+sdt.rounder(creditSum)+".- <hr />"
         jobSum = 0
         jobDays = 0
         jobHours = 0
@@ -884,9 +879,9 @@ class Gui(QtGui.QMainWindow):
         text += "<h4>"+tr("Jobs")+"</h4>"
         text += "<ul>"
         for job in company.jobs:
-            if self.ui.companyViewCalendarFilter.isChecked():
+            if cvCalIsChecked:
                 if (job.startdate.month() == ccm and job.startdate.year() == ccy) or (job.enddate.month() == ccm and job.startdate.year() == ccy):
-                    days = self.calcDaySpace(job.startdate,  job.enddate, ccm,  job.weekendDays)
+                    days = sdt.calcDaySpace(job.startdate,  job.enddate, ccm,  job.weekendDays)
                 else:
                     days = -1
             else:
@@ -897,21 +892,37 @@ class Gui(QtGui.QMainWindow):
                 hourSpace = days * (job.hours / company.perHours ) +job.correctionHours
                 jobHours += hourSpace
                 jobSum += company.loan * hourSpace
-                text += "<li>"+job.name+": "+self.rounder(days)+"d * ("+self.rounder(job.hours)+"h /"+str(company.perHours)+" )+" +str(job.correctionHours)+"h = "+self.rounder(hourSpace)+"h * " + str(company.loan)+".-  ="+self.rounder(hourSpace*company.loan)+".- </li>"
+                text += "<li>"+job.name+": "+sdt.rounder(days)+"d * ("+sdt.rounder(job.hours)+"h /"+str(company.perHours)+" )+" +str(job.correctionHours)+"h = "+sdt.rounder(hourSpace)+"h * " + str(company.loan)+".-  ="+sdt.rounder(hourSpace*company.loan)+".- </li>"
                 text += "<ul>"
                 for charge in job.wcharges:
                     if charge.howManyTimes > 0:
                         chargeSum += charge.value * charge.howManyTimes
-                        text += "<li>"+charge.name+": "+str(charge.value)+".- * "+str(charge.howManyTimes)+" times = "+self.rounder(charge.value * days)+".- </li>"
+                        text += "<li>"+charge.name+": "+str(charge.value)+".- * "+str(charge.howManyTimes)+" times = "+sdt.rounder(charge.value * days)+".- </li>"
                     else:
                         chargeSum += charge.value * days
-                        text += "<li>"+charge.name+": "+str(charge.value)+".- * "+self.rounder(days)+"d = "+self.rounder(chargeSum)+".- </li>"
+                        text += "<li>"+charge.name+": "+str(charge.value)+".- * "+sdt.rounder(days)+"d = "+sdt.rounder(chargeSum)+".- </li>"
                 text += "</ul>"
-        text += "</ul> Sum: "+self.rounder(jobSum)+".- in "+self.rounder(jobHours)+"h / "+self.rounder(jobDays )+" d (+ "+self.rounder(chargeSum)+".- charges) <hr />"
+        text += "</ul> Sum: "+sdt.rounder(jobSum)+".- in "+sdt.rounder(jobHours)+"h / "+sdt.rounder(jobDays )+" d (+ "+sdt.rounder(chargeSum)+".- charges) <hr />"
         loanSplitSumDays = loanSplitSum * jobDays
         result = jobSum - loanSplitSumDays - creditSum + chargeSum
         #the end of all results..
         text += "<h4>"+tr("Summary")+"</h4>"
-        text += "<ul><li><b>"+self.rounder(jobSum)+".-</b> </li><li><b> - "+self.rounder(loanSplitSumDays)+".-  </b>"+tr("Splits")+"</li><li><b> - "+self.rounder(creditSum)+".- </b>"+tr(  "Credits")+"</li> <li><b> + "+self.rounder(chargeSum)+".- </b> "+tr("Charges")+"</li></ul><hr /> "+tr("Your company should pay")+"<b> "+self.rounder(result)+".- </b>"
-        self.ui.companyViewText.setText(text)
+        text += "<ul><li><b>"+sdt.rounder(jobSum)+".-</b> </li><li><b> - "+sdt.rounder(loanSplitSumDays)+".-  </b>"+tr("Splits")+"</li><li><b> - "+sdt.rounder(creditSum)+".- </b>"+tr(  "Credits")+"</li> <li><b> + "+sdt.rounder(chargeSum)+".- </b> "+tr("Charges")+"</li></ul><hr /> "+tr("Your company should pay")+"<b> "+sdt.rounder(result)+".- </b>"
+        return text
+    @staticmethod
+    def rounder(nr):
+        origNr = nr
+        intNr = int(nr)
+        afterComma = nr - intNr
+        stringComma = str(afterComma)
+        if len(stringComma) > 6:
+            stringComma = str(abs(float(stringComma)))
+            if int(stringComma[4:5]) > 5:
+                correctAfterComma = int(stringComma[2:4]) + 1
+            else:
+                correctAfterComma = int(stringComma[2:4]) 
+            floatString = str(intNr)+"."+str(correctAfterComma)
+            return floatString
+        else:
+            return str(origNr)
                 

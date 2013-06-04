@@ -928,7 +928,7 @@
      <attribute name="title">
       <string>Logics - Checks</string>
      </attribute>
-     <widget class="QTabWidget" name="tabWidget_3">
+     <widget class="QTabWidget" name="viewTabs">
       <property name="geometry">
        <rect>
         <x>0</x>

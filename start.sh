@@ -1,2 +1,2 @@
 #!/bin/bash
-/usr/bin/python3 startandgui.py
+/usr/bin/python3 start.py

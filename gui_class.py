@@ -1,14 +1,6 @@
-#this code is GPL-FORCED so let changes open, pls!!
-#License @ http://www.gnu.org/licenses/gpl.txt
-#Author: skamster
-
-import os.path,  sys,  re
-from PyQt4 import QtGui, QtCore
+import re
 from models import *
-
-    
-def tr(name, bla=""):
-    return QtCore.QCoreApplication.translate("@default",  name)
+from PyQt4 import QtGui
 singleView = False
 singleViewId = -1
 singleViewName = ""
@@ -23,6 +15,8 @@ for config in mightyController.configlist:
         singleViewId = config.value
 if True is not singleView:
     from gui import Ui_MainWindow
+def tr(name, bla=""):
+    return QtCore.QCoreApplication.translate("@default",  name)
 class Gui(QtGui.QMainWindow):
     def __init__(self, parent=None):
         # INIT
@@ -650,9 +644,9 @@ class Gui(QtGui.QMainWindow):
                 daySpace = allDays - (startdate.daysInMonth() - startdate.day())
         else:
             daySpace = startdate.daysTo(enddate) + 1
-        if daySpace >= 7:
-            weekendPart = int(daySpace / 7) * weekendDays
-            daySpace = daySpace - weekendPart
+        #if daySpace >= 7:
+            #weekendPart = int(daySpace / 7) * weekendDays
+            #daySpace = daySpace - weekendPart
         return daySpace
     #--------------------------
     # Showing-Tab
@@ -661,10 +655,6 @@ class Gui(QtGui.QMainWindow):
     def updateInfoExel(self):
         self.ui.infoExel.clearContents()
         self.ui.infoExel.clear()
-        self.ui.infoExel.insertRow(0)
-        self.ui.infoExel.insertRow(1)
-        self.ui.infoExel.insertRow(2)
-        self.ui.infoExel.insertRow(3)
         #proof of concept, have to move..
         self.updateGraphicView()
         self.updateCompanyViewList()
@@ -680,13 +670,13 @@ class Gui(QtGui.QMainWindow):
         infoSearch = infoSearch.lower()
         if singleView:
             company = self.currentCompany
+            self.ui.infoExel.insertRow(3)
             self.filterJobs(self.currentCompany, infoSearch,  wcm, wcy, rowNr)
             self.createCreditTextBox(self.currentCompany, wcm, wcy)
         else:
             for company in mightyController.companylist:
                 self.ui.infoExel.insertRow(rowNr)
                 self.filterJobs(company, infoSearch,  wcm, wcy, rowNr)
-                rowNr += 1
                 self.createCreditTextBox(company, wcm, wcy)
 
 
@@ -705,7 +695,7 @@ class Gui(QtGui.QMainWindow):
         self.ui.amount.display(self.sum)
     def filterJobs(self, company, infoSearch, wcm, wcy, rowNr):
         for job in company.jobs:
-            
+            #print(company.name+" "+job.name)
             #insertARow = False
             if singleView:
                 dater = QtCore.QDate.fromString(str(wcm)+"."+str(wcy), "M.yyyy")
@@ -725,6 +715,9 @@ class Gui(QtGui.QMainWindow):
                         daySpace = dater.daysInMonth() - (job.weekendDays * 4)
                     else:
                         daySpace = self.calcDaySpace(job.startdate,  job.enddate, wcm,  job.weekendDays)
+                if daySpace >= 7:
+                    weekendPart = int(daySpace / 7) * job.weekendDays
+                    daySpace = daySpace - weekendPart
                 #cal + search
                 if self.ui.filterCalendar.isChecked() and self.ui.filterInactive.isChecked() and infoSearch != "":
                     if (((job.startdate.month() == wcm) and (job.startdate.year() == wcy)) or (((job.enddate.month() == wcm)) and (job.enddate.year()== wcy)))and (re.search(infoSearch,  jobname) is not None  or re.search(infoSearch,  jobplace) is not None or re.search(infoSearch,  jobcomment) is not None or re.search(infoSearch,  jobleader) is not None or re.search(infoSearch, companyname) is not None):
@@ -922,19 +915,3 @@ class Gui(QtGui.QMainWindow):
         text += "<ul><li><b>"+self.rounder(jobSum)+".-</b> </li><li><b> - "+self.rounder(loanSplitSumDays)+".-  </b>"+tr("Splits")+"</li><li><b> - "+self.rounder(creditSum)+".- </b>"+tr(  "Credits")+"</li> <li><b> + "+self.rounder(chargeSum)+".- </b> "+tr("Charges")+"</li></ul><hr /> "+tr("Your company should pay")+"<b> "+self.rounder(result)+".- </b>"
         self.ui.companyViewText.setText(text)
                 
-
-app = QtGui.QApplication(sys.argv)
-lang = ""
-for config in mightyController.configlist:
-    if config.key == "lang" or config.key == "language":
-        if os.path.isfile(config.value):
-            lang=config.value
-        elif os.path.isfile(config.value+".qm"):
-            lang=config.value+".qm"
-translator = QtCore.QTranslator()
-translator.load(lang,"./")
-app.installTranslator(translator)
-jobman = Gui()
-jobman.show()
-
-sys.exit(app.exec_())

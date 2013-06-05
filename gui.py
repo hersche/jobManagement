@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gui.ui'
 #
-# Created: Tue Jun  4 18:13:42 2013
+# Created: Wed Jun  5 11:19:53 2013
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(1096, 654)
+        MainWindow.resize(1096, 656)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -107,9 +107,6 @@ class Ui_MainWindow(object):
         self.loan.setMaximum(99999999.99)
         self.loan.setObjectName(_fromUtf8("loan"))
         self.formLayout_2.setWidget(1, QtGui.QFormLayout.FieldRole, self.loan)
-        self.companydescription = QtGui.QTextEdit(self.formLayoutWidget_2)
-        self.companydescription.setObjectName(_fromUtf8("companydescription"))
-        self.formLayout_2.setWidget(3, QtGui.QFormLayout.SpanningRole, self.companydescription)
         self.label_24 = QtGui.QLabel(self.formLayoutWidget_2)
         self.label_24.setObjectName(_fromUtf8("label_24"))
         self.formLayout_2.setWidget(2, QtGui.QFormLayout.LabelRole, self.label_24)
@@ -119,6 +116,12 @@ class Ui_MainWindow(object):
         self.perHours.setProperty("value", 1.0)
         self.perHours.setObjectName(_fromUtf8("perHours"))
         self.formLayout_2.setWidget(2, QtGui.QFormLayout.FieldRole, self.perHours)
+        self.companydescription = QtGui.QTextEdit(self.formLayoutWidget_2)
+        self.companydescription.setObjectName(_fromUtf8("companydescription"))
+        self.formLayout_2.setWidget(3, QtGui.QFormLayout.FieldRole, self.companydescription)
+        self.label_35 = QtGui.QLabel(self.formLayoutWidget_2)
+        self.label_35.setObjectName(_fromUtf8("label_35"))
+        self.formLayout_2.setWidget(3, QtGui.QFormLayout.LabelRole, self.label_35)
         self.createCompany = QtGui.QPushButton(self.frame_4)
         self.createCompany.setGeometry(QtCore.QRect(10, 170, 91, 23))
         self.createCompany.setObjectName(_fromUtf8("createCompany"))
@@ -134,7 +137,7 @@ class Ui_MainWindow(object):
         self.tab = QtGui.QWidget()
         self.tab.setObjectName(_fromUtf8("tab"))
         self.verticalLayoutWidget = QtGui.QWidget(self.tab)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 10, 171, 96))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 10, 171, 101))
         self.verticalLayoutWidget.setObjectName(_fromUtf8("verticalLayoutWidget"))
         self.verticalLayout = QtGui.QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setMargin(0)
@@ -182,14 +185,17 @@ class Ui_MainWindow(object):
         self.creditActive.setObjectName(_fromUtf8("creditActive"))
         self.formLayout_3.setWidget(4, QtGui.QFormLayout.LabelRole, self.creditActive)
         self.createCredit = QtGui.QPushButton(self.tab)
-        self.createCredit.setGeometry(QtCore.QRect(0, 110, 99, 23))
+        self.createCredit.setGeometry(QtCore.QRect(0, 120, 99, 23))
         self.createCredit.setObjectName(_fromUtf8("createCredit"))
         self.saveCredit = QtGui.QPushButton(self.tab)
-        self.saveCredit.setGeometry(QtCore.QRect(110, 110, 99, 23))
+        self.saveCredit.setGeometry(QtCore.QRect(110, 120, 99, 23))
         self.saveCredit.setObjectName(_fromUtf8("saveCredit"))
         self.deleteCredit = QtGui.QPushButton(self.tab)
-        self.deleteCredit.setGeometry(QtCore.QRect(220, 110, 99, 23))
+        self.deleteCredit.setGeometry(QtCore.QRect(230, 120, 99, 23))
         self.deleteCredit.setObjectName(_fromUtf8("deleteCredit"))
+        self.plainTextEdit_3 = QtGui.QPlainTextEdit(self.tab)
+        self.plainTextEdit_3.setGeometry(QtCore.QRect(0, 140, 401, 51))
+        self.plainTextEdit_3.setObjectName(_fromUtf8("plainTextEdit_3"))
         self.tabWidget_2.addTab(self.tab, _fromUtf8(""))
         self.tab_2 = QtGui.QWidget()
         self.tab_2.setObjectName(_fromUtf8("tab_2"))
@@ -236,6 +242,9 @@ class Ui_MainWindow(object):
         self.loanSplitMoney = QtGui.QCheckBox(self.formLayoutWidget_8)
         self.loanSplitMoney.setObjectName(_fromUtf8("loanSplitMoney"))
         self.formLayout_8.setWidget(2, QtGui.QFormLayout.FieldRole, self.loanSplitMoney)
+        self.plainTextEdit_4 = QtGui.QPlainTextEdit(self.tab_2)
+        self.plainTextEdit_4.setGeometry(QtCore.QRect(0, 130, 411, 61))
+        self.plainTextEdit_4.setObjectName(_fromUtf8("plainTextEdit_4"))
         self.tabWidget_2.addTab(self.tab_2, _fromUtf8(""))
         self.tab_3 = QtGui.QWidget()
         self.tab_3.setObjectName(_fromUtf8("tab_3"))
@@ -414,7 +423,7 @@ class Ui_MainWindow(object):
         self.tab_4 = QtGui.QWidget()
         self.tab_4.setObjectName(_fromUtf8("tab_4"))
         self.infoExel = QtGui.QTableWidget(self.tab_4)
-        self.infoExel.setGeometry(QtCore.QRect(0, 150, 941, 271))
+        self.infoExel.setGeometry(QtCore.QRect(0, 150, 1021, 271))
         self.infoExel.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         self.infoExel.setHorizontalScrollMode(QtGui.QAbstractItemView.ScrollPerPixel)
         self.infoExel.setColumnCount(9)
@@ -478,10 +487,10 @@ class Ui_MainWindow(object):
         self.graphFrame.setFrameShadow(QtGui.QFrame.Raised)
         self.graphFrame.setObjectName(_fromUtf8("graphFrame"))
         self.graphView = QtGui.QGraphicsView(self.graphFrame)
-        self.graphView.setGeometry(QtCore.QRect(10, 10, 291, 131))
+        self.graphView.setGeometry(QtCore.QRect(10, 0, 310, 150))
         self.graphView.setObjectName(_fromUtf8("graphView"))
         self.horizontalLayoutWidget = QtGui.QWidget(self.tab_4)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(350, 430, 261, 80))
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(450, 420, 261, 80))
         self.horizontalLayoutWidget.setObjectName(_fromUtf8("horizontalLayoutWidget"))
         self.horizontalLayout = QtGui.QHBoxLayout(self.horizontalLayoutWidget)
         self.horizontalLayout.setMargin(0)
@@ -496,7 +505,7 @@ class Ui_MainWindow(object):
         self.amount.setObjectName(_fromUtf8("amount"))
         self.horizontalLayout.addWidget(self.amount)
         self.infoExelCredits = QtGui.QTextEdit(self.tab_4)
-        self.infoExelCredits.setGeometry(QtCore.QRect(20, 430, 291, 76))
+        self.infoExelCredits.setGeometry(QtCore.QRect(0, 420, 441, 91))
         self.infoExelCredits.setReadOnly(True)
         self.infoExelCredits.setObjectName(_fromUtf8("infoExelCredits"))
         self.viewTabs.addTab(self.tab_4, _fromUtf8(""))
@@ -710,6 +719,7 @@ class Ui_MainWindow(object):
         self.label_3.setText(_translate("MainWindow", "Companyname", None))
         self.label_4.setText(_translate("MainWindow", "Loan", None))
         self.label_24.setText(_translate("MainWindow", "Per Hours", None))
+        self.label_35.setText(_translate("MainWindow", "Comment / Details", None))
         self.createCompany.setText(_translate("MainWindow", "Create", None))
         self.saveCompany.setText(_translate("MainWindow", "Save", None))
         self.deleteCompany.setText(_translate("MainWindow", "Delete", None))
@@ -723,6 +733,7 @@ class Ui_MainWindow(object):
         self.createCredit.setText(_translate("MainWindow", "Create", None))
         self.saveCredit.setText(_translate("MainWindow", "Save", None))
         self.deleteCredit.setText(_translate("MainWindow", "Delete", None))
+        self.plainTextEdit_3.setPlainText(_translate("MainWindow", "In temporary companys you could take sometimes a part of the loan before month ends. those are credits.", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab), _translate("MainWindow", "Credits", None))
         self.label_20.setText(_translate("MainWindow", "Loan Splits", None))
         self.createLoanSplit.setText(_translate("MainWindow", "Create", None))
@@ -731,6 +742,7 @@ class Ui_MainWindow(object):
         self.label_21.setText(_translate("MainWindow", "Name", None))
         self.label_22.setText(_translate("MainWindow", "Value", None))
         self.loanSplitMoney.setText(_translate("MainWindow", "on=money,off=percent", None))
+        self.plainTextEdit_4.setPlainText(_translate("MainWindow", "When there\'s go something substracted, as example holiday-money, gouverment-payings, etc", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_2), _translate("MainWindow", "Loan Splits", None))
         self.label_17.setText(_translate("MainWindow", "Name", None))
         self.label_18.setText(_translate("MainWindow", "Money", None))
@@ -739,7 +751,7 @@ class Ui_MainWindow(object):
         self.saveCharge.setText(_translate("MainWindow", "Save", None))
         self.deleteCharge.setText(_translate("MainWindow", "Delete", None))
         self.addChargeToJob.setText(_translate("MainWindow", "Add to job", None))
-        self.plainTextEdit.setPlainText(_translate("MainWindow", "A static charge doesn\'t get active till you add it to a job. Don\'t forget to tell the job, how many time u used the charge effective..", None))
+        self.plainTextEdit.setPlainText(_translate("MainWindow", "a charge is, when you have to pay your hotel or the food yourself and the company will pay it you back with the loan. When you \"add to job\" it, it becames a workcharge, means it is active for this job.", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_3), _translate("MainWindow", "Static Charges", None))
         self.label_5.setText(_translate("MainWindow", "Jobname", None))
         self.label_6.setText(_translate("MainWindow", "Place", None))
@@ -822,7 +834,9 @@ class Ui_MainWindow(object):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt; text-decoration: underline;\">Avaible Config-Keys</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">lang / language = language - put the right filename (*.qm in your folder) there and restart</p></body></html>", None))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">lang / language = language - put the right filename (*.qm in your folder) there and restart</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">single / singleView = 1 / 0 , true / false - this is a view with just one company and limited options (more default-values, as example &quot;perHours&quot; in company.</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
         self.mainTab.setTabText(self.mainTab.indexOf(self.settings), _translate("MainWindow", "Settings", "en"))
         self.status.setText(_translate("MainWindow", "Status..", None))
 

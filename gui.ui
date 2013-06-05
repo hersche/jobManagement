@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1096</width>
-    <height>654</height>
+    <height>656</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -214,9 +214,6 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="0" colspan="2">
-          <widget class="QTextEdit" name="companydescription"/>
-         </item>
          <item row="2" column="0">
           <widget class="QLabel" name="label_24">
            <property name="text">
@@ -234,6 +231,16 @@
            </property>
            <property name="value">
             <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QTextEdit" name="companydescription"/>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_35">
+           <property name="text">
+            <string>Comment / Details</string>
            </property>
           </widget>
          </item>
@@ -301,7 +308,7 @@
            <x>0</x>
            <y>10</y>
            <width>171</width>
-           <height>96</height>
+           <height>101</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
@@ -400,7 +407,7 @@
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>110</y>
+           <y>120</y>
            <width>99</width>
            <height>23</height>
           </rect>
@@ -413,7 +420,7 @@
          <property name="geometry">
           <rect>
            <x>110</x>
-           <y>110</y>
+           <y>120</y>
            <width>99</width>
            <height>23</height>
           </rect>
@@ -425,14 +432,27 @@
         <widget class="QPushButton" name="deleteCredit">
          <property name="geometry">
           <rect>
-           <x>220</x>
-           <y>110</y>
+           <x>230</x>
+           <y>120</y>
            <width>99</width>
            <height>23</height>
           </rect>
          </property>
          <property name="text">
           <string>Delete</string>
+         </property>
+        </widget>
+        <widget class="QPlainTextEdit" name="plainTextEdit_3">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>140</y>
+           <width>401</width>
+           <height>51</height>
+          </rect>
+         </property>
+         <property name="plainText">
+          <string>In temporary companys you could take sometimes a part of the loan before month ends. those are credits.</string>
          </property>
         </widget>
        </widget>
@@ -543,6 +563,19 @@
            </widget>
           </item>
          </layout>
+        </widget>
+        <widget class="QPlainTextEdit" name="plainTextEdit_4">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>130</y>
+           <width>411</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="plainText">
+          <string>When there's go something substracted, as example holiday-money, gouverment-payings, etc</string>
+         </property>
         </widget>
        </widget>
        <widget class="QWidget" name="tab_3">
@@ -671,7 +704,7 @@
           </rect>
          </property>
          <property name="plainText">
-          <string>A static charge doesn't get active till you add it to a job. Don't forget to tell the job, how many time u used the charge effective..</string>
+          <string>a charge is, when you have to pay your hotel or the food yourself and the company will pay it you back with the loan. When you &quot;add to job&quot; it, it becames a workcharge, means it is active for this job.</string>
          </property>
         </widget>
        </widget>
@@ -949,7 +982,7 @@
          <rect>
           <x>0</x>
           <y>150</y>
-          <width>941</width>
+          <width>1021</width>
           <height>271</height>
          </rect>
         </property>
@@ -1112,9 +1145,9 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>10</y>
-           <width>291</width>
-           <height>131</height>
+           <y>0</y>
+           <width>310</width>
+           <height>150</height>
           </rect>
          </property>
         </widget>
@@ -1122,8 +1155,8 @@
        <widget class="QWidget" name="horizontalLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>350</x>
-          <y>430</y>
+          <x>450</x>
+          <y>420</y>
           <width>261</width>
           <height>80</height>
          </rect>
@@ -1147,10 +1180,10 @@
        <widget class="QTextEdit" name="infoExelCredits">
         <property name="geometry">
          <rect>
-          <x>20</x>
-          <y>430</y>
-          <width>291</width>
-          <height>76</height>
+          <x>0</x>
+          <y>420</y>
+          <width>441</width>
+          <height>91</height>
          </rect>
         </property>
         <property name="readOnly">
@@ -1584,7 +1617,9 @@
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:18pt; text-decoration: underline;&quot;&gt;Avaible Config-Keys&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;lang / language = language - put the right filename (*.qm in your folder) there and restart&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;lang / language = language - put the right filename (*.qm in your folder) there and restart&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;single / singleView = 1 / 0 , true / false - this is a view with just one company and limited options (more default-values, as example &amp;quot;perHours&amp;quot; in company.&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </widget>

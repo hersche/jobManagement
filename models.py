@@ -249,15 +249,17 @@ class Job:
                 self.wcharges.append(charges(row[0], row[1], row[2], co[0], co[3]))
     def addSpese(self,  chargesid, howManyTimes):
         c.execute("INSERT INTO wcharges (jobid, chargesid, howManyTimes) VALUES (?,?,?)",  ( self.id, chargesid, howManyTimes))
+        db.commit()
     def removeSpese(self, name,  company):
-        for spese in company.charges:
-            if spese.name == name:
-                c.execute("DELETE FROM wcharges WHERE chargesid=?",  (spese.id, ))
+        for wcharge in self.wcharges:
+            if wcharge.name == name:
+                c.execute("DELETE FROM wcharges WHERE chargesid=?",  (wcharge.wchargeId, ))
                 db.commit()
     def saveCharge(self, name,  howManyTimes):
         for wcharge in self.wcharges:
             if wcharge.name == name:
-                c.execute("UPDATE wcharges SET howManyTimes=? WHERE wid=?",  (howManyTimes,  wcharge.id))
+                print("hallo"+str(wcharge.id)+" "+str(howManyTimes))
+                c.execute("UPDATE wcharges SET howManyTimes=? WHERE wid=?",  (howManyTimes,  wcharge.wchargeId))
                 db.commit()
                 self.updateWchargesList()
         

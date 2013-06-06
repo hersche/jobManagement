@@ -626,36 +626,38 @@ class Gui(QtGui.QMainWindow):
         self.sum = 0
         creditStringFinale =""
         creditSumFinale = 0
-
         if singleView:
             self.ui.infoExel.setHorizontalHeaderLabels((tr( "Jobname"),tr( "Place"), tr( "Leader"), tr( "Loan"),tr( "Time"), tr(  "Charges"), tr( "Splits"), tr( "Summe")))
         else:
             self.ui.infoExel.setHorizontalHeaderLabels((tr( "Companyname"),tr( "Jobname"),tr( "Place"), tr( "Leader"), tr( "Loan"),tr( "Time"), tr(  "Charges"), tr( "Splits"), tr( "Summe")))
         workCalendar = QtCore.QDate.fromString(str(self.ui.workCalendar.monthShown())+"."+str(self.ui.workCalendar.yearShown()),"M.yyyy")
         #proof of concept, have to move..
-
         rowNr = 0
+        sum = 0
         self.roundSum += 1
         infoSearch = self.ui.infoSearch.text()
         infoSearch = infoSearch.lower()
         sdt.updateGraphicView(self.ui,  mightyController.companylist, workCalendar, infoSearch)
         if singleView:
             company = self.currentCompany
-            nRowNr, nSum = sdt.filterJobs(self.ui, self.currentCompany, infoSearch,  workCalendar, rowNr)
+            nRowNr, nSum = sdt.filterJobs(self.ui, self.currentCompany, infoSearch,  workCalendar, rowNr, self.sum)
             self.sum += nSum
             self.createCreditTextBox(self.currentCompany, workCalendar)
         else:
+            if rowNr==0:
+                self.ui.infoExel.insertRow(rowNr)
             for company in mightyController.companylist:
-                nRowNr, nSum = sdt.filterJobs(self.ui, company, infoSearch,  workCalendar, rowNr)
-                
-                rowNr = nRowNr
-                self.sum += nSum
-                creditString,  creditSum = self.createCreditTextBox(company, workCalendar, self.sum)
+                for job in company.jobs:
+                    if cw.insertJobYesNo(self.ui, company, job, infoSearch, workCalendar):
+                        sum += sdt.createJobRow(self.ui,  job, company, workCalendar, rowNr, sum) 
+                        rowNr +=1
+                        self.ui.infoExel.insertRow(rowNr)
+                creditString,  creditSum = self.createCreditTextBox(company, workCalendar, sum)
                 creditSumFinale += creditSum
                 creditStringFinale += creditString
         creditStringFinale+="<hr />Of all companys: "+str(creditSumFinale)+".-"
         self.ui.infoExelCredits.setText(creditStringFinale)
-        self.ui.amount.display(self.sum)
+        self.ui.amount.display(sum)
 
 
     def createCreditTextBox(self, company, wc, sum):
@@ -670,10 +672,6 @@ class Gui(QtGui.QMainWindow):
             creditString += "------------<br />"+tr("Creditsum")+ "4 :"+company.name+str(creditSum)+"<br />"
 
         return (creditString,  creditSum)
-        
-        
-        
-
 
     def updateCompanyViewList(self):
         if singleView == False:

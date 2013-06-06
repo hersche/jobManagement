@@ -45,7 +45,7 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Personal finances&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="data">
      <property name="sizePolicy">
@@ -150,6 +150,12 @@
         <height>421</height>
        </rect>
       </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
@@ -164,6 +170,12 @@
          <width>431</width>
          <height>201</height>
         </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
@@ -181,6 +193,9 @@
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout_2">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMaximumSize</enum>
+         </property>
          <property name="fieldGrowthPolicy">
           <enum>QFormLayout::ExpandingFieldsGrow</enum>
          </property>
@@ -731,10 +746,13 @@
          <x>20</x>
          <y>10</y>
          <width>361</width>
-         <height>371</height>
+         <height>372</height>
         </rect>
        </property>
        <layout class="QFormLayout" name="formLayout">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::ExpandingFieldsGrow</enum>
+        </property>
         <property name="labelAlignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
@@ -768,6 +786,13 @@
         <item row="2" column="1">
          <widget class="QLineEdit" name="baustellenleiter"/>
         </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>Startdate</string>
+          </property>
+         </widget>
+        </item>
         <item row="3" column="1">
          <widget class="QDateEdit" name="startdate">
           <property name="displayFormat">
@@ -775,13 +800,6 @@
           </property>
           <property name="calendarPopup">
            <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_13">
-          <property name="text">
-           <string>Startdate</string>
           </property>
          </widget>
         </item>
@@ -819,15 +837,15 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="1">
-         <widget class="QDoubleSpinBox" name="correctionHours"/>
-        </item>
         <item row="7" column="0">
          <widget class="QLabel" name="label_12">
           <property name="text">
            <string>Correction (allTime)</string>
           </property>
          </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="QDoubleSpinBox" name="correctionHours"/>
         </item>
         <item row="8" column="0">
          <widget class="QLabel" name="label_11">
@@ -843,20 +861,10 @@
           </property>
          </widget>
         </item>
-        <item row="12" column="0">
-         <widget class="QPushButton" name="createJob">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>Create</string>
-          </property>
-         </widget>
-        </item>
-        <item row="12" column="1">
-         <widget class="QPushButton" name="deleteJob">
-          <property name="text">
-           <string>Delete</string>
+        <item row="9" column="0" colspan="2">
+         <widget class="QPlainTextEdit" name="jobComment">
+          <property name="plainText">
+           <string>Comments...</string>
           </property>
          </widget>
         </item>
@@ -877,10 +885,20 @@
           </property>
          </widget>
         </item>
-        <item row="9" column="0" colspan="2">
-         <widget class="QPlainTextEdit" name="jobComment">
-          <property name="plainText">
-           <string>Comments...</string>
+        <item row="12" column="0">
+         <widget class="QPushButton" name="createJob">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Create</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="1">
+         <widget class="QPushButton" name="deleteJob">
+          <property name="text">
+           <string>Delete</string>
           </property>
          </widget>
         </item>
@@ -1632,6 +1650,12 @@ p, li { white-space: pre-wrap; }
       <width>271</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="text">
      <string>Status..</string>

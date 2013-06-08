@@ -16,5 +16,14 @@ programm supports:
    * Calendarview
    * Livesearch [jobname, jobplace, jobleader, jobcomment, companyname]
    * Show inactive
+
+<h3>Install in *buntu</h3>
+open console and put in:
+sudo apt-get install pyqt python3
+
+download the programm as zip (and unzip it) or check it out by git. after that a click on start.sh 
+should start it. when it doesnt start, try to mark it in file-settings as executable (console: chmod +x 
+start.sh)
+
 Try it out and do a feedback! It have to get better in many details, but basicly it works..
 This code is licensed under GPL v3: http://www.gnu.org/licenses/gpl.txt

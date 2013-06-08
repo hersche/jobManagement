@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gui.ui'
 #
-# Created: Thu Jun  6 23:59:35 2013
+# Created: Fri Jun  7 16:20:28 2013
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -40,7 +40,7 @@ class Ui_MainWindow(object):
         self.centralwidget.setSizePolicy(sizePolicy)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.mainTab = QtGui.QTabWidget(self.centralwidget)
-        self.mainTab.setGeometry(QtCore.QRect(0, 40, 1091, 591))
+        self.mainTab.setGeometry(QtCore.QRect(0, 40, 1051, 591))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -430,7 +430,7 @@ class Ui_MainWindow(object):
         self.logic.setSizePolicy(sizePolicy)
         self.logic.setObjectName(_fromUtf8("logic"))
         self.viewTabs = QtGui.QTabWidget(self.logic)
-        self.viewTabs.setGeometry(QtCore.QRect(0, 10, 1071, 541))
+        self.viewTabs.setGeometry(QtCore.QRect(0, 10, 1041, 541))
         self.viewTabs.setObjectName(_fromUtf8("viewTabs"))
         self.tab_4 = QtGui.QWidget()
         self.tab_4.setObjectName(_fromUtf8("tab_4"))
@@ -494,12 +494,12 @@ class Ui_MainWindow(object):
         self.workCalendar.setGeometry(QtCore.QRect(10, 10, 221, 131))
         self.workCalendar.setObjectName(_fromUtf8("workCalendar"))
         self.graphFrame = QtGui.QFrame(self.tab_4)
-        self.graphFrame.setGeometry(QtCore.QRect(590, 0, 311, 151))
+        self.graphFrame.setGeometry(QtCore.QRect(590, 0, 431, 151))
         self.graphFrame.setFrameShape(QtGui.QFrame.StyledPanel)
         self.graphFrame.setFrameShadow(QtGui.QFrame.Raised)
         self.graphFrame.setObjectName(_fromUtf8("graphFrame"))
         self.graphView = QtGui.QGraphicsView(self.graphFrame)
-        self.graphView.setGeometry(QtCore.QRect(10, 0, 310, 150))
+        self.graphView.setGeometry(QtCore.QRect(0, 0, 431, 150))
         self.graphView.setObjectName(_fromUtf8("graphView"))
         self.horizontalLayoutWidget = QtGui.QWidget(self.tab_4)
         self.horizontalLayoutWidget.setGeometry(QtCore.QRect(450, 420, 261, 80))
@@ -721,7 +721,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.mainTab.setCurrentIndex(0)
+        self.mainTab.setCurrentIndex(1)
         self.tabWidget_2.setCurrentIndex(0)
         self.viewTabs.setCurrentIndex(0)
         self.tabWidget_4.setCurrentIndex(1)

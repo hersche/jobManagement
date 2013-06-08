@@ -5,6 +5,7 @@ class Gui(QtGui.QMainWindow):
     def __init__(self, parent=None):
         self.roundSum = 0
         # INIT
+        self.currentCompany = None
         self.showInactive = True
         QtGui.QWidget.__init__(self, parent)
         if singleView:
@@ -224,16 +225,17 @@ class Gui(QtGui.QMainWindow):
             for company in mightyController.companylist:
                 if item is not None and company.name == item.text():
                     self.currentCompany = company
-        self.ui.companyname.setText(self.currentCompany.name)
-        self.ui.loan.setValue(self.currentCompany.loan)
-        if not singleView:
-            self.ui.companydescription.clear()
-            self.ui.perHours.setValue(self.currentCompany.perHours)
-            self.ui.companydescription.insertPlainText(str(self.currentCompany.describtion))
-        self.updateJobList(True)
-        self.updatechargesList(True)
-        self.updateCreditList(True)
-        self.updateLoanSplitList(True)
+        if None is not self.currentCompany :
+            self.ui.companyname.setText(self.currentCompany.name)
+            self.ui.loan.setValue(self.currentCompany.loan)
+            if not singleView:
+                self.ui.companydescription.clear()
+                self.ui.perHours.setValue(self.currentCompany.perHours)
+                self.ui.companydescription.insertPlainText(str(self.currentCompany.describtion))
+            self.updateJobList(True)
+            self.updatechargesList(True)
+            self.updateCreditList(True)
+            self.updateLoanSplitList(True)
     def onSpeseItemClick(self, item):
         for spese in self.currentCompany.charges:
             if spese.name == item.text():
@@ -324,15 +326,14 @@ class Gui(QtGui.QMainWindow):
     def onSaveSpese(self):
         cr = self.ui.chargesList.currentRow()
         cm = self.ui.chargesList.currentItem()
-        success = False
+
         for spese in self.currentCompany.charges:
             if cm is not None and spese.name == cm.text():
-                spese.save(self.ui.chargesName.text(), self.ui.chargesValue.text())
-                success = True
-                self.ui.status.setText(tr("Charge")+" "+self.ui.chargesName.text()+" "+tr("saved"))
-        if not success:
-            self.alertBox.setText(tr("Charge")+" "+tr("could not")+" be "+tr("saved"))
-            self.alertBox.exec()
+                if spese.save(self.ui.chargesName.text(), self.ui.chargesValue.text()) != -1:
+                    self.ui.status.setText(tr("Charge")+" "+self.ui.chargesName.text()+" "+tr("saved"))
+                else:
+                    sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("saved")+". DB-Error. The name maybe exist allready? ")
+                    self.alertBox.exec()
         else:
             self.updatechargesList(True)
             self.updateWorkchargesList(True)

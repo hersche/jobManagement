@@ -31,7 +31,7 @@
      <rect>
       <x>0</x>
       <y>40</y>
-      <width>1091</width>
+      <width>1051</width>
       <height>591</height>
      </rect>
     </property>
@@ -45,7 +45,7 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Personal finances&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="data">
      <property name="sizePolicy">
@@ -984,7 +984,7 @@
        <rect>
         <x>0</x>
         <y>10</y>
-        <width>1071</width>
+        <width>1041</width>
         <height>541</height>
        </rect>
       </property>
@@ -1149,7 +1149,7 @@
          <rect>
           <x>590</x>
           <y>0</y>
-          <width>311</width>
+          <width>431</width>
           <height>151</height>
          </rect>
         </property>
@@ -1162,9 +1162,9 @@
         <widget class="QGraphicsView" name="graphView">
          <property name="geometry">
           <rect>
-           <x>10</x>
+           <x>0</x>
            <y>0</y>
-           <width>310</width>
+           <width>431</width>
            <height>150</height>
           </rect>
          </property>

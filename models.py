@@ -12,15 +12,15 @@ db = sqlite3.connect('jobmanagement.db')
 #aber wir brauchen ja den cursor, um die db initialisieren zu können.
 c = db.cursor()
 if fileExist == False:
-    c.execute("CREATE TABLE company (cid  INTEGER PRIMARY KEY, name text, loan REAL, perHours REAL, describtion text)")
+    c.execute("CREATE TABLE company (cid  INTEGER PRIMARY KEY, name text UNIQUE, loan REAL, perHours REAL, describtion text)")
     #TODO add weekendDays to job (int) - -1 means no weekend
-    c.execute("CREATE TABLE job (jid  INTEGER PRIMARY KEY, name text, place text, comment text, hours real, correctionHours real, weekendDays INTEGER, startdate text, enddate text, baustellenleiter text, active integer, companyid integer)")
+    c.execute("CREATE TABLE job (jid  INTEGER PRIMARY KEY, name text UNIQUE, place text, comment text, hours real, correctionHours real, weekendDays INTEGER, startdate text, enddate text, leader text, active integer, companyid integer)")
     c.execute("CREATE TABLE charges (sid  INTEGER PRIMARY KEY, name text, value real, companyid integer)")
     c.execute("CREATE TABLE credit (crid  INTEGER PRIMARY KEY, name TEXT, value real, date text, payed integer, active integer, companyid integer)")
     c.execute("CREATE TABLE wcharges (wid  INTEGER PRIMARY KEY, jobid INTEGER, chargesid integer, howManyTimes real)")
     # if money is false, the measure is in percent..
     c.execute("CREATE TABLE loanSplit (lsid  INTEGER PRIMARY KEY, name TEXT, value REAL, money INTEGER, companyid INTEGER)")
-    c.execute("CREATE TABLE config (coid INTEGER PRIMARY KEY,  key TEXT,  value TEXT)")
+    c.execute("CREATE TABLE config (coid INTEGER PRIMARY KEY,  key TEXT UNIQUE,  value TEXT)")
     
     db.commit()
 class Controller:
@@ -28,9 +28,13 @@ class Controller:
             self.updateList()
             self.updateConfigList()
         def createCompany(self, name,  loan,  perHours,  describtion):
-            c.execute("INSERT INTO company (name, loan,  perHours, describtion) VALUES (?,?,?,?);",  (name, loan,  perHours, describtion))
-            db.commit()
-            self.updateList()
+            try:
+                c.execute("INSERT INTO company (name, loan,  perHours, describtion) VALUES (?,?,?,?);",  (name, loan,  perHours, describtion))
+                db.commit()
+                self.updateList()
+            except sqlite3.Error as e:
+                print("An DB-error occurred:", e.args[0])
+                return -1
         def updateList(self):
             self.companylist = []
             c.execute('select * from company;') 
@@ -47,9 +51,13 @@ class Controller:
             for row in c.fetchall():
                 self.personalCharges.append(charges(row[0], row[1], row[2]))
         def createConfig(self, key,  value):
-            c.execute("INSERT INTO config (key, value) VALUES (?,?);",  (key, value))
-            db.commit()
-            self.updateConfigList()
+            try:
+                c.execute("INSERT INTO config (key, value) VALUES (?,?);",  (key, value))
+                db.commit()
+                self.updateConfigList()
+            except sqlite3.Error as e:
+                print("An DB-error occurred:", e.args[0])
+                return -1
         def updateConfigList(self):
             self.configlist = []
             c.execute('select * from config;') 
@@ -72,11 +80,17 @@ class Config:
         self.value = value
         
     def save(self, key,  value):
-        c.execute("UPDATE config SET key=?, value=? WHERE coid=?",  (key, value,  self.id))
-        db.commit()
+        try:
+            c.execute("UPDATE config SET key=?, value=? WHERE coid=?",  (key, value,  self.id))
+            db.commit()
+        except sqlite3.Error as e:
+            print("An DB-error occurred:", e.args[0])
     def delete(self):
-        c.execute("DELETE FROM config WHERE coid=?",  (self.id, ))
-        db.commit()
+        try:
+            c.execute("DELETE FROM config WHERE coid=?",  (self.id, ))
+            db.commit()
+        except sqlite3.Error as e:
+            print("An DB-error occurred:", e.args[0])
         
                 
 class loanSplit:
@@ -95,11 +109,19 @@ class loanSplit:
         tmpMoney = 0
         if money==True:
             tmpMoney = 1
-        c.execute("UPDATE loanSplit SET name=?, value=?, money=? WHERE lsid=?",  (name, float(value), tmpMoney,  self.id))
-        db.commit()
+        try:
+            c.execute("UPDATE loanSplit SET name=?, value=?, money=? WHERE lsid=?",  (name, float(value), tmpMoney,  self.id))
+            db.commit()
+        except sqlite3.Error as e:
+            print("An DB-error occurred:", e.args[0])
+            return -1
     def delete(self):
-        c.execute("DELETE FROM loanSplit WHERE lsid=?",  (self.id, ))
-        db.commit()
+        try:
+            c.execute("DELETE FROM loanSplit WHERE lsid=?",  (self.id, ))
+            db.commit()
+        except sqlite3.Error as e:
+            print("An DB-error occurred:", e.args[0])
+            return -1
     
 class charges:
     def __init__(self, id,  name,  value, wchargeid=-1, howManyTimes=-1):
@@ -110,11 +132,19 @@ class charges:
         self.wchargeId = wchargeid
         self.howManyTimes = howManyTimes
     def save(self, name, value,  howManyTimes=-1):
-        c.execute("UPDATE charges SET name=?, value=? WHERE sid=?",  (name, float(value), self.id))
-        db.commit()
+        try:
+            c.execute("UPDATE charges SET name=?, value=? WHERE sid=?",  (name, float(value), self.id))
+            db.commit()
+        except sqlite3.Error as e:
+            print("An DB-error occurred:", e.args[0])
+            return -1
     def delete(self):
-        c.execute("DELETE FROM charges WHERE sid=?",  (self.id, ))
-        db.commit()
+        try:
+            c.execute("DELETE FROM charges WHERE sid=?",  (self.id, ))
+            db.commit()
+        except sqlite3.Error as e:
+            print("An DB-error occurred:", e.args[0])
+            return -1
         
 class Credit:
     def __init__(self, id, name,  value,  date, payed, active,  company):
@@ -138,11 +168,19 @@ class Credit:
             tmpPayed=1
         if active:
             tmpActive=1
-        c.execute("UPDATE credit SET name=?,value=?, date=?, payed=?,active=? WHERE crid=?",  (name, value, date, tmpPayed, tmpActive, str(self.id)))
-        db.commit()
+        try:
+            c.execute("UPDATE credit SET name=?,value=?, date=?, payed=?,active=? WHERE crid=?",  (name, value, date, tmpPayed, tmpActive, str(self.id)))
+            db.commit()
+        except sqlite3.Error as e:
+            print("An DB-error occurred:", e.args[0])
+            return -1
     def delete(self):
-        c.execute("DELETE FROM credit WHERE crid=?",  (self.id, ))
-        db.commit()
+        try:
+            c.execute("DELETE FROM credit WHERE crid=?",  (self.id, ))
+            db.commit()
+        except sqlite3.Error as e:
+            print("An DB-error occurred:", e.args[0])
+            return -1
         
 
 class Company:
@@ -180,24 +218,37 @@ class Company:
             self.charges.append(charges(row[0], row[1], row[2]))
     def createJob(self,  name, place, comment,  hours, correctionHours,  weekendDays,  startdate,  enddate,  baustellenleiter,  active):
         # (self,  id,  name,  place,  comment,  hours, correctionHours,   startdate,  enddate,  baustellenleiter,  active, companyid):
+        try:
             c.execute("INSERT INTO job (name, place, comment,hours, correctionHours, weekendDays, startdate, enddate,  baustellenleiter, active, companyid) VALUES (?,?,?,?,?,?,?,?,?,?,?)",  (name, place,  comment, hours,correctionHours,  weekendDays,  startdate, enddate,  baustellenleiter, active,   self.id))
             db.commit()
             self.updateJobList()
+        except sqlite3.Error as e:
+            print("An DB-error occurred:", e.args[0])
+            return -1
+            
     def createSpese(self,  name, value, companyid = -10):
+        try:
             if companyid != -10:
                 c.execute("INSERT INTO charges (name, value, companyid) VALUES (?,?,?)",  ( name, value,  companyid))
             else:
                 c.execute("INSERT INTO charges (name, value, companyid) VALUES (?,?,?)",  ( name, value,  self.id))
             db.commit()
             self.updatechargesList()
+        except sqlite3.Error as e:
+            print("An DB-error occurred:", e.args[0])
+            return -1
             
     def createLoanSplit(self, name, value, money):
         if money == True:
             tmpMoney = 1
         else:
             tmpMoney = 0
-        c.execute("INSERT INTO loanSplit (name, value, money, companyid) VALUES (?,?,?,?)",  ( name, value, tmpMoney,  self.id))
-        db.commit()
+        try:
+            c.execute("INSERT INTO loanSplit (name, value, money, companyid) VALUES (?,?,?,?)",  ( name, value, tmpMoney,  self.id))
+            db.commit()
+        except sqlite3.Error as e:
+            print("An DB-error occurred:", e.args[0])
+            return -1
         
     def createCredit(self, name,  value, date, payed,  active,  companyid = -10):
         if active:
@@ -208,25 +259,33 @@ class Company:
             tmpPayed = 1
         else:
             tmpPayed = 0
-        if companyid != -10:
-            c.execute("INSERT INTO credit (name, value, date, payed,active, companyid) VALUES (?,?,?,?,?,?)",  ( name,  value, date, tmpPayed,tmpActive,  companyid))
-        else:
-            c.execute("INSERT INTO credit (name, value, date, payed,active, companyid) VALUES (?,?,?,?,?,?)",  ( name,  value, date, tmpPayed,tmpActive,  self.id))
-        db.commit()
+        try:
+            if companyid != -10:
+                c.execute("INSERT INTO credit (name, value, date, payed,active, companyid) VALUES (?,?,?,?,?,?)",  ( name,  value, date, tmpPayed,tmpActive,  companyid))
+            else:
+                c.execute("INSERT INTO credit (name, value, date, payed,active, companyid) VALUES (?,?,?,?,?,?)",  ( name,  value, date, tmpPayed,tmpActive,  self.id))
+            db.commit()
+        except sqlite3.Error as e:
+            print("An DB-error occurred:", e.args[0])
+            return -1
     
     def save(self, name,  loan,  perHours, describtion):
             c.execute("UPDATE company SET name=?, loan=?, perHours=?, describtion=? WHERE cid=?",  (name, loan, perHours, describtion,  self.id))
             db.commit()
     def delete(self):
-        c.execute("DELETE FROM job WHERE companyid=?",  (self.id, ))
-        c.execute("DELETE FROM charges WHERE companyid=?",  (self.id, ))
-        c.execute("DELETE FROM loanSplit WHERE companyid=?",  (self.id, ))
-        c.execute("DELETE FROM company WHERE cid=?",  (self.id, ))
-        db.commit()
+        try:
+            c.execute("DELETE FROM job WHERE companyid=?",  (self.id, ))
+            c.execute("DELETE FROM charges WHERE companyid=?",  (self.id, ))
+            c.execute("DELETE FROM loanSplit WHERE companyid=?",  (self.id, ))
+            c.execute("DELETE FROM company WHERE cid=?",  (self.id, ))
+            db.commit()
+        except sqlite3.Error as e:
+            print("An DB-error occurred:", e.args[0])
+            return -1
             
 
 class Job:
-    def __init__(self,  id,  name,  place,  comment,  hours, correctionHours, weekendDays,  startdate,  enddate,  baustellenleiter,  active, companyid):
+    def __init__(self,  id,  name,  place,  comment,  hours, correctionHours, weekendDays,  startdate,  enddate,  leader,  active, companyid):
         self.id = id
         self.name = name
         self.place = place
@@ -236,7 +295,7 @@ class Job:
         self.weekendDays = weekendDays
         self.startdate = QtCore.QDate.fromString(startdate, dbDateFormat)
         self.enddate = QtCore.QDate.fromString(enddate, dbDateFormat)
-        self.baustellenleiter = baustellenleiter
+        self.baustellenleiter = leader
         self.active = active
         self.companyid = companyid
         self.updateWchargesList()
@@ -253,24 +312,39 @@ class Job:
     def removeSpese(self, name,  company):
         for wcharge in self.wcharges:
             if wcharge.name == name:
-                c.execute("DELETE FROM wcharges WHERE chargesid=?",  (wcharge.wchargeId, ))
-                db.commit()
+                try:
+                    c.execute("DELETE FROM wcharges WHERE chargesid=?",  (wcharge.wchargeId, ))
+                    db.commit()
+                except sqlite3.Error as e:
+                    print("An DB-error occurred:", e.args[0])
+                    return -1
     def saveCharge(self, name,  howManyTimes):
         for wcharge in self.wcharges:
             if wcharge.name == name:
-                print("hallo"+str(wcharge.id)+" "+str(howManyTimes))
-                c.execute("UPDATE wcharges SET howManyTimes=? WHERE wid=?",  (howManyTimes,  wcharge.wchargeId))
-                db.commit()
-                self.updateWchargesList()
+                try:
+                    c.execute("UPDATE wcharges SET howManyTimes=? WHERE wid=?",  (howManyTimes,  wcharge.wchargeId))
+                    db.commit()
+                    self.updateWchargesList()
+                except sqlite3.Error as e:
+                    print("An DB-error occurred:", e.args[0])
+                    return -1
         
-    def save(self, name,  place, comment, hours, correctionHours, weekendDays,  startdate, enddate, baustellenleiter, active, companyid):
+    def save(self, name,  place, comment, hours, correctionHours, weekendDays,  startdate, enddate,leader, active, companyid):
             tmpActive = 0
             if active == True:
                 tmpActive = 1
-            c.execute("UPDATE job SET name=?, place=?, comment=?, hours=?, correctionHours=?, weekendDays=?, startdate=?, enddate=?, baustellenleiter=?, active=?, companyid=? WHERE jid=?",  (name, place,  comment, hours, correctionHours, weekendDays,  startdate, enddate, baustellenleiter, tmpActive, companyid, self.id))
-            db.commit()
+            try:
+                c.execute("UPDATE job SET name=?, place=?, comment=?, hours=?, correctionHours=?, weekendDays=?, startdate=?, enddate=?, leader=?, active=?, companyid=? WHERE jid=?",  (name, place,  comment, hours, correctionHours, weekendDays,  startdate, enddate, leader, tmpActive, companyid, self.id))
+                db.commit()
+            except sqlite3.Error as e:
+                print("An DB-error occurred:", e.args[0])
+                return -1
     def delete(self):
-        c.execute("DELETE FROM wcharges WHERE jobid=?",  (self.id, ))
-        c.execute("DELETE FROM job WHERE jid=?",  (self.id, ))
-        db.commit()
+        try:
+            c.execute("DELETE FROM wcharges WHERE jobid=?",  (self.id, ))
+            c.execute("DELETE FROM job WHERE jid=?",  (self.id, ))
+            db.commit()
+        except sqlite3.Error as e:
+            print("An DB-error occurred:", e.args[0])
+            return -1
         

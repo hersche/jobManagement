@@ -4,6 +4,13 @@ def tr(name):
     return QtCore.QCoreApplication.translate("@default",  name)
 #semantic designer tools
 class sdt:
+    
+    
+    def aB(text):
+        alertBox = QtGui.QMessageBox()
+        alertBox.setText(text)
+        alertBox.exec()
+    
     @staticmethod
     def calcDaySpace(startdate,  enddate,  wc,  weekendDays):
         if startdate.daysTo(enddate) == 0:
@@ -29,7 +36,6 @@ class sdt:
         #minSpace = daySpace * job.hours * 60
         loanSum,  loanSplitSum, realHourLoan, realHourSplitSum,  chargeSum = maths.calcJobSum(company,  job,  workCalendar)
         #building table..
-        sumReturn = sum + loanSum
         if not singleView:
             ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(company.name) ))
             colNr = colNr + 1
@@ -47,8 +53,8 @@ class sdt:
         colNr = colNr + 1
         ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(realHourSplitSum)+" @all ("+sdt.rounder(loanSplitSum)+".-/"+str(company.perHours)+tr("h")+")"))
         colNr = colNr + 1
-        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(sumReturn)+".-" ))
-        return sumReturn
+        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(sum + loanSum)+".-" ))
+        return loanSum
     @staticmethod
     def colorChanger(color):
         if color > 200:
@@ -61,6 +67,7 @@ class sdt:
         r, g, b=(233, 36, 99)
         pen.setCapStyle(QtCore.Qt.RoundCap)
         pen.setWidth(4)
+        widthPerHour = 100
         scene = QtGui.QGraphicsScene()
         #lastLine = 0
         oldDaySpace = 0.00
@@ -76,7 +83,7 @@ class sdt:
                     value = (company.loan*daySpace) / 4
                     allValue += value
                     #print(job.name+"="+str(value)+":"+str(daySpace))
-                    scene.addLine(float(oldDaySpace),float(-oldValue) ,   float(daySpace), float(-loanSum/20),  pen)
+                    scene.addLine(float(oldDaySpace),float(-oldValue) ,   float(daySpace*widthPerHour), float(-loanSum/20),  pen)
                     oldDaySpace = daySpace
                     oldValue = loanSum/20
                     r=sdt.colorChanger(r)

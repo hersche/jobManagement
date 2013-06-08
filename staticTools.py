@@ -37,16 +37,23 @@ class sdt:
         loanSum,  loanSplitSum, realHourLoan, realHourSplitSum,  chargeSum = maths.calcJobSum(company,  job,  workCalendar)
         #building table..
         if not singleView:
-            ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(company.name) ))
+            w = QtGui.QTableWidgetItem(str(company.name))
+            w.setToolTip(company.describtion)
+            ui.infoExel.setItem(rowNr,  colNr,   w)
             colNr = colNr + 1
-        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(job.name) ))
+        w = QtGui.QTableWidgetItem(job.name)
+        w.setToolTip(job.comment)
+        ui.infoExel.setItem(rowNr,  colNr,   w)
         colNr = colNr + 1
         ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(job.place) ))
         colNr = colNr + 1
-        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(job.baustellenleiter) ))
+        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(job.leader) ))
         colNr = colNr + 1
         ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(loanSum) + ".- ("+sdt.rounder(realHourLoan)+"/std)" ))
         colNr = colNr + 1
+        w = QtGui.QTableWidgetItem(sdt.rounder(daySpace * job.hours) +" Std / "+sdt.rounder(daySpace)+ "d (*"+str(job.hours)+"h)+"+str(weekendPart)+"WE")
+        w.setToolTip("From "+job.startdate.toString(dbDateFormat)+" to "+job.enddate.toString(dbDateFormat))
+        ui.infoExel.setItem(rowNr,  colNr,   w)
         ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(daySpace * job.hours) +" Std / "+sdt.rounder(daySpace)+ "d (*"+str(job.hours)+"h)+"+str(weekendPart)+"WE"))
         colNr = colNr + 1
         ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(chargeSum)+".- " ))
@@ -67,7 +74,7 @@ class sdt:
         r, g, b=(233, 36, 99)
         pen.setCapStyle(QtCore.Qt.RoundCap)
         pen.setWidth(4)
-        widthPerHour = 100
+        widthPerHour = 1.15
         scene = QtGui.QGraphicsScene()
         #lastLine = 0
         oldDaySpace = 0.00
@@ -78,14 +85,14 @@ class sdt:
                 if cw.insertJobYesNo(ui, company, job, infoSearch, workCalendar):
                     daySpace,  weekendPart = sdt.calcDaySpace(job.startdate, job.enddate, workCalendar,  job.weekendDays)
                     loanSum,  loanSplitSum, realHourLoan,  realHourSplitSum,  chargeSum = maths.calcJobSum(company,  job,  workCalendar)
-                    daySpace = ((daySpace * job.hours) + job.correctionHours )/8
+                    daySpace = ((daySpace * job.hours) + job.correctionHours )
                     daySpace = (daySpace + oldDaySpace) 
-                    value = (company.loan*daySpace) / 4
+                    value = ((company.loan/10)*daySpace)
                     allValue += value
                     #print(job.name+"="+str(value)+":"+str(daySpace))
-                    scene.addLine(float(oldDaySpace),float(-oldValue) ,   float(daySpace*widthPerHour), float(-loanSum/20),  pen)
+                    scene.addLine(float(oldDaySpace),float(-oldValue) ,   float(daySpace*widthPerHour), float(-loanSum),  pen)
                     oldDaySpace = daySpace
-                    oldValue = loanSum/20
+                    oldValue = loanSum
                     r=sdt.colorChanger(r)
                     g=sdt.colorChanger(g)
                     b=sdt.colorChanger(b)
@@ -207,7 +214,7 @@ class cw:
     def checkForValidDate(startdate, enddate,  wCalendarDate):
         return (startdate.month() == wCalendarDate.month() and startdate.year() == wCalendarDate.year()) or (enddate.month() == wCalendarDate.month() and startdate.year() == wCalendarDate.year())
     def filterTextSearch(infoSearch,  job,  company):
-        return (re.search(infoSearch,  job.name.lower()) is not None  or re.search(infoSearch,  job.place.lower()) is not None or re.search(infoSearch,  job.comment.lower()) is not None or re.search(infoSearch,  job.baustellenleiter.lower()) is not None or re.search(infoSearch, company.name.lower()) is not None)
+        return (re.search(infoSearch,  job.name.lower()) is not None  or re.search(infoSearch,  job.place.lower()) is not None or re.search(infoSearch,  job.comment.lower()) is not None or re.search(infoSearch,  job.leader.lower()) is not None or re.search(infoSearch, company.name.lower()) is not None)
     @staticmethod
     def insertJobYesNo(ui, company, job, infoSearch, workCalendar):
         insertARow = False

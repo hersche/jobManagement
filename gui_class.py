@@ -299,7 +299,7 @@ class Gui(QtGui.QMainWindow):
                 self.ui.jobname.setText(job.name)
                 self.ui.jobplace.setText(job.place)
                 self.ui.jobComment.setPlainText(job.comment)
-                self.ui.baustellenleiter.setText(job.baustellenleiter)
+                self.ui.baustellenleiter.setText(job.leader)
                 self.ui.hours.cleanText()
                 self.ui.hours.setValue(job.hours)
                 self.ui.correctionHours.cleanText()
@@ -333,7 +333,6 @@ class Gui(QtGui.QMainWindow):
                     self.ui.status.setText(tr("Charge")+" "+self.ui.chargesName.text()+" "+tr("saved"))
                 else:
                     sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("saved")+". DB-Error. The name maybe exist allready? ")
-                    self.alertBox.exec()
         else:
             self.updatechargesList(True)
             self.updateWorkchargesList(True)

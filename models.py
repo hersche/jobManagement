@@ -216,10 +216,10 @@ class Company:
         c.execute('select * from charges WHERE companyid = ?',  (str(self.id), ))
         for row in c.fetchall():
             self.charges.append(charges(row[0], row[1], row[2]))
-    def createJob(self,  name, place, comment,  hours, correctionHours,  weekendDays,  startdate,  enddate,  baustellenleiter,  active):
+    def createJob(self,  name, place, comment,  hours, correctionHours,  weekendDays,  startdate,  enddate,  leader,  active):
         # (self,  id,  name,  place,  comment,  hours, correctionHours,   startdate,  enddate,  baustellenleiter,  active, companyid):
         try:
-            c.execute("INSERT INTO job (name, place, comment,hours, correctionHours, weekendDays, startdate, enddate,  baustellenleiter, active, companyid) VALUES (?,?,?,?,?,?,?,?,?,?,?)",  (name, place,  comment, hours,correctionHours,  weekendDays,  startdate, enddate,  baustellenleiter, active,   self.id))
+            c.execute("INSERT INTO job (name, place, comment,hours, correctionHours, weekendDays, startdate, enddate,  leader, active, companyid) VALUES (?,?,?,?,?,?,?,?,?,?,?)",  (name, place,  comment, hours,correctionHours,  weekendDays,  startdate, enddate,  leader, active,   self.id))
             db.commit()
             self.updateJobList()
         except sqlite3.Error as e:
@@ -295,7 +295,7 @@ class Job:
         self.weekendDays = weekendDays
         self.startdate = QtCore.QDate.fromString(startdate, dbDateFormat)
         self.enddate = QtCore.QDate.fromString(enddate, dbDateFormat)
-        self.baustellenleiter = leader
+        self.leader = leader
         self.active = active
         self.companyid = companyid
         self.updateWchargesList()

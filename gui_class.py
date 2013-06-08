@@ -2,6 +2,9 @@ from staticTools import *
 
 #the whole gui...
 class Gui(QtGui.QMainWindow):
+    """
+    
+   """
     def __init__(self, parent=None):
         self.roundSum = 0
         # INIT
@@ -541,8 +544,13 @@ class Gui(QtGui.QMainWindow):
     # Company-Actions
     #---------------------
     def onCreateCompany(self):
-        mightyController.createCompany(self.ui.companyname.text(),  self.ui.loan.text(),  self.ui.perHours.text(),  self.ui.companydescription.toPlainText())
-        self.ui.companyList.addItem(self.ui.companyname.text())
+        b = mightyController.createCompany(self.ui.companyname.text(),  self.ui.loan.text(),  self.ui.perHours.text(),  self.ui.companydescription.toPlainText()) 
+        if b== -2:
+            sdt.aB(tr("Company already exist, please choose another name"))
+        elif b == -1:
+            sdt.aB(tr("A DB-Failure is happent. Please check the console."))
+        else:
+            self.ui.companyList.addItem(self.ui.companyname.text())
     def onSaveCompany(self):
         if self.currentCompany is not None:
             if singleView:
@@ -570,11 +578,16 @@ class Gui(QtGui.QMainWindow):
         if self.ui.active.isChecked():
             tmpCheck = 1
         if singleView:
-            self.currentCompany.createJob(self.ui.jobname.text(), self.ui.jobplace.text(), self.ui.jobComment.toPlainText(), self.ui.hours.text(),self.ui.correctionHours.text(),  self.ui.weekendDays.value(),  -1,  -1,  self.ui.baustellenleiter.text(),  tmpCheck)
+            b = self.currentCompany.createJob(self.ui.jobname.text(), self.ui.jobplace.text(), self.ui.jobComment.toPlainText(), self.ui.hours.text(),self.ui.correctionHours.text(),  self.ui.weekendDays.value(),  -1,  -1,  self.ui.baustellenleiter.text(),  tmpCheck)
         else:
-            self.currentCompany.createJob(self.ui.jobname.text(), self.ui.jobplace.text(), self.ui.jobComment.toPlainText(), self.ui.hours.text(),self.ui.correctionHours.text(),  self.ui.weekendDays.value(),  self.ui.startdate.text(),  self.ui.enddate.text(),  self.ui.baustellenleiter.text(),  tmpCheck)
+            b = self.currentCompany.createJob(self.ui.jobname.text(), self.ui.jobplace.text(), self.ui.jobComment.toPlainText(), self.ui.hours.text(),self.ui.correctionHours.text(),  self.ui.weekendDays.value(),  self.ui.startdate.text(),  self.ui.enddate.text(),  self.ui.baustellenleiter.text(),  tmpCheck)
         # @TODO select the created!!
-        self.ui.jobList.addItem(self.ui.jobname.text())
+        if b== -2:
+            sdt.aB(tr("Job already exist, please choose another name"))
+        elif b == -1:
+            sdt.aB(tr("A DB-Failure is happent. Please check the console."))
+        else:
+            self.ui.jobList.addItem(self.ui.jobname.text())
     def onSaveJob(self):
         cm = self.ui.jobList.currentItem()
         for job in self.currentCompany.jobs:

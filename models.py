@@ -14,12 +14,13 @@ c = db.cursor()
 if fileExist == False:
     c.execute("CREATE TABLE company (cid  INTEGER PRIMARY KEY, name text UNIQUE, loan REAL, perHours REAL, describtion text)")
     #TODO add weekendDays to job (int) - -1 means no weekend
-    c.execute("CREATE TABLE job (jid  INTEGER PRIMARY KEY, name text UNIQUE, place text, comment text, hours real, correctionHours real, weekendDays INTEGER, startdate text, enddate text, leader text, active integer, companyid integer)")
+    c.execute("CREATE TABLE job (jid  INTEGER PRIMARY KEY, name text UNIQUE, place text, comment text, hours real, correctionHours real, weekendDays INTEGER, startdate text, enddate text, leader TEXT, active INTEGER, archived INTEGER, companyid integer)")
     c.execute("CREATE TABLE charges (sid  INTEGER PRIMARY KEY, name text, value real, companyid integer)")
     c.execute("CREATE TABLE credit (crid  INTEGER PRIMARY KEY, name TEXT, value real, date text, payed integer, active integer, companyid integer)")
     c.execute("CREATE TABLE wcharges (wid  INTEGER PRIMARY KEY, jobid INTEGER, chargesid integer, howManyTimes real)")
     # if money is false, the measure is in percent..
     c.execute("CREATE TABLE loanSplit (lsid  INTEGER PRIMARY KEY, name TEXT, value REAL, money INTEGER, companyid INTEGER)")
+    c.execute("CREATE TABLE personalFinance (pfid  INTEGER PRIMARY KEY, name TEXT UNIQUE, value REAL, date TEXT,repeat TEXT, timesRepeat INTEGER, plusMinus TEXT, active INTEGER)")
     c.execute("CREATE TABLE config (coid INTEGER PRIMARY KEY,  key TEXT UNIQUE,  value TEXT)")
     
     db.commit()
@@ -33,6 +34,8 @@ class Controller:
                 db.commit()
                 self.updateList()
             except sqlite3.Error as e:
+                if e.args[0] == "column name is not unique":
+                    return -2
                 print("An DB-error occurred:", e.args[0])
                 return -1
         def updateList(self):
@@ -210,7 +213,7 @@ class Company:
         self.jobs = []
         c.execute('select * from job WHERE companyid = ?',  (str(self.id), ))
         for row in c.fetchall():
-            self.jobs.append(Job(row[0], row[1], row[2], row[3], row[4],  row[5],  row[6],  row[7],  row[8],row[9], row[10],  row[11] ))
+            self.jobs.append(Job(row[0], row[1], row[2], row[3], row[4],  row[5],  row[6],  row[7],  row[8],row[9], row[10],  row[11] , row[12]))
     def updatechargesList(self):
         self.charges = []
         c.execute('select * from charges WHERE companyid = ?',  (str(self.id), ))
@@ -223,8 +226,11 @@ class Company:
             db.commit()
             self.updateJobList()
         except sqlite3.Error as e:
-            print("An DB-error occurred:", e.args[0])
-            return -1
+            if e.args[0] == "column name is not unique":
+                return -2
+            else:
+                print("An DB-error occurred:", e.args[0])
+                return -1
             
     def createSpese(self,  name, value, companyid = -10):
         try:
@@ -285,7 +291,7 @@ class Company:
             
 
 class Job:
-    def __init__(self,  id,  name,  place,  comment,  hours, correctionHours, weekendDays,  startdate,  enddate,  leader,  active, companyid):
+    def __init__(self,  id,  name,  place,  comment,  hours, correctionHours, weekendDays,  startdate,  enddate,  leader,  active, archived,  companyid):
         self.id = id
         self.name = name
         self.place = place
@@ -297,6 +303,9 @@ class Job:
         self.enddate = QtCore.QDate.fromString(enddate, dbDateFormat)
         self.leader = leader
         self.active = active
+        self.archived = False
+        if archived == 1:
+            self.archived = True
         self.companyid = companyid
         self.updateWchargesList()
     def updateWchargesList(self):

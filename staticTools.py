@@ -51,14 +51,15 @@ class sdt:
         colNr = colNr + 1
         ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(loanSum) + ".- ("+sdt.rounder(realHourLoan)+"/std)" ))
         colNr = colNr + 1
-        w = QtGui.QTableWidgetItem(sdt.rounder(daySpace * job.hours) +" Std / "+sdt.rounder(daySpace)+ "d (*"+str(job.hours)+"h)+"+str(weekendPart)+"WE")
-        w.setToolTip("From "+job.startdate.toString(dbDateFormat)+" to "+job.enddate.toString(dbDateFormat))
+        w = QtGui.QTableWidgetItem(sdt.rounder(daySpace * job.hours) +" Std")
+        w.setToolTip(tr("From ")+job.startdate.toString(dbDateFormat)+" to "+job.enddate.toString(dbDateFormat)+ " AND <br />"+sdt.rounder(daySpace)+ "d (*"+str(job.hours)+"h)+"+str(weekendPart)+" Weekenddays")
         ui.infoExel.setItem(rowNr,  colNr,   w)
-        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(daySpace * job.hours) +" Std / "+sdt.rounder(daySpace)+ "d (*"+str(job.hours)+"h)+"+str(weekendPart)+"WE"))
         colNr = colNr + 1
         ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(chargeSum)+".- " ))
         colNr = colNr + 1
-        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(realHourSplitSum)+" @all ("+sdt.rounder(loanSplitSum)+".-/"+str(company.perHours)+tr("h")+")"))
+        w = QtGui.QTableWidgetItem(sdt.rounder(realHourSplitSum)+".- @all")
+        w.setToolTip(sdt.rounder(loanSplitSum)+".-/"+str(company.perHours)+tr("h")+")")
+        ui.infoExel.setItem(rowNr,  colNr,   w)
         colNr = colNr + 1
         ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(sum + loanSum)+".-" ))
         return loanSum

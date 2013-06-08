@@ -10,12 +10,13 @@ programm supports:
    * Credits taken from the company, when you worked and wont wait to the end of the month..
    * "Static charges" cause they normaly didn't change for a job (you just have it there or not)
    * loanSplits, means, what goes away, to gouverment, maybe holiday-money for you, or whatelse, but "notloan"
-
+* Multilangual (at the moment english and german)
 * Diffrent filtering options and Views
    * Overallview and Detailedview based on Companys
    * Calendarview
    * Livesearch [jobname, jobplace, jobleader, jobcomment, companyname]
    * Show inactive
+* SingleView (if you just use 1 company.. more limited)
 
 <h3>Install in *buntu</h3>
 open console and put in:

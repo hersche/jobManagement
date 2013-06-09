@@ -117,7 +117,7 @@ class sdt:
                 text += "% ("+sdt.rounder(inMoney)+".-) </li>"
         text += "</ul>"
         if loanSplitSum > 0:
-            text += tr("Loansplitsum")+": "+sdt.rounder(loanSplitSum)+".-/"+str(company.perHours)+tr("h")+"<hr />"
+            text += tr("Loansplitsum")+": "+sdt.rounder(loanSplitSum)+".-/"+str(company.perHours)+" "+tr("h")+"<hr />"
         creditSum = 0
         text += "<h4>"+tr("Credits")+"</h4><ul><pre>"
         for credit in company.credits:
@@ -141,7 +141,7 @@ class sdt:
         for job in company.jobs:
             if cvCalIsChecked:
                 if cw.checkForValidDate(job.startdate, job.enddate, workCalendar):
-                    days = sdt.calcDaySpace(job.startdate,  job.enddate, ccm,  job.weekendDays)
+                    days,  weekendPart = sdt.calcDaySpace(job.startdate,  job.enddate, workCalendar,  job.weekendDays)
                 else:
                     days = -1
             else:
@@ -162,7 +162,10 @@ class sdt:
                         text += "<li><pre>"+charge.name+": "+str(charge.value)+".- * "+str(days)+" days = "+sdt.rounder(charge.value * days)+".-     (Sum: "+sdt.rounder(chargeSum)+")</pre></li>"
                 text += "</ul>"
         text += "</ul> Sum: "+sdt.rounder(jobSum)+".- in "+sdt.rounder(jobHours)+"h / "+sdt.rounder(jobDays )+" d (+ "+sdt.rounder(chargeSum)+".- charges) <hr />"
-        loanSplitSumDays = loanSplitSum * jobDays
+        if jobDays != 0:
+            loanSplitSumDays = loanSplitSum * (jobDays * (jobHours/jobDays))
+        else:
+            loanSplitSumDays = 0
         result = jobSum - loanSplitSumDays - creditSum + chargeSum
         #the end of all results..
         text += "<h4>"+tr("Summary")+"</h4>"

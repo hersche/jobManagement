@@ -50,8 +50,8 @@ class Gui(QtGui.QMainWindow):
             self.ui.deleteCompany.clicked.connect(self.onDeleteCompany)
         self.ui.saveCompany.clicked.connect(self.onSaveCompany)
         self.ui.companyname.returnPressed.connect(self.onSaveCompany)
-        self.ui.loan.valueChanged.connect(self.onSaveCompany)
-        self.ui.perHours.valueChanged.connect(self.onSaveCompany)
+        #self.ui.loan.valueChanged.connect(self.onSaveCompany)
+        #self.ui.perHours.valueChanged.connect(self.onSaveCompany)
         
         #Job-Actions
         self.ui.createJob.clicked.connect(self.onCreateJob)
@@ -60,9 +60,9 @@ class Gui(QtGui.QMainWindow):
         self.ui.jobplace.returnPressed.connect(self.onSaveJob)
         #self.ui.startdate.returnPressed.connect(self.onSaveJob)
         #self.ui.enddate.returnPressed.connect(self.onSaveJob)
-        self.ui.hours.valueChanged.connect(self.onSaveJob)
-        self.ui.correctionHours.valueChanged.connect(self.onSaveJob)
-        self.ui.weekendDays.valueChanged.connect(self.onSaveJob)
+        #self.ui.hours.valueChanged.connect(self.onSaveJob)
+        #self.ui.correctionHours.valueChanged.connect(self.onSaveJob)
+        #self.ui.weekendDays.valueChanged.connect(self.onSaveJob)
         self.ui.deleteJob.clicked.connect(self.onDeleteJob)
         #Charge-Actions
         self.ui.createCharge.clicked.connect(self.onCreateSpese)
@@ -120,21 +120,26 @@ class Gui(QtGui.QMainWindow):
         self.ui.companyViewCalendarFilter.clicked.connect(self.updateCompanyView)
     
     def tabUpdater(self,  index=0):
-        ci = self.ui.mainTab.currentIndex()
-        if ci == 0:
-            self.updateCompanyList(True)
-        elif ci == 1:
-            vci = self.ui.viewTabs.currentIndex()
-            if vci == 0:
-                self.updateInfoExel()
-            elif vci == 1:
-                self.updateCompanyViewList()
-                self.updateCompanyView()
-        elif ci == 2:
-            self.updatePersonalChargesList();
-            self.updatePersonalCreditList();
-        elif ci == 3:
-            self.updateConfigList(True)
+        try: 
+            ci = self.ui.mainTab.currentIndex()
+            if ci == 0:
+                print("hi")
+                self.updateCompanyList(selectFirst=True)
+                #self.updateJobList(selectFirst=True)
+            elif ci == 1:
+                vci = self.ui.viewTabs.currentIndex()
+                if vci == 0:
+                    self.updateInfoExel()
+                elif vci == 1:
+                    self.updateCompanyViewList()
+                    self.updateCompanyView()
+            elif ci == 2:
+                self.updatePersonalChargesList();
+                self.updatePersonalCreditList();
+            elif ci == 3:
+                self.updateConfigList(True)
+        except Exception as e:
+            print(e.text())
     #----------------------
     # Updaters
     #-----------------------
@@ -143,10 +148,12 @@ class Gui(QtGui.QMainWindow):
         if singleView == False:
             mightyController.updateList()
             self.ui.companyList.clear()
+            print("list.."+str(len(mightyController.companylist)))
             for company in mightyController.companylist:
                 self.ui.companyList.addItem(company.name)
+                print(company.name)
             if selectFirst:
-                self.ui.companyList.setCurrentRow(0)
+                self.ui.companyList.setCurrentRow(1)
                 self.onCompanyItemClick(self.ui.companyList.currentItem())
     def updateJobList(self, selectFirst=False,  name=""):
         self.ui.jobList.clear()
@@ -239,6 +246,7 @@ class Gui(QtGui.QMainWindow):
         else:
             for company in mightyController.companylist:
                 if item is not None and company.name == item.text():
+                    print("found "+company.name+" vs "+item.text())
                     self.currentCompany = company
         if None is not self.currentCompany :
             self.ui.companyname.setText(self.currentCompany.name)

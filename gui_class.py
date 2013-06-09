@@ -49,14 +49,26 @@ class Gui(QtGui.QMainWindow):
             self.ui.createCompany.clicked.connect(self.onCreateCompany)
             self.ui.deleteCompany.clicked.connect(self.onDeleteCompany)
         self.ui.saveCompany.clicked.connect(self.onSaveCompany)
+        self.ui.companyname.returnPressed.connect(self.onSaveCompany)
+        self.ui.loan.valueChanged.connect(self.onSaveCompany)
+        self.ui.perHours.valueChanged.connect(self.onSaveCompany)
         
         #Job-Actions
         self.ui.createJob.clicked.connect(self.onCreateJob)
         self.ui.saveJob.clicked.connect(self.onSaveJob)
+        self.ui.jobname.returnPressed.connect(self.onSaveJob)
+        self.ui.jobplace.returnPressed.connect(self.onSaveJob)
+        #self.ui.startdate.returnPressed.connect(self.onSaveJob)
+        #self.ui.enddate.returnPressed.connect(self.onSaveJob)
+        self.ui.hours.valueChanged.connect(self.onSaveJob)
+        self.ui.correctionHours.valueChanged.connect(self.onSaveJob)
+        self.ui.weekendDays.valueChanged.connect(self.onSaveJob)
         self.ui.deleteJob.clicked.connect(self.onDeleteJob)
         #Charge-Actions
         self.ui.createCharge.clicked.connect(self.onCreateSpese)
         self.ui.saveCharge.clicked.connect(self.onSaveSpese)
+        self.ui.chargesName.returnPressed.connect(self.onSaveSpese)
+        self.ui.chargesValue.valueChanged.connect(self.onSaveSpese)
         self.ui.deleteCharge.clicked.connect(self.onDeleteSpese)
         self.ui.deleteWorkSpese.clicked.connect(self.onDeleteWorkSpese)
         self.ui.addChargeToJob.clicked.connect(self.onAddWorkSpese)
@@ -660,7 +672,8 @@ class Gui(QtGui.QMainWindow):
             if rowNr==0:
                 self.ui.infoExel.insertRow(rowNr)
             for company in mightyController.companylist:
-                for job in company.jobs:
+                sl = sorted(company.jobs, key=lambda job: job.startdate,  reverse=True)
+                for job in sl:
                     if cw.insertJobYesNo(self.ui, company, job, infoSearch, workCalendar):
                         sum += sdt.createJobRow(self.ui,  job, company, workCalendar, rowNr, sum) 
                         rowNr +=1

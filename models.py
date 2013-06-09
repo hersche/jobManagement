@@ -1,5 +1,6 @@
 import os.path,  sqlite3
 from PyQt4 import QtCore
+from Crypto.Cipher import * 
 dbDateFormat = "dd.MM.yyyy"
 fileExist = True
 
@@ -12,16 +13,16 @@ db = sqlite3.connect('jobmanagement.db')
 #aber wir brauchen ja den cursor, um die db initialisieren zu können.
 c = db.cursor()
 if fileExist == False:
-    c.execute("CREATE TABLE company (cid  INTEGER PRIMARY KEY, name text UNIQUE, loan REAL, perHours REAL, describtion text)")
+    c.execute("CREATE TABLE company (cid  INTEGER PRIMARY KEY, name text UNIQUE, loan REAL, perHours REAL, describtion text, encrypted integer)")
     #TODO add weekendDays to job (int) - -1 means no weekend
-    c.execute("CREATE TABLE job (jid  INTEGER PRIMARY KEY, name text UNIQUE, place text, comment text, hours real, correctionHours real, weekendDays INTEGER, startdate text, enddate text, leader TEXT, active INTEGER, archived INTEGER, companyid integer)")
-    c.execute("CREATE TABLE charges (sid  INTEGER PRIMARY KEY, name text, value real, companyid integer)")
-    c.execute("CREATE TABLE credit (crid  INTEGER PRIMARY KEY, name TEXT, value real, date text, payed integer, active integer, companyid integer)")
-    c.execute("CREATE TABLE wcharges (wid  INTEGER PRIMARY KEY, jobid INTEGER, chargesid integer, howManyTimes real)")
+    c.execute("CREATE TABLE job (jid  INTEGER PRIMARY KEY, name text UNIQUE, place text, comment text, hours real, correctionHours real, weekendDays INTEGER, startdate text, enddate text, leader TEXT, active INTEGER, archived INTEGER, companyid integer, encrypted integer)")
+    c.execute("CREATE TABLE charges (sid  INTEGER PRIMARY KEY, name text, value real, companyid integer, encrypted integer)")
+    c.execute("CREATE TABLE credit (crid  INTEGER PRIMARY KEY, name TEXT, value real, date text, payed integer, active integer, companyid integer, encrypted integer)")
+    c.execute("CREATE TABLE wcharges (wid  INTEGER PRIMARY KEY, jobid INTEGER, chargesid integer, howManyTimes real, encrypted integer)")
     # if money is false, the measure is in percent..
-    c.execute("CREATE TABLE loanSplit (lsid  INTEGER PRIMARY KEY, name TEXT, value REAL, money INTEGER, companyid INTEGER)")
-    c.execute("CREATE TABLE personalFinance (pfid  INTEGER PRIMARY KEY, name TEXT UNIQUE, value REAL, date TEXT,repeat TEXT, timesRepeat INTEGER, plusMinus TEXT, active INTEGER)")
-    c.execute("CREATE TABLE config (coid INTEGER PRIMARY KEY,  key TEXT UNIQUE,  value TEXT)")
+    c.execute("CREATE TABLE loanSplit (lsid  INTEGER PRIMARY KEY, name TEXT, value REAL, money INTEGER, companyid INTEGER, encrypted integer)")
+    c.execute("CREATE TABLE personalFinance (pfid  INTEGER PRIMARY KEY, name TEXT UNIQUE, value REAL, date TEXT,repeat TEXT, timesRepeat INTEGER, plusMinus TEXT, active INTEGER, encrypted integer)")
+    c.execute("CREATE TABLE config (coid INTEGER PRIMARY KEY,  key TEXT UNIQUE,  value TEXT, encrypted integer)")
     
     db.commit()
 class Controller:

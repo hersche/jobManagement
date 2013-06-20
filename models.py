@@ -54,6 +54,23 @@ class Controller:
             c.execute('select * from charges WHERE companyid = ?',  (str(-1), ))
             for row in c.fetchall():
                 self.personalCharges.append(charges(row[0], row[1], row[2]))
+        def updatePersonalFinancesList(self):
+            self.personalFinances = []
+            try:
+                c.execute('select * from personalFinance')
+                for row in c.fetchall():
+                    self.personalFinances.append(personalFinance(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8]))
+            except sqlite3.Error as e:
+                print("An DB-error occurred:", e.args[0])
+                return -1
+        def createPersonalFinance(self, name,  value, date, repeat, timesRepeat, plusMinus,  active,  encrypted ):
+            try:
+                c.execute("INSERT INTO personalFinance (name,  value, date, repeat, timesRepeat, plusMinus,  active,  encrypted) VALUES (?,?,?,?,?,?,?,?);",  (name,  value, date, repeat, timesRepeat, plusMinus,  active,  encrypted))
+                db.commit()
+                self.updateConfigList()
+            except sqlite3.Error as e:
+                print("An DB-error occurred:", e.args[0])
+                return -1
         def createConfig(self, key,  value):
             try:
                 c.execute("INSERT INTO config (key, value) VALUES (?,?);",  (key, value))
@@ -75,7 +92,38 @@ class Controller:
             for company in self.companylist:
                 if company.name == name:
                     return company
-                    
+                 
+              
+           
+        
+     
+      #CREATE TABLE personalFinance (pfid  INTEGER PRIMARY KEY, name TEXT UNIQUE, value REAL, date TEXT,repeat TEXT, timesRepeat INTEGER, plusMinus TEXT, active INTEGER, encrypted integer)")   
+class personalFinance:
+    def __init__(self, id, name, value, date, repeat, timesRepeat, plusMinus,  active,  encrypted):
+        self.id = id
+        self.name = name
+        self.value = value
+        self.date=date
+        self.repeat =repeat
+        self.timesRepeat = timesRepeat
+        self.plusMinus=plusMinus
+        tmpActive = False
+        if active == 1:
+            tmpActive = True
+        self.active = tmpActive
+        self.encrypted = encrypted
+    def save(self, name, value, date, repeat, timesRepeat, plusMinus, active, encrypted):
+        try:
+            c.execute("UPDATE personalFinance SET name=?,value=?,date=?,repeat=?,timesRepeat=?,plusMinus=?,active=?,encrypted=? WHERE pfid=?",  (name, value, date, repeat, timesRepeat, plusMinus, active, encrypted,self.id))
+            db.commit()
+        except sqlite3.Error as e:
+            print("An DB-error occurred:", e.args[0])
+    def delete(self):
+        try:
+            c.execute("DELETE FROM personalFinance WHERE pfid=?",  (self.id, ))
+            db.commit()
+        except sqlite3.Error as e:
+            print("An DB-error occurred:", e.args[0])
 class Config:
     #"CREATE TABLE config (coid INTEGER PRIMARY KEY,  key TEXT,  value TEXT)
     def __init__(self,  id,  key,  value):

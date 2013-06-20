@@ -38,8 +38,8 @@ class Gui(QtGui.QMainWindow):
         self.ui.jobList.itemClicked.connect(self.onJobItemClick)
         self.ui.creditList.itemClicked.connect(self.onCreditItemClick)
         self.ui.chargesList.itemClicked.connect(self.onSpeseItemClick)
-        self.ui.personalCreditList.itemClicked.connect(self.onPersonalCreditItemClick)
-        self.ui.personalChargesList.itemClicked.connect(self.onPersonalChargeItemClick)
+        #self.ui.personalCreditList.itemClicked.connect(self.onPersonalCreditItemClick)
+        #self.ui.personalChargesList.itemClicked.connect(self.onPersonalChargeItemClick)
         self.ui.loanSplitList.itemClicked.connect(self.onLoanSplitItemClick)
         self.ui.configList.itemClicked.connect(self.onConfigItemClick)
         self.ui.workChargesList.itemClicked.connect(self.onWChargeItemClick)
@@ -58,17 +58,11 @@ class Gui(QtGui.QMainWindow):
         self.ui.saveJob.clicked.connect(self.onSaveJob)
         self.ui.jobname.returnPressed.connect(self.onSaveJob)
         self.ui.jobplace.returnPressed.connect(self.onSaveJob)
-        #self.ui.startdate.returnPressed.connect(self.onSaveJob)
-        #self.ui.enddate.returnPressed.connect(self.onSaveJob)
-        #self.ui.hours.valueChanged.connect(self.onSaveJob)
-        #self.ui.correctionHours.valueChanged.connect(self.onSaveJob)
-        #self.ui.weekendDays.valueChanged.connect(self.onSaveJob)
         self.ui.deleteJob.clicked.connect(self.onDeleteJob)
         #Charge-Actions
         self.ui.createCharge.clicked.connect(self.onCreateSpese)
         self.ui.saveCharge.clicked.connect(self.onSaveSpese)
         self.ui.chargesName.returnPressed.connect(self.onSaveSpese)
-        self.ui.chargesValue.valueChanged.connect(self.onSaveSpese)
         self.ui.deleteCharge.clicked.connect(self.onDeleteSpese)
         self.ui.deleteWorkSpese.clicked.connect(self.onDeleteWorkSpese)
         self.ui.addChargeToJob.clicked.connect(self.onAddWorkSpese)
@@ -91,14 +85,14 @@ class Gui(QtGui.QMainWindow):
         #personal tab
         #---------------------
         #Charge-Actions
-        self.ui.createPersonalCharge.clicked.connect(self.onCreatePersonalCharge)
-        self.ui.savePersonalCharge.clicked.connect(self.onSavePersonalCharge)
-        self.ui.deletePersonalCharge.clicked.connect(self.onDeletePersonalCharge)
+        #self.ui.createPersonalCharge.clicked.connect(self.onCreatePersonalCharge)
+        #self.ui.savePersonalCharge.clicked.connect(self.onSavePersonalCharge)
+        #self.ui.deletePersonalCharge.clicked.connect(self.onDeletePersonalCharge)
 
         #Credit-Actions
-        self.ui.createPersonalCredit.clicked.connect(self.onCreatePersonalCredit)
-        self.ui.savePersonalCredit.clicked.connect(self.onSavePersonalCredit)
-        self.ui.deletePersonalCredit.clicked.connect(self.onDeletePersonalCredit)
+        #self.ui.createPersonalCredit.clicked.connect(self.onCreatePersonalCredit)
+        #self.ui.savePersonalCredit.clicked.connect(self.onSavePersonalCredit)
+        #self.ui.deletePersonalCredit.clicked.connect(self.onDeletePersonalCredit)
         
         
         #--------------------------
@@ -123,7 +117,6 @@ class Gui(QtGui.QMainWindow):
         try: 
             ci = self.ui.mainTab.currentIndex()
             if ci == 0:
-                print("hi")
                 self.updateCompanyList(selectFirst=True)
                 #self.updateJobList(selectFirst=True)
             elif ci == 1:
@@ -133,9 +126,9 @@ class Gui(QtGui.QMainWindow):
                 elif vci == 1:
                     self.updateCompanyViewList()
                     self.updateCompanyView()
-            elif ci == 2:
-                self.updatePersonalChargesList();
-                self.updatePersonalCreditList();
+            #elif ci == 2:
+                #self.updatePersonalChargesList();
+                #self.updatePersonalCreditList();
             elif ci == 3:
                 self.updateConfigList(True)
         except Exception as e:
@@ -148,7 +141,6 @@ class Gui(QtGui.QMainWindow):
         if singleView == False:
             mightyController.updateList()
             self.ui.companyList.clear()
-            print("list.."+str(len(mightyController.companylist)))
             for company in mightyController.companylist:
                 self.ui.companyList.addItem(company.name)
                 print(company.name)
@@ -180,6 +172,14 @@ class Gui(QtGui.QMainWindow):
         if selectFirst:
             self.ui.personalChargesList.setCurrentRow(0)
             self.onPersonalChargeItemClick(self.ui.personalChargesList.currentItem())
+    def updatePersonalFinancesList(self,  selectFirst=False,  name=""):
+        self.ui.pfList.clear()
+        mightyController.updatePersonalFinancesList()
+        for pf in mightyController.personalFinances:
+            self.ui.pfList.addItem(pf.name)
+        if selectFirst:
+            self.ui.pfList.setCurrentRow(0)
+            self.onPersonalFinanceItemClick(self.ui.pfList.currentItem())
     def updateLoanSplitList(self,  selectFirst=False,  name=""):
         self.ui.loanSplitList.clear()
         self.currentCompany.updateLoanSplitList()

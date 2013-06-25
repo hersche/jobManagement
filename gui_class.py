@@ -43,6 +43,7 @@ class Gui(QtGui.QMainWindow):
         self.ui.loanSplitList.itemClicked.connect(self.onLoanSplitItemClick)
         self.ui.configList.itemClicked.connect(self.onConfigItemClick)
         self.ui.workChargesList.itemClicked.connect(self.onWChargeItemClick)
+        self.ui.pfList.itemClicked.connect(self.onPersonalFinanceItemClick)
 
         #Company-Actions
         if not singleView:
@@ -85,9 +86,9 @@ class Gui(QtGui.QMainWindow):
         #personal tab
         #---------------------
         #Charge-Actions
-        #self.ui.createPersonalCharge.clicked.connect(self.onCreatePersonalCharge)
-        #self.ui.savePersonalCharge.clicked.connect(self.onSavePersonalCharge)
-        #self.ui.deletePersonalCharge.clicked.connect(self.onDeletePersonalCharge)
+        self.ui.pfCreate.clicked.connect(self.onCreatePersonalFinance)
+        self.ui.pfSave.clicked.connect(self.onSavePersonalFinance)
+        self.ui.pfDelete.clicked.connect(self.onDeletePersonalFinance)
 
         #Credit-Actions
         #self.ui.createPersonalCredit.clicked.connect(self.onCreatePersonalCredit)
@@ -126,8 +127,8 @@ class Gui(QtGui.QMainWindow):
                 elif vci == 1:
                     self.updateCompanyViewList()
                     self.updateCompanyView()
-            #elif ci == 2:
-                #self.updatePersonalChargesList();
+            elif ci == 2:
+                self.updatePersonalFinancesList()
                 #self.updatePersonalCreditList();
             elif ci == 3:
                 self.updateConfigList(True)
@@ -159,8 +160,8 @@ class Gui(QtGui.QMainWindow):
     def updatechargesList(self,  selectFirst=False,  name=""):
         self.ui.chargesList.clear()
         self.currentCompany.updatechargesList()
-        for spese in self.currentCompany.charges:
-            self.ui.chargesList.addItem(spese.name)
+        for charge in self.currentCompany.charges:
+            self.ui.chargesList.addItem(charge.name)
         if selectFirst:
             self.ui.chargesList.setCurrentRow(0)
             self.onSpeseItemClick(self.ui.chargesList.currentItem())
@@ -246,7 +247,6 @@ class Gui(QtGui.QMainWindow):
         else:
             for company in mightyController.companylist:
                 if item is not None and company.name == item.text():
-                    print("found "+company.name+" vs "+item.text())
                     self.currentCompany = company
         if None is not self.currentCompany :
             self.ui.companyname.setText(self.currentCompany.name)
@@ -269,6 +269,24 @@ class Gui(QtGui.QMainWindow):
             if spese.name == item.text():
                 self.ui.personalChargesName.setText(spese.name)
                 self.ui.personalChargesValue.setValue(spese.value)
+    def onPersonalFinanceItemClick(self, item):
+        for pf in mightyController.personalFinances:
+            if pf.name == item.text():
+                self.ui.pfName.setText(pf.name)
+                self.ui.pfValue.setValue(pf.value)
+                self.ui.pfDate.setDate(pf.date)
+                self.ui.pfRepeatTimes.setValue(pf.timesRepeat)
+                if pf.plusMinus == "+":
+                    self.ui.pfPlusMinus.setCurrentIndex(0)
+                else:
+                    self.ui.pfPlusMinus.setCurrentIndex(1)
+                if pf.repeat == tr("Daily"):
+                    self.ui.pfRepeat.setCurrentIndex(0)
+                elif pf.repeat == tr("Weekly"):
+                    self.ui.pfRepeat.setCurrentIndex(1)
+                else:
+                    self.ui.pfRepeat.setCurrentIndex(2)
+                self.ui.pfActive.setChecked(pf.active)
     def onWChargeItemClick(self, item):
         jobSelect = self.ui.jobList.currentItem()
         for  job in self.currentCompany.jobs:
@@ -339,6 +357,44 @@ class Gui(QtGui.QMainWindow):
                     self.ui.active.setChecked(True)
                 else:
                     self.ui.active.setChecked(False)
+                    
+    #-------------
+    # personal Finance-Actions
+    #--------------
+    def onCreatePersonalFinance(self):
+        #self.currentCompany.createSpese(self.ui.chargesName.text(), self.ui.chargesValue.text())
+        mightyController.createPersonalFinance(self.ui.pfName.text(), self.ui.pfValue.text(), self.ui.pfDate.text(), self.ui.pfRepeat.currentText(), self.ui.pfRepeatTimes.value(), self.ui.pfPlusMinus.currentText(), self.ui.pfActive.isChecked(), encrypted)
+        # @TODO select the created!
+        self.updatePersonalFinancesList(True)
+    def onSavePersonalFinance(self):
+        cr = self.ui.pfList.currentRow()
+        cm = self.ui.pfList.currentItem()
+
+        for pf in mightyController.personalFinances:
+            if cm is not None and pf.name == cm.text():
+                if pf.save(self.ui.pfName.text(), self.ui.pfValue.text(), self.ui.pfDate.text(), self.ui.pfRepeat.currentText(), self.ui.pfRepeatTimes.value(), self.ui.pfPlusMinus.currentText(), self.ui.pfActive.isChecked(), encrypted) != -1:
+                    self.ui.status.setText(tr("Personal Finance")+" "+self.ui.pfName.text()+" "+tr("saved"))
+                else:
+                    sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("saved")+". DB-Error. The name maybe exist allready? ")
+        else:
+            self.ui.chargesList.setCurrentRow(cr)
+            self.ui.chargesList.setCurrentItem(cm)
+        self.updatePersonalFinancesList(True)
+    def onDeletePersonalFinance(self):
+        cm = self.ui.pfList.currentItem()
+        success = False
+        for pf in mightyController.personalFinances:
+            if cm is not None and pf.name == cm.text():
+                pf.delete()
+                success = True
+                self.ui.status.setText(tr("Charge")+" "+cm.text()+" "+tr("deleted"))
+        if not success:
+            self.alertBox.setText(tr("Charge")+" "+tr("could not")+" be "+tr("deleted"))
+            self.alertBox.exec()
+        else:
+            self.updatechargesList(True)
+            
+            
     #-------------
     # Charges-Actions
     #--------------

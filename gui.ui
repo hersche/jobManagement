@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1039</width>
+    <width>1043</width>
     <height>700</height>
    </rect>
   </property>
@@ -45,7 +45,7 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Personal finances&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="data">
      <property name="sizePolicy">
@@ -73,7 +73,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_7">
        <attribute name="title">
@@ -568,13 +568,13 @@
          <property name="geometry">
           <rect>
            <x>10</x>
-           <y>410</y>
+           <y>400</y>
            <width>481</width>
-           <height>221</height>
+           <height>231</height>
           </rect>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="tab">
           <attribute name="title">
@@ -1006,7 +1006,20 @@
          <item row="0" column="0">
           <widget class="QLabel" name="label_40">
            <property name="text">
-            <string>TextLabel</string>
+            <string>Loan per year</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="lineEdit_2"/>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="lineEdit_3"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_41">
+           <property name="text">
+            <string>Tax</string>
            </property>
           </widget>
          </item>
@@ -1023,7 +1036,7 @@
       </sizepolicy>
      </property>
      <attribute name="title">
-      <string>Logics - Checks</string>
+      <string>Analysis</string>
      </attribute>
      <widget class="QTabWidget" name="viewTabs">
       <property name="geometry">
@@ -1039,14 +1052,14 @@
       </property>
       <widget class="QWidget" name="tab_4">
        <attribute name="title">
-        <string>Overview</string>
+        <string>Overview for all</string>
        </attribute>
        <widget class="QTableWidget" name="infoExel">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>0</x>
           <y>150</y>
-          <width>1001</width>
+          <width>1021</width>
           <height>291</height>
          </rect>
         </property>
@@ -1116,7 +1129,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>591</width>
+          <width>561</width>
           <height>151</height>
          </rect>
         </property>
@@ -1131,7 +1144,7 @@
           <rect>
            <x>260</x>
            <y>20</y>
-           <width>271</width>
+           <width>291</width>
            <height>82</height>
           </rect>
          </property>
@@ -1307,16 +1320,6 @@
      <attribute name="title">
       <string>Personal finances</string>
      </attribute>
-     <widget class="QTextEdit" name="personalFinancesSummary">
-      <property name="geometry">
-       <rect>
-        <x>480</x>
-        <y>250</y>
-        <width>591</width>
-        <height>281</height>
-       </rect>
-      </property>
-     </widget>
      <widget class="QFrame" name="frame_3">
       <property name="geometry">
        <rect>
@@ -1398,7 +1401,11 @@
          <widget class="QLineEdit" name="pfName"/>
         </item>
         <item row="1" column="2">
-         <widget class="QDoubleSpinBox" name="pfValue"/>
+         <widget class="QDoubleSpinBox" name="pfValue">
+          <property name="maximum">
+           <double>9999999.990000000223517</double>
+          </property>
+         </widget>
         </item>
         <item row="2" column="2">
          <widget class="QDateEdit" name="pfDate">
@@ -1433,6 +1440,9 @@
          <widget class="QCheckBox" name="pfActive">
           <property name="text">
            <string/>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -1490,44 +1500,70 @@
        <string>Zeige Inaktive</string>
       </property>
      </widget>
-     <widget class="QWidget" name="gridLayoutWidget_3">
+     <widget class="QFrame" name="frame_5">
       <property name="geometry">
        <rect>
-        <x>500</x>
-        <y>30</y>
-        <width>461</width>
-        <height>201</height>
+        <x>470</x>
+        <y>0</y>
+        <width>551</width>
+        <height>581</height>
        </rect>
       </property>
-      <layout class="QGridLayout" name="gridLayout_3">
-       <item row="2" column="3">
-        <widget class="QCheckBox" name="checkBox_2">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QCalendarWidget" name="calendarWidget"/>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="label_39">
-         <property name="text">
-          <string>Search</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3">
-        <widget class="QLineEdit" name="lineEdit"/>
-       </item>
-       <item row="2" column="0">
-        <widget class="QCheckBox" name="checkBox_3">
-         <property name="text">
-          <string>Filter Calendar</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QWidget" name="gridLayoutWidget_3">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>461</width>
+         <height>201</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="2" column="3">
+         <widget class="QCheckBox" name="checkBox_2">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="label_39">
+          <property name="text">
+           <string>Search</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QLineEdit" name="lineEdit"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QCheckBox" name="checkBox_3">
+          <property name="text">
+           <string>Filter Calendar</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QCalendarWidget" name="calendarWidget"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QTextEdit" name="personalFinancesSummary">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>230</y>
+         <width>531</width>
+         <height>331</height>
+        </rect>
+       </property>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="settings">
@@ -1656,7 +1692,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1039</width>
+     <width>1043</width>
      <height>20</height>
     </rect>
    </property>

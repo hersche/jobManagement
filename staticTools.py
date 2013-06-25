@@ -4,8 +4,15 @@ def tr(name):
     return QtCore.QCoreApplication.translate("@default",  name)
 #semantic designer tools
 class sdt:
-    
-    
+
+    @staticmethod
+    def tB(text):
+        alertBox = QtGui.QInputDialog.getText(ui,  text, text)
+#        alertBox.setInputMode(QtGui.QInputDialog.TextInput)
+#        alertBox.setText(text)
+#        alertBox.exec()
+
+    @staticmethod
     def aB(text):
         alertBox = QtGui.QMessageBox()
         alertBox.setText(text)
@@ -91,9 +98,9 @@ class sdt:
                     value = ((company.loan/10)*daySpace)
                     allValue += value
                     #print(job.name+"="+str(value)+":"+str(daySpace))
-                    scene.addLine(float(oldDaySpace),float(-oldValue) ,   float(daySpace*widthPerHour), float(-loanSum),  pen)
-                    oldDaySpace = daySpace
-                    oldValue = loanSum
+                    scene.addLine(float(oldDaySpace),float(-oldValue) ,   float(daySpace*widthPerHour), float(-loanSum/50),  pen)
+                    oldDaySpace = daySpace*widthPerHour
+                    oldValue = loanSum/50
                     r=sdt.colorChanger(r)
                     g=sdt.colorChanger(g)
                     b=sdt.colorChanger(b)

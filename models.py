@@ -103,7 +103,7 @@ class personalFinance:
         self.id = id
         self.name = name
         self.value = value
-        self.date=date
+        self.date=QtCore.QDate.fromString(date, dbDateFormat)
         self.repeat =repeat
         self.timesRepeat = timesRepeat
         self.plusMinus=plusMinus
@@ -260,7 +260,7 @@ class Company:
             self.credits.append(Credit(row[0], row[1], row[2],  row[3],  row[4], row[5], row[6]))
     def updateJobList(self):
         self.jobs = []
-        c.execute('select * from job WHERE companyid = ?',  (str(self.id), ))
+        c.execute('select * from job WHERE companyid = ? ORDER BY startdate',  (str(self.id), ))
         for row in c.fetchall():
             self.jobs.append(Job(row[0], row[1], row[2], row[3], row[4],  row[5],  row[6],  row[7],  row[8],row[9], row[10],  row[11] , row[12]))
     def updatechargesList(self):

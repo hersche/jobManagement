@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gui.ui'
 #
-# Created: Tue Jun 25 19:23:35 2013
+# Created: Thu Jun 27 19:06:41 2013
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -660,25 +660,25 @@ class Ui_MainWindow(object):
         self.gridLayout_3 = QtGui.QGridLayout(self.gridLayoutWidget_3)
         self.gridLayout_3.setMargin(0)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
-        self.checkBox_2 = QtGui.QCheckBox(self.gridLayoutWidget_3)
-        self.checkBox_2.setText(_fromUtf8(""))
-        self.checkBox_2.setObjectName(_fromUtf8("checkBox_2"))
-        self.gridLayout_3.addWidget(self.checkBox_2, 2, 3, 1, 1)
         self.label_39 = QtGui.QLabel(self.gridLayoutWidget_3)
         self.label_39.setObjectName(_fromUtf8("label_39"))
         self.gridLayout_3.addWidget(self.label_39, 0, 1, 1, 1)
-        self.lineEdit = QtGui.QLineEdit(self.gridLayoutWidget_3)
-        self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
-        self.gridLayout_3.addWidget(self.lineEdit, 0, 3, 1, 1)
-        self.checkBox_3 = QtGui.QCheckBox(self.gridLayoutWidget_3)
-        self.checkBox_3.setObjectName(_fromUtf8("checkBox_3"))
-        self.gridLayout_3.addWidget(self.checkBox_3, 2, 0, 1, 1)
-        self.calendarWidget = QtGui.QCalendarWidget(self.gridLayoutWidget_3)
-        self.calendarWidget.setObjectName(_fromUtf8("calendarWidget"))
-        self.gridLayout_3.addWidget(self.calendarWidget, 0, 0, 1, 1)
-        self.personalFinancesSummary = QtGui.QTextEdit(self.frame_5)
-        self.personalFinancesSummary.setGeometry(QtCore.QRect(10, 230, 531, 331))
-        self.personalFinancesSummary.setObjectName(_fromUtf8("personalFinancesSummary"))
+        self.pfSearch = QtGui.QLineEdit(self.gridLayoutWidget_3)
+        self.pfSearch.setObjectName(_fromUtf8("pfSearch"))
+        self.gridLayout_3.addWidget(self.pfSearch, 0, 3, 1, 1)
+        self.pfCalendarEnabled = QtGui.QCheckBox(self.gridLayoutWidget_3)
+        self.pfCalendarEnabled.setObjectName(_fromUtf8("pfCalendarEnabled"))
+        self.gridLayout_3.addWidget(self.pfCalendarEnabled, 2, 0, 1, 1)
+        self.pfCalendar = QtGui.QCalendarWidget(self.gridLayoutWidget_3)
+        self.pfCalendar.setObjectName(_fromUtf8("pfCalendar"))
+        self.gridLayout_3.addWidget(self.pfCalendar, 0, 0, 1, 1)
+        self.pfSearchEnabled = QtGui.QCheckBox(self.gridLayoutWidget_3)
+        self.pfSearchEnabled.setText(_fromUtf8(""))
+        self.pfSearchEnabled.setObjectName(_fromUtf8("pfSearchEnabled"))
+        self.gridLayout_3.addWidget(self.pfSearchEnabled, 0, 4, 1, 1)
+        self.pfSummary = QtGui.QTextEdit(self.frame_5)
+        self.pfSummary.setGeometry(QtCore.QRect(10, 230, 531, 331))
+        self.pfSummary.setObjectName(_fromUtf8("pfSummary"))
         self.mainTab.addTab(self.tab_6, _fromUtf8(""))
         self.settings = QtGui.QWidget()
         self.settings.setObjectName(_fromUtf8("settings"))
@@ -741,7 +741,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.mainTab.setCurrentIndex(1)
+        self.mainTab.setCurrentIndex(2)
         self.tabWidget.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(2)
         self.viewTabs.setCurrentIndex(0)
@@ -863,7 +863,7 @@ class Ui_MainWindow(object):
         self.pfDelete.setText(_translate("MainWindow", "Delete", None))
         self.checkBox.setText(_translate("MainWindow", "Zeige Inaktive", None))
         self.label_39.setText(_translate("MainWindow", "Search", None))
-        self.checkBox_3.setText(_translate("MainWindow", "Filter Calendar", None))
+        self.pfCalendarEnabled.setText(_translate("MainWindow", "Filter Calendar", None))
         self.mainTab.setTabText(self.mainTab.indexOf(self.tab_6), _translate("MainWindow", "Personal finances", None))
         self.label_23.setText(_translate("MainWindow", "Configs", None))
         self.label_26.setText(_translate("MainWindow", "Key", None))

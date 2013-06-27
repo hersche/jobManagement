@@ -24,6 +24,7 @@ class Gui(QtGui.QMainWindow):
             self.ui.startdate.setDate(cd)
             self.ui.enddate.setDate(cd)
         self.ui.creditDate.setDate(cd)
+        self.ui.pfDate.setDate(cd)
         self.tabUpdater()
         self.alertBox = QtGui.QMessageBox()
         
@@ -84,11 +85,17 @@ class Gui(QtGui.QMainWindow):
         self.ui.deleteConfig.clicked.connect(self.onDeleteConfig)
         #---------------------
         #personal tab
-        #---------------------
+        #--------------------- 
         #Charge-Actions
+        
         self.ui.pfCreate.clicked.connect(self.onCreatePersonalFinance)
         self.ui.pfSave.clicked.connect(self.onSavePersonalFinance)
         self.ui.pfDelete.clicked.connect(self.onDeletePersonalFinance)
+
+        self.ui.pfCalendar.currentPageChanged.connect(self.updatePersonalFinanceText)
+        self.ui.pfCalendarEnabled.clicked.connect(self.updatePersonalFinanceText)
+        self.ui.pfSearchEnabled.clicked.connect(self.updatePersonalFinanceText)
+        self.ui.pfSearch.textChanged.connect(self.updatePersonalFinanceText)
 
         #Credit-Actions
         #self.ui.createPersonalCredit.clicked.connect(self.onCreatePersonalCredit)
@@ -132,8 +139,10 @@ class Gui(QtGui.QMainWindow):
                 #self.updatePersonalCreditList();
             elif ci == 3:
                 self.updateConfigList(True)
+            else:
+                print("no tab? id:"+str(ci))
         except Exception as e:
-            print(e.text())
+            print(e)
     #----------------------
     # Updaters
     #-----------------------
@@ -166,8 +175,7 @@ class Gui(QtGui.QMainWindow):
             self.ui.chargesList.setCurrentRow(0)
             self.onSpeseItemClick(self.ui.chargesList.currentItem())
     def updatePersonalChargesList(self,  selectFirst=False,  name=""):
-        self.ui.personalChargesList.clear()
-        mightyController.updatePersonalChargesList()
+
         for spese in mightyController.personalCharges:
             self.ui.personalChargesList.addItem(spese.name)
         if selectFirst:
@@ -175,6 +183,7 @@ class Gui(QtGui.QMainWindow):
             self.onPersonalChargeItemClick(self.ui.personalChargesList.currentItem())
     def updatePersonalFinancesList(self,  selectFirst=False,  name=""):
         self.ui.pfList.clear()
+        self.updatePersonalFinanceText()
         mightyController.updatePersonalFinancesList()
         for pf in mightyController.personalFinances:
             self.ui.pfList.addItem(pf.name)
@@ -377,8 +386,8 @@ class Gui(QtGui.QMainWindow):
                 else:
                     sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("saved")+". DB-Error. The name maybe exist allready? ")
         else:
-            self.ui.chargesList.setCurrentRow(cr)
-            self.ui.chargesList.setCurrentItem(cm)
+            self.ui.pfList.setCurrentRow(cr)
+            self.ui.pfList.setCurrentItem(cm)
         self.updatePersonalFinancesList(True)
     def onDeletePersonalFinance(self):
         cm = self.ui.pfList.currentItem()
@@ -392,8 +401,10 @@ class Gui(QtGui.QMainWindow):
             self.alertBox.setText(tr("Charge")+" "+tr("could not")+" be "+tr("deleted"))
             self.alertBox.exec()
         else:
-            self.updatechargesList(True)
-            
+            self.updatePersonalFinancesList(True)
+    def updatePersonalFinanceText(self):
+        self.ui.pfSummary.clear()
+        self.ui.pfSummary.setText(sdt.createPersonalFinancesHtml(mightyController.personalFinances,  self.ui))
             
     #-------------
     # Charges-Actions

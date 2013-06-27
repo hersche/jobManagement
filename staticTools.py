@@ -194,6 +194,20 @@ class sdt:
             return floatString
         else:
             return str(origNr)
+    @staticmethod
+    def createPersonalFinancesHtml(pfList, ui):
+        pfHtml = "<ul>"
+        pfSum = 0
+        for pf in pfList:
+            if cw.ifInsertPersonalFinance(ui,  pf):
+                pfHtml += "<li>" + pf.name+" @ "+pf.date.toString(dbDateFormat)+": "+pf.plusMinus+str(pf.value)+".-</li>"
+                if pf.plusMinus == "+":
+                    pfSum += pf.value
+                else:
+                    pfSum -= pf.value
+        pfHtml += "</ul> <h3>Summe: "+str(pfSum)+"</h3>"
+        return pfHtml
+            
         
         
 class maths:
@@ -226,6 +240,29 @@ class cw:
         return (startdate.month() == wCalendarDate.month() and startdate.year() == wCalendarDate.year()) or (enddate.month() == wCalendarDate.month() and startdate.year() == wCalendarDate.year())
     def filterTextSearch(infoSearch,  job,  company):
         return (re.search(infoSearch,  job.name.lower()) is not None  or re.search(infoSearch,  job.place.lower()) is not None or re.search(infoSearch,  job.comment.lower()) is not None or re.search(infoSearch,  job.leader.lower()) is not None or re.search(infoSearch, company.name.lower()) is not None)
+    @staticmethod
+    def ifInsertPersonalFinance(ui,  pf):
+        pfCal = QtCore.QDate.fromString(str(ui.pfCalendar.monthShown())+"."+str(ui.pfCalendar.yearShown()), "M.yyyy")
+        print(str(pfCal.month())+"."+str(pfCal.year())+"vs"+str(pf.date.month())+"."+str(pf.date.year()))
+        if ui.pfCalendarEnabled.isChecked() == False and ui.pfSearchEnabled.isChecked()==False:
+            return True
+        elif ui.pfCalendarEnabled.isChecked() and ui.pfSearchEnabled.isChecked()==False:
+            if pf.date.month() == pfCal.month() and pf.date.year() == pfCal.year():
+                return True
+        elif  ui.pfCalendarEnabled.isChecked() == False and  ui.pfSearchEnabled.isChecked():
+            pfSearch = ui.pfSearch.text()
+            pfSearch = pfSearch.lower()
+            if ui.pfSearch.text() == "":
+                return True
+            elif re.search(pfSearch,  pf.name.lower()) is not None:
+                return True
+        elif ui.pfCalendarEnabled.isChecked() and ui.pfSearchEnabled.isChecked():
+            if ui.pfSearch.text() == "" and  (pf.date.month() == pfCal.month() and pf.date.year() == pfCal.year()):
+                return True
+            elif re.search(pfSearch,  pf.name.lower()) is not None  and  (pf.date.month() == pfCal.month() and pf.date.year() == pfCal.year()):
+                return True
+        else:
+            return False
     @staticmethod
     def insertJobYesNo(ui, company, job, infoSearch, workCalendar):
         insertARow = False

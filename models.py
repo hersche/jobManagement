@@ -29,6 +29,7 @@ class Controller:
         def __init__(self):
             self.updateList()
             self.updateConfigList()
+            self.updatePersonalFinancesList()
         def createCompany(self, name,  loan,  perHours,  describtion):
             try:
                 c.execute("INSERT INTO company (name, loan,  perHours, describtion) VALUES (?,?,?,?);",  (name, loan,  perHours, describtion))

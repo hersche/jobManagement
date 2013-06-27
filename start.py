@@ -6,7 +6,7 @@ from gui_class import *
 import sys
 app = QtGui.QApplication(sys.argv)
 translator = QtCore.QTranslator()
-translator.load(lang,"./")
+translator.load("lang/"+lang,"./")
 app.installTranslator(translator)
 jobman = Gui()
 jobman.show()

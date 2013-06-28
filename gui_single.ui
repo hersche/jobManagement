@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>869</width>
+    <width>923</width>
     <height>664</height>
    </rect>
   </property>
@@ -45,7 +45,7 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Personal finances&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="data">
      <property name="sizePolicy">
@@ -825,7 +825,7 @@
      <attribute name="title">
       <string>Logics - Checks</string>
      </attribute>
-     <widget class="QTabWidget" name="tabWidget_3">
+     <widget class="QTabWidget" name="viewTabs">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -841,65 +841,6 @@
        <attribute name="title">
         <string>Overview</string>
        </attribute>
-       <widget class="QTableWidget" name="infoExel">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>160</y>
-          <width>791</width>
-          <height>271</height>
-         </rect>
-        </property>
-        <property name="editTriggers">
-         <set>QAbstractItemView::NoEditTriggers</set>
-        </property>
-        <property name="horizontalScrollMode">
-         <enum>QAbstractItemView::ScrollPerPixel</enum>
-        </property>
-        <property name="columnCount">
-         <number>8</number>
-        </property>
-        <column>
-         <property name="text">
-          <string>Jobname</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Place</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Leitung</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Lohn</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Zeit (ges)</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Spesen</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Abzüge</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Summe</string>
-         </property>
-        </column>
-       </widget>
        <widget class="QFrame" name="frame_7">
         <property name="geometry">
          <rect>
@@ -1049,6 +990,71 @@
          <bool>true</bool>
         </property>
        </widget>
+       <widget class="QTableWidget" name="infoExel">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>150</y>
+          <width>1021</width>
+          <height>271</height>
+         </rect>
+        </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <property name="horizontalScrollMode">
+         <enum>QAbstractItemView::ScrollPerPixel</enum>
+        </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
+        <property name="columnCount">
+         <number>8</number>
+        </property>
+        <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+         <bool>true</bool>
+        </attribute>
+        <column>
+         <property name="text">
+          <string>Jobname</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Place</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Leader</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Loan</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Time</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Charges</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Splits</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Summe</string>
+         </property>
+        </column>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_5">
        <attribute name="title">
@@ -1096,291 +1102,224 @@
      <attribute name="title">
       <string>Personal finances</string>
      </attribute>
-     <widget class="QTabWidget" name="tabWidget_4">
+     <widget class="QCheckBox" name="checkBox">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>20</y>
-        <width>491</width>
-        <height>231</height>
+        <x>10</x>
+        <y>10</y>
+        <width>131</width>
+        <height>21</height>
        </rect>
       </property>
-      <property name="currentIndex">
-       <number>1</number>
+      <property name="text">
+       <string>Zeige Inaktive</string>
       </property>
-      <widget class="QWidget" name="tab_7">
-       <attribute name="title">
-        <string>Buys</string>
-       </attribute>
-       <widget class="QWidget" name="verticalLayoutWidget_3">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>10</y>
-          <width>241</width>
-          <height>151</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_3">
-         <item>
-          <widget class="QLabel" name="label_31">
-           <property name="text">
-            <string>Credits (to Company)</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QListWidget" name="personalCreditList"/>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="formLayoutWidget_10">
-        <property name="geometry">
-         <rect>
-          <x>240</x>
-          <y>10</y>
-          <width>241</width>
-          <height>121</height>
-         </rect>
-        </property>
-        <layout class="QFormLayout" name="formLayout_10">
-         <property name="fieldGrowthPolicy">
-          <enum>QFormLayout::ExpandingFieldsGrow</enum>
-         </property>
-         <property name="labelAlignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_32">
-           <property name="text">
-            <string>Money</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QDoubleSpinBox" name="personalCreditValue">
-           <property name="decimals">
-            <number>2</number>
-           </property>
-           <property name="maximum">
-            <double>99999.990000000005239</double>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_33">
-           <property name="text">
-            <string>Date</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QDateEdit" name="personalCreditDate">
-           <property name="displayFormat">
-            <string>dd.MM.yyyy</string>
-           </property>
-           <property name="calendarPopup">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="QCheckBox" name="personalCreditPayed">
-           <property name="text">
-            <string>Payed</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="personalCreditName"/>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_34">
-           <property name="text">
-            <string>Name/Comment</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QCheckBox" name="personalCreditActive">
-           <property name="text">
-            <string>Active</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QPushButton" name="createPersonalCredit">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>170</y>
-          <width>99</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Create</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="savePersonalCredit">
-        <property name="geometry">
-         <rect>
-          <x>180</x>
-          <y>170</y>
-          <width>99</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Save</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="deletePersonalCredit">
-        <property name="geometry">
-         <rect>
-          <x>330</x>
-          <y>170</y>
-          <width>99</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Delete</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QWidget" name="tab_9">
-       <attribute name="title">
-        <string>Becomings</string>
-       </attribute>
-       <widget class="QWidget" name="formLayoutWidget_13">
-        <property name="geometry">
-         <rect>
-          <x>210</x>
-          <y>0</y>
-          <width>191</width>
-          <height>101</height>
-         </rect>
-        </property>
-        <layout class="QFormLayout" name="formLayout_13">
-         <property name="fieldGrowthPolicy">
-          <enum>QFormLayout::ExpandingFieldsGrow</enum>
-         </property>
-         <property name="labelAlignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_38">
-           <property name="text">
-            <string>Name</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="personalChargesName"/>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_39">
-           <property name="text">
-            <string>Money</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QDoubleSpinBox" name="personalChargesValue"/>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="verticalLayoutWidget_4">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>201</width>
-          <height>101</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <item>
-          <widget class="QLabel" name="label_40">
-           <property name="text">
-            <string>Static Charges</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QListWidget" name="personalChargesList"/>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QPushButton" name="createPersonalCharge">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>110</y>
-          <width>91</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Create</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="savePersonalCharge">
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>110</y>
-          <width>81</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Save</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="deletePersonalCharge">
-        <property name="geometry">
-         <rect>
-          <x>170</x>
-          <y>110</y>
-          <width>91</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Delete</string>
-        </property>
-       </widget>
-       <widget class="QPlainTextEdit" name="plainTextEdit_2">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>130</y>
-          <width>401</width>
-          <height>61</height>
-         </rect>
-        </property>
-        <property name="plainText">
-         <string>A static charge doesn't get active till you add it to a job. Don't forget to tell the job, how many time u used the charge effective..</string>
-        </property>
-       </widget>
-      </widget>
      </widget>
-     <widget class="QTextEdit" name="personalFinancesSummary">
+     <widget class="QWidget" name="gridLayoutWidget_2">
       <property name="geometry">
        <rect>
         <x>0</x>
+        <y>30</y>
+        <width>451</width>
+        <height>221</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="2" column="1">
+        <widget class="QLabel" name="label_33">
+         <property name="text">
+          <string>Date</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="label_31">
+         <property name="text">
+          <string>Value</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLabel" name="label_37">
+         <property name="text">
+          <string>Repeat</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLabel" name="label_38">
+         <property name="text">
+          <string>Repeat Times</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="label_32">
+         <property name="text">
+          <string>Name</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLabel" name="label_34">
+         <property name="text">
+          <string>Plus/Minus</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" rowspan="7">
+        <widget class="QListWidget" name="pfList"/>
+       </item>
+       <item row="6" column="1">
+        <widget class="QLabel" name="label_36">
+         <property name="text">
+          <string>Active</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLineEdit" name="pfName"/>
+       </item>
+       <item row="1" column="2">
+        <widget class="QDoubleSpinBox" name="pfValue">
+         <property name="maximum">
+          <double>9999999.990000000223517</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QDateEdit" name="pfDate">
+         <property name="displayFormat">
+          <string>dd.MM.yyyy</string>
+         </property>
+         <property name="calendarPopup">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2" colspan="2">
+        <widget class="QComboBox" name="pfRepeat">
+         <item>
+          <property name="text">
+           <string>Daily</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Weekly</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Monthly</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="6" column="2">
+        <widget class="QCheckBox" name="pfActive">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2">
+        <widget class="QComboBox" name="pfPlusMinus">
+         <item>
+          <property name="text">
+           <string>+</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>-</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="QSpinBox" name="pfRepeatTimes"/>
+       </item>
+       <item row="7" column="0">
+        <widget class="QPushButton" name="pfCreate">
+         <property name="text">
+          <string>Create</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QPushButton" name="pfSave">
+         <property name="text">
+          <string>Save</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="2">
+        <widget class="QPushButton" name="pfDelete">
+         <property name="text">
+          <string>Delete</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="gridLayoutWidget_3">
+      <property name="geometry">
+       <rect>
+        <x>460</x>
+        <y>30</y>
+        <width>461</width>
+        <height>201</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="0" column="1">
+        <widget class="QLabel" name="label_39">
+         <property name="text">
+          <string>Search</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QLineEdit" name="pfSearch"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="QCheckBox" name="pfCalendarEnabled">
+         <property name="text">
+          <string>Filter Calendar</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="4">
+        <widget class="QCheckBox" name="pfSearchEnabled">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QCalendarWidget" name="pfCalendar"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QTextEdit" name="pfSummary">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
         <y>260</y>
-        <width>491</width>
-        <height>251</height>
+        <width>671</width>
+        <height>331</height>
        </rect>
       </property>
      </widget>
+     <zorder>checkBox</zorder>
+     <zorder>gridLayoutWidget_2</zorder>
+     <zorder>gridLayoutWidget_3</zorder>
+     <zorder>pfSummary</zorder>
+     <zorder>pfCalendar</zorder>
     </widget>
     <widget class="QWidget" name="settings">
      <attribute name="title">
@@ -1472,8 +1411,11 @@
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:18pt; text-decoration: underline;&quot;&gt;Avaible Config-Keys&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;lang / language = language - put the right filename (*.qm in your folder) there and restart&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:18pt; text-decoration: underline;&quot;&gt;Avaible Config-Keys&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;* lang / language = language - put the right filename (*.qm in your folder) there and restart&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;* singleview = 1 - enables singleView (experimental)&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;* encrypted : 1=AES, 2=ARC4, 3=DES3 (you may need to install pycrypto)&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </widget>
@@ -1500,7 +1442,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>869</width>
+     <width>923</width>
      <height>20</height>
     </rect>
    </property>

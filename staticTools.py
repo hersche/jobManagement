@@ -1,7 +1,4 @@
 from header import *
-
-def tr(name):
-    return QtCore.QCoreApplication.translate("@default",  name)
 #semantic designer tools
 class sdt:
 
@@ -39,7 +36,7 @@ class sdt:
         if not singleView:
             daySpace,  weekendPart = sdt.calcDaySpace(job.startdate,  job.enddate, workCalendar,  job.weekendDays)
         else:
-            daySpace,  weekendPart = (dater.daysInMonth() - (job.weekendDays * 4), job.weekendDays)
+            daySpace,  weekendPart = (workCalendar.daysInMonth() - (job.weekendDays * 4), job.weekendDays)
         #minSpace = daySpace * job.hours * 60
         loanSum,  loanSplitSum, realHourLoan, realHourSplitSum,  chargeSum = maths.calcJobSum(company,  job,  workCalendar)
         #building table..

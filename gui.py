@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gui.ui'
 #
-# Created: Thu Jun 27 19:06:41 2013
+# Created: Thu Jun 27 22:43:20 2013
 #      by: PyQt4 UI code generator 4.10.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -523,12 +523,12 @@ class Ui_MainWindow(object):
         self.workCalendar.setGeometry(QtCore.QRect(10, 10, 221, 131))
         self.workCalendar.setObjectName(_fromUtf8("workCalendar"))
         self.graphFrame = QtGui.QFrame(self.tab_4)
-        self.graphFrame.setGeometry(QtCore.QRect(590, 0, 431, 151))
+        self.graphFrame.setGeometry(QtCore.QRect(560, 0, 451, 151))
         self.graphFrame.setFrameShape(QtGui.QFrame.StyledPanel)
         self.graphFrame.setFrameShadow(QtGui.QFrame.Raised)
         self.graphFrame.setObjectName(_fromUtf8("graphFrame"))
         self.graphView = QtGui.QGraphicsView(self.graphFrame)
-        self.graphView.setGeometry(QtCore.QRect(0, 0, 431, 150))
+        self.graphView.setGeometry(QtCore.QRect(0, 0, 451, 150))
         self.graphView.setObjectName(_fromUtf8("graphView"))
         self.horizontalLayoutWidget = QtGui.QWidget(self.tab_4)
         self.horizontalLayoutWidget.setGeometry(QtCore.QRect(440, 450, 261, 80))
@@ -683,7 +683,7 @@ class Ui_MainWindow(object):
         self.settings = QtGui.QWidget()
         self.settings.setObjectName(_fromUtf8("settings"))
         self.formLayoutWidget_7 = QtGui.QWidget(self.settings)
-        self.formLayoutWidget_7.setGeometry(QtCore.QRect(10, 10, 291, 251))
+        self.formLayoutWidget_7.setGeometry(QtCore.QRect(10, 10, 351, 251))
         self.formLayoutWidget_7.setObjectName(_fromUtf8("formLayoutWidget_7"))
         self.formLayout_7 = QtGui.QFormLayout(self.formLayoutWidget_7)
         self.formLayout_7.setLabelAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
@@ -717,7 +717,7 @@ class Ui_MainWindow(object):
         self.deleteConfig.setObjectName(_fromUtf8("deleteConfig"))
         self.formLayout_7.setWidget(7, QtGui.QFormLayout.FieldRole, self.deleteConfig)
         self.textEdit = QtGui.QTextEdit(self.settings)
-        self.textEdit.setGeometry(QtCore.QRect(330, 10, 421, 261))
+        self.textEdit.setGeometry(QtCore.QRect(450, 20, 501, 261))
         self.textEdit.setUndoRedoEnabled(False)
         self.textEdit.setReadOnly(True)
         self.textEdit.setObjectName(_fromUtf8("textEdit"))
@@ -744,7 +744,7 @@ class Ui_MainWindow(object):
         self.mainTab.setCurrentIndex(2)
         self.tabWidget.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(2)
-        self.viewTabs.setCurrentIndex(0)
+        self.viewTabs.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -875,10 +875,13 @@ class Ui_MainWindow(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt; text-decoration: underline;\">Avaible Config-Keys</span></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">lang / language = language - put the right filename (*.qm in your folder) there and restart</p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">single / singleView = 1 / 0 , true / false - this is a view with just one company and limited options (more default-values, as example &quot;perHours&quot; in company.</p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt; text-decoration: underline;\">Avaible Config-Keys</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">* lang / language = language - put the right filename (*.qm in your folder) there</p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">* singleview = 1 - enables singleView (experimental)</p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">* encrypted : 1=AES, 2=ARC4, 3=DES3 (you may need to install pycrypto)</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Restart is needed after changes!</p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
         self.mainTab.setTabText(self.mainTab.indexOf(self.settings), _translate("MainWindow", "Settings", "en"))
         self.status.setText(_translate("MainWindow", "Status..", None))
 

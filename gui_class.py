@@ -11,11 +11,30 @@ class Gui(QtGui.QMainWindow):
         self.currentCompany = None
         self.showInactive = True
         QtGui.QWidget.__init__(self, parent)
+
         if singleView:
             self.ui = Ui_MainWindowSingle()
         else:
             self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        if encrypted != "-1":
+            pw, okCancel = QtGui.QInputDialog.getText(self,  "Passwort eingeben", "hophop")
+            cipher = Blowfish.new("testestest", enc.MODE_CFB, iv)
+            tmpStr=""
+            le = len(pw)
+            if  le > 8:
+                rest = 8-(le% 8)
+                
+                print("len "+str(len(pw))+" rest: "+str(rest))
+                
+                while rest != 0:
+                    tmpStr += "."
+                    rest -= 1
+            
+            t = cipher.encrypt(pw+tmpStr)
+            print("clearText: "+pw+tmpStr)
+            print("Crypted: "+str(t))
+            print ("Decrypted: "+str(cipher.decrypt(t)))
         if singleView:
             #init self.currentCompany
             self.onCompanyItemClick("singleView")
@@ -738,14 +757,17 @@ class Gui(QtGui.QMainWindow):
         infoSearch = self.ui.infoSearch.text()
         infoSearch = infoSearch.lower()
         sdt.updateGraphicView(self.ui,  mightyController.companylist, workCalendar, infoSearch)
+        self.ui.infoExel.insertRow(0)
         if singleView:
             company = self.currentCompany
-            nRowNr, nSum = sdt.filterJobs(self.ui, self.currentCompany, infoSearch,  workCalendar, rowNr, self.sum)
-            self.sum += nSum
-            self.createCreditTextBox(self.currentCompany, workCalendar)
+            for job in company.jobs:
+                if cw.insertJobYesNo(self.ui, company, job, infoSearch, workCalendar):
+                    print("insert..")
+                    sum += sdt.createJobRow(self.ui,  job, company, workCalendar, rowNr, sum) 
+                    rowNr +=1
+                    self.ui.infoExel.insertRow(rowNr)
+            creditString, creditSumFinale = self.createCreditTextBox(self.currentCompany, workCalendar, sum)
         else:
-            if rowNr==0:
-                self.ui.infoExel.insertRow(rowNr)
             for company in mightyController.companylist:
                 sl = sorted(company.jobs, key=lambda job: job.startdate,  reverse=True)
                 for job in sl:
@@ -758,7 +780,7 @@ class Gui(QtGui.QMainWindow):
                 creditStringFinale += creditString
         creditStringFinale+="<hr />Of all companys: "+str(creditSumFinale)+".-"
         self.ui.infoExelCredits.setText(creditStringFinale)
-        self.ui.amount.display(sum)
+        self.ui.amount.display(sum-creditSumFinale)
 
 
     def createCreditTextBox(self, company, wc, sum):

@@ -93,7 +93,6 @@ class Controller:
             for company in self.companylist:
                 if company.name == name:
                     return company
-                 
               
            
         
@@ -148,10 +147,11 @@ class Config:
                 
 class loanSplit:
     #CREATE TABLE loanSplit (lsid  INTEGER PRIMARY KEY, name TEXT, value REAL, money INTEGER, companyid INTEGER)"
-    def __init__(self, id,  name, value,  money):
+    def __init__(self, id,  name, value,  money, encrypted):
         self.id = id
         self.name = name
         self.value = value
+        self.encrypted = encrypted
         if money == 1:
             #The value is calcucalted as money (.-)
             self.money = True
@@ -177,12 +177,14 @@ class loanSplit:
             return -1
     
 class charges:
-    def __init__(self, id,  name,  value, wchargeid=-1, howManyTimes=-1):
+    def __init__(self, id,  name,  value, wchargeid=-1, howManyTimes=-1, encrypted = "-1"):
         self.id = id
         self.name = name
         self.value = value
+        self.encrypted = encrypted
         #just used in workcharges
         self.wchargeId = wchargeid
+        self.encrypted = encrypted
         self.howManyTimes = howManyTimes
     def save(self, name, value,  howManyTimes=-1):
         try:
@@ -200,11 +202,12 @@ class charges:
             return -1
         
 class Credit:
-    def __init__(self, id, name,  value,  date, payed, active,  company):
+    def __init__(self, id, name,  value,  date, payed, active,  company, encrypted):
         self.id = id
         self.name = name
         self.value = value
         self.date = QtCore.QDate.fromString(date, dbDateFormat)
+        self.encrypted = encrypted
         if active == 1:
             self.active = True
         else: 
@@ -253,22 +256,22 @@ class Company:
         self.loanSplits = []
         c.execute("SELECT * FROM loanSplit WHERE companyid = ?", (str(self.id), ))
         for row in c.fetchall():
-            self.loanSplits.append(loanSplit(row[0], row[1],row[2],row[3]))
+            self.loanSplits.append(loanSplit(row[0], row[1],row[2],row[3], row[4]))
     def updateCreditList(self):
         self.credits = []
         c.execute('select * from credit WHERE companyid = ?',  (str(self.id), ))
         for row in c.fetchall():
-            self.credits.append(Credit(row[0], row[1], row[2],  row[3],  row[4], row[5], row[6]))
+            self.credits.append(Credit(row[0], row[1], row[2],  row[3],  row[4], row[5], row[6], row[7]))
     def updateJobList(self):
         self.jobs = []
         c.execute('select * from job WHERE companyid = ? ORDER BY startdate',  (str(self.id), ))
         for row in c.fetchall():
-            self.jobs.append(Job(row[0], row[1], row[2], row[3], row[4],  row[5],  row[6],  row[7],  row[8],row[9], row[10],  row[11] , row[12]))
+            self.jobs.append(Job(row[0], row[1], row[2], row[3], row[4],  row[5],  row[6],  row[7],  row[8],row[9], row[10],  row[11] , row[12], row[13]))
     def updatechargesList(self):
         self.charges = []
         c.execute('select * from charges WHERE companyid = ?',  (str(self.id), ))
         for row in c.fetchall():
-            self.charges.append(charges(row[0], row[1], row[2]))
+            self.charges.append(charges(row[0], row[1], row[2], row[3]))
     def createJob(self,  name, place, comment,  hours, correctionHours,  weekendDays,  startdate,  enddate,  leader,  active):
         # (self,  id,  name,  place,  comment,  hours, correctionHours,   startdate,  enddate,  baustellenleiter,  active, companyid):
         try:
@@ -341,7 +344,7 @@ class Company:
             
 
 class Job:
-    def __init__(self,  id,  name,  place,  comment,  hours, correctionHours, weekendDays,  startdate,  enddate,  leader,  active, archived,  companyid):
+    def __init__(self,  id,  name,  place,  comment,  hours, correctionHours, weekendDays,  startdate,  enddate,  leader,  active, archived,  companyid, encrypted):
         self.id = id
         self.name = name
         self.place = place
@@ -354,6 +357,7 @@ class Job:
         self.leader = leader
         self.active = active
         self.archived = False
+        self.encrypted=encrypted
         if archived == 1:
             self.archived = True
         self.companyid = companyid

@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'gui.ui'
 #
-# Created: Thu Jun 27 22:43:20 2013
-#      by: PyQt4 UI code generator 4.10.1
+# Created: Sat Jun 29 18:38:48 2013
+#      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -531,7 +531,7 @@ class Ui_MainWindow(object):
         self.graphView.setGeometry(QtCore.QRect(0, 0, 451, 150))
         self.graphView.setObjectName(_fromUtf8("graphView"))
         self.horizontalLayoutWidget = QtGui.QWidget(self.tab_4)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(440, 450, 261, 80))
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(570, 450, 261, 80))
         self.horizontalLayoutWidget.setObjectName(_fromUtf8("horizontalLayoutWidget"))
         self.horizontalLayout = QtGui.QHBoxLayout(self.horizontalLayoutWidget)
         self.horizontalLayout.setMargin(0)
@@ -543,7 +543,7 @@ class Ui_MainWindow(object):
         self.amount.setObjectName(_fromUtf8("amount"))
         self.horizontalLayout.addWidget(self.amount)
         self.infoExelCredits = QtGui.QTextEdit(self.tab_4)
-        self.infoExelCredits.setGeometry(QtCore.QRect(70, 440, 281, 111))
+        self.infoExelCredits.setGeometry(QtCore.QRect(0, 440, 501, 111))
         self.infoExelCredits.setReadOnly(True)
         self.infoExelCredits.setObjectName(_fromUtf8("infoExelCredits"))
         self.viewTabs.addTab(self.tab_4, _fromUtf8(""))
@@ -741,10 +741,10 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.mainTab.setCurrentIndex(2)
+        self.mainTab.setCurrentIndex(1)
         self.tabWidget.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(2)
-        self.viewTabs.setCurrentIndex(1)
+        self.viewTabs.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

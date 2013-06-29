@@ -16,17 +16,19 @@ class sdt:
         alertBox.exec()
     
     @staticmethod
-    def calcDaySpace(startdate,  enddate,  wc,  weekendDays):
+    def calcDaySpace(startdate,  enddate,  wc,  weekendDays, noCalendar = False):
         if startdate.daysTo(enddate) == 0:
             daySpace = 1
-        elif startdate.month() != enddate.month():
+        elif startdate.month() != enddate.month() and noCalendar==False:
             allDays = startdate.daysTo(enddate)
             if startdate.month() == wc.month():
                 daySpace = allDays - enddate.day()+1
             else:
                 daySpace = allDays - (startdate.daysInMonth() - startdate.day())
-        else:
+        elif noCalendar:
                 daySpace = startdate.daysTo(enddate) + 1
+        else:
+            daySpace = startdate.daysTo(enddate) + 1
         weekendPart = int(daySpace / 7) * weekendDays
         daySpace = daySpace - weekendPart
         return (daySpace,  weekendPart)
@@ -34,7 +36,11 @@ class sdt:
     def createJobRow(ui,  job, company, workCalendar,  rowNr, sum):
         colNr = 0
         if not singleView:
-            daySpace,  weekendPart = sdt.calcDaySpace(job.startdate,  job.enddate, workCalendar,  job.weekendDays)
+            if ui.filterAll.isChecked() and ui.filterCalendar .isChecked():
+                daySpace,  weekendPart = sdt.calcDaySpace(job.startdate,  job.enddate, workCalendar,  job.weekendDays)
+            else:
+                daySpace,  weekendPart = sdt.calcDaySpace(job.startdate,  job.enddate, workCalendar,  job.weekendDays, noCalendar=True)
+            
         else:
             daySpace,  weekendPart = (workCalendar.daysInMonth() - (job.weekendDays * 4), job.weekendDays)
         #minSpace = daySpace * job.hours * 60
@@ -55,8 +61,8 @@ class sdt:
         colNr = colNr + 1
         ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(loanSum) + ".- ("+sdt.rounder(realHourLoan)+"/std)" ))
         colNr = colNr + 1
-        w = QtGui.QTableWidgetItem(sdt.rounder(daySpace * job.hours) +" Std")
-        w.setToolTip(tr("From ")+job.startdate.toString(dbDateFormat)+" to "+job.enddate.toString(dbDateFormat)+ " AND <br />"+sdt.rounder(daySpace)+ "d (*"+str(job.hours)+"h)+"+str(weekendPart)+" Weekenddays")
+        w = QtGui.QTableWidgetItem(sdt.rounder((daySpace * job.hours)+job.correctionHours) +" Std")
+        w.setToolTip(tr("From")+" "+job.startdate.toString(dbDateFormat)+" to "+job.enddate.toString(dbDateFormat)+ "<hr />"+sdt.rounder(daySpace)+ "d (*"+str(job.hours)+"h)+"+str(job.correctionHours)+"correctionH. "+str(weekendPart)+"d was Weekenddays")
         ui.infoExel.setItem(rowNr,  colNr,   w)
         colNr = colNr + 1
         ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(chargeSum)+".- " ))
@@ -79,7 +85,10 @@ class sdt:
         r, g, b=(233, 36, 99)
         pen.setCapStyle(QtCore.Qt.RoundCap)
         pen.setWidth(4)
-        widthPerHour = 1.15
+        if ui.filterAll.isChecked() and ui.filterCalendar.isChecked():
+            widthPerHour = 2.8
+        else:
+            widthPerHour = 2.0
         scene = QtGui.QGraphicsScene()
         #lastLine = 0
         oldDaySpace = 0.00
@@ -91,7 +100,7 @@ class sdt:
                     daySpace,  weekendPart = sdt.calcDaySpace(job.startdate, job.enddate, workCalendar,  job.weekendDays)
                     loanSum,  loanSplitSum, realHourLoan,  realHourSplitSum,  chargeSum = maths.calcJobSum(company,  job,  workCalendar)
                     daySpace = ((daySpace * job.hours) + job.correctionHours )
-                    daySpace = (daySpace + oldDaySpace) 
+                    daySpace = (daySpace + oldDaySpace) / 2
                     value = ((company.loan/10)*daySpace)
                     allValue += value
                     #print(job.name+"="+str(value)+":"+str(daySpace))
@@ -181,12 +190,12 @@ class sdt:
         intNr = int(nr)
         afterComma = nr - intNr
         stringComma = str(afterComma)
-        if len(stringComma) > 6:
+        if len(stringComma) >= 5:
             stringComma = str(abs(float(stringComma)))
             if int(stringComma[4:5]) > 5:
-                correctAfterComma = int(stringComma[2:4]) + 1
+                correctAfterComma = int(stringComma[2:3]) + 1
             else:
-                correctAfterComma = int(stringComma[2:4]) 
+                correctAfterComma = int(stringComma[2:3]) 
             floatString = str(intNr)+"."+str(correctAfterComma)
             return floatString
         else:
@@ -211,7 +220,7 @@ class maths:
     @staticmethod
     def calcJobSum(company,  job, workCalendar):
         daySpace,  weekendPart = sdt.calcDaySpace(job.startdate, job.enddate, workCalendar,  job.weekendDays)
-        hrSpace = daySpace * job.hours
+        hrSpace = daySpace * job.hours + job.correctionHours
         chargeSum = 0
         for charge in job.wcharges:
             if charge.howManyTimes == 0:

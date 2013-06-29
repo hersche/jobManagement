@@ -45,7 +45,7 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Personal finances&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="data">
      <property name="sizePolicy">
@@ -1048,7 +1048,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_4">
        <attribute name="title">
@@ -1238,7 +1238,7 @@
        <widget class="QWidget" name="horizontalLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>440</x>
+          <x>570</x>
           <y>450</y>
           <width>261</width>
           <height>80</height>
@@ -1260,9 +1260,9 @@
        <widget class="QTextEdit" name="infoExelCredits">
         <property name="geometry">
          <rect>
-          <x>70</x>
+          <x>0</x>
           <y>440</y>
-          <width>281</width>
+          <width>501</width>
           <height>111</height>
          </rect>
         </property>

@@ -18,7 +18,7 @@ class Gui(QtGui.QMainWindow):
         else:
             self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        if encrypted != "-1" or encrypted != "":
+        if encrypted != "-1" and encrypted != "":
             pw, okCancel = QtGui.QInputDialog.getText(self,  "Passwort eingeben", "Pw igääää")
             if okCancel:
                 eo = cm(pw, enc)
@@ -775,16 +775,18 @@ class Gui(QtGui.QMainWindow):
 
     def createCreditTextBox(self, company, wc, sum):
         creditString =""
+        fCreditString = ""
         creditSum = 0
         #change to check credit-list-size
         for credit in company.credits:
             if (self.ui.filterCalendar.isChecked() and credit.date.month() == wc.month() and credit.date.year() == wc.year()) or self.ui.filterCalendar.isChecked() == False:
                 creditSum += credit.value
-                creditString += "-"+credit.name+"/"+credit.date.toString(dbDateFormat)+": "+str(credit.value)+"<br />"
-        if creditSum > 0:
-            creditString += "------------<br />"+tr("Creditsum")+ "4 :"+company.name+str(creditSum)+"<br />"
-
-        return (creditString,  creditSum)
+                creditString += "<li><pre>"+credit.name+" @"+credit.date.toString(dbDateFormat)+":      "+str(credit.value)+"</pre><li/>"
+        if len(company.credits) > 0 and creditSum > 0:
+            fCreditString = "<ul>"
+            creditString += "</ul>"+company.name+": "+str(creditSum)+"<br />"
+            fCreditString += creditString
+        return (fCreditString,  creditSum)
 
     def updateCompanyViewList(self):
         if singleView == False:

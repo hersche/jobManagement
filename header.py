@@ -9,8 +9,7 @@ singleView = False
 singleViewId = -1
 singleViewName = ""
 encrypted = "-1"
-iv = 0
-pw = ""
+eo = None
 mightyController = Controller();
 for config in mightyController.configlist:
     if (config.key.lower() == "single" or config.key.lower() == "singleview") and (config.value.lower() == "true" or config.value.lower() == "1"):
@@ -32,9 +31,6 @@ for config in mightyController.configlist:
                 encrypted = DES3
             else:
                 encrypted = "-1"
-            if encrypted != "-1":
-                iv = rand.new().read(enc.block_size)
-                print("iv-length: "+str(len(iv)))
         except  Exception as e:
             print(tr("Couldn't import pyCrypto, use plaintext Message; "))
             print(e)

@@ -1,5 +1,6 @@
 from staticTools import *
-
+import base64
+from cryptClass import *
 #the whole gui...
 class Gui(QtGui.QMainWindow):
     """
@@ -17,24 +18,13 @@ class Gui(QtGui.QMainWindow):
         else:
             self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        if encrypted != "-1":
-            pw, okCancel = QtGui.QInputDialog.getText(self,  "Passwort eingeben", "hophop")
-            cipher = Blowfish.new("testestest", enc.MODE_CFB, iv)
-            tmpStr=""
-            le = len(pw)
-            if  le > 8:
-                rest = 8-(le% 8)
-                
-                print("len "+str(len(pw))+" rest: "+str(rest))
-                
-                while rest != 0:
-                    tmpStr += "."
-                    rest -= 1
-            
-            t = cipher.encrypt(pw+tmpStr)
-            print("clearText: "+pw+tmpStr)
-            print("Crypted: "+str(t))
-            print ("Decrypted: "+str(cipher.decrypt(t)))
+        if encrypted != "-1" or encrypted != "":
+            pw, okCancel = QtGui.QInputDialog.getText(self,  "Passwort eingeben", "Pw igääää")
+            if okCancel:
+                eo = cm(pw, enc)
+                ec = eo.encrypt("hallo Welt und so weiter und so fooooort..")
+                print(ec)
+                print(eo.decrypt(ec))
         if singleView:
             #init self.currentCompany
             self.onCompanyItemClick("singleView")

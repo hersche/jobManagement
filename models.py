@@ -190,7 +190,7 @@ class loanSplit:
             return -1
 #sid  INTEGER PRIMARY KEY, name text, value text, companyid text, encrypted text)")
 class charges:
-    def __init__(self, id,  name,  value, wchargeid, howManyTimes, encrypted, eo):
+    def __init__(self, id,  name,  value, wchargeid=-1, howManyTimes=-1, encrypted="", eo=None):
         self.id = id
         self.name = name
         self.value = float(value)
@@ -243,13 +243,13 @@ class Credit:
         if active:
             tmpActive="1"
         try:
-            if self.mc.eo != None:
+            if self.eo != None:
                 c.execute("UPDATE credit SET name=?,value=?, date=?, payed=?,active=? WHERE crid=?",  (self.eo.encrypt(name, self.eo.encrypt(value), self.eo.encrypt(date), self.eo.encrypt(tmpPayed), self.eo.encrypt(tmpActive), str(self.id))))
             else:
                 c.execute("UPDATE credit SET name=?,value=?, date=?, payed=?,active=? WHERE crid=?",  (name, value, date, tmpPayed, tmpActive, str(self.id)))
             db.commit()
         except sqlite3.Error as e:
-            print("An DB-error occurred:", e.args[0])
+            print("credit save An DB-error occurred:", e.args[0])
             return -1
     def delete(self):
         try:
@@ -278,20 +278,33 @@ class Company:
 
     def updateLoanSplitList(self):
         self.loanSplits = []
-        c.execute("SELECT * FROM loanSplit WHERE companyid = ?", (str(self.id), ))
-        for row in c.fetchall():
-            if self.eo != None:
-                self.loanSplits.append(loanSplit(row[0], self.eo.decrypt(row[1]),self.eo.decrypt(row[2]),self.eo.decrypt(row[3]), row[4], self.eo))
-            else:
-                self.loanSplits.append(loanSplit(row[0], row[1],row[2],row[3], row[4], mightyController))
+        if self.eo != None:
+            sString = "select * from loanSplit WHERE lsid = ?"
+            c.execute('select lsid, companyid from loanSplit')
+            for r in c.fetchall():
+                if self.eo.decrypt(r[1]) == str(self.id):
+                    c.execute(sString,  (str(r[0]), ))
+                    for row in c.fetchall():
+                        self.loanSplits.append(loanSplit(row[0], self.eo.decrypt(row[1]),self.eo.decrypt(row[2]),self.eo.decrypt(row[3]), row[4], self.eo))
+        else:
+            for row in c.fetchall():
+                c.execute("SELECT * FROM loanSplit WHERE companyid = ?", (str(self.id), ))
+                self.loanSplits.append(loanSplit(row[0], row[1],row[2],row[3], row[4], self.eo))
     def updateCreditList(self):
         self.credits = []
-        c.execute('select * from credit WHERE companyid = ?',  (str(self.id), ))
-        for row in c.fetchall():
-            if self.eo != None:
-                self.credits.append(Credit(row[0], self.eo.decrypt(row[1]), self.eo.decrypt(row[2]),  self.eo.decrypt(row[3]),  self.eo.decrypt(row[4]), self.eo.decrypt(row[5]), self.eo.decrypt(row[6]), row[7],self.eo))
-            else:
-                self.credits.append(Credit(row[0], row[1], row[2],  row[3],  row[4], row[5], row[6], row[7], mightyController))
+        if self.eo != None:
+            sString = "select * from credit WHERE crid=?"
+            c.execute('select crid, companyid from credit')
+            for r in c.fetchall():
+                if self.eo.decrypt(r[1]) == str(self.id):
+                    print(str(r[0]))
+                    c.execute(sString,  (str(r[0]), ))
+                    for row in c.fetchall():
+                        self.credits.append(Credit(row[0], self.eo.decrypt(row[1]), self.eo.decrypt(row[2]),  self.eo.decrypt(row[3]),  self.eo.decrypt(row[4]), self.eo.decrypt(row[5]), self.eo.decrypt(row[6]), row[7],self.eo))
+        else:
+            c.execute('select * from credit WHERE companyid = ?',  (str(self.id), ))
+            for row in c.fetchall():
+                self.credits.append(Credit(row[0], row[1], row[2],  row[3],  row[4], row[5], row[6], row[7], self.eo))
     def updateJobList(self):
         self.jobs = []
         if self.eo is None:
@@ -299,26 +312,27 @@ class Company:
             for row in c.fetchall():
                 self.jobs.append(Job(row[0], row[1], row[2], row[3], row[4],  row[5],  row[6],  row[7],  row[8],row[9], row[10],  row[11] , row[12], row[13], self.eo))
         else:
-            idList = []
             sString = "select * from job WHERE jid = ?;"
             c.execute('select jid, companyid from job;')
             for r in c.fetchall():
-                print(self.eo.decrypt(r[1])+" vs "+str(self.id))
-                
                 if self.eo.decrypt(r[1]) == str(self.id):
-                    print("match!!")
-                    idList.append(r[0])
                     c.execute(sString,  (str(r[0]), ))
                     for row in c.fetchall():
                         self.jobs.append(Job(row[0], self.eo.decrypt(row[1]), self.eo.decrypt(row[2]), self.eo.decrypt(row[3]), self.eo.decrypt(row[4]),self.eo.decrypt(row[5]),  self.eo.decrypt(row[6]),self.eo.decrypt(row[7]), self.eo.decrypt(row[8]),self.eo.decrypt(row[9]),self.eo.decrypt(row[10]), self.eo.decrypt(row[11]),self.eo.decrypt(row[12]), row[13], self.eo))
     def updatechargesList(self):
         self.charges = []
-        c.execute('select * from charges WHERE companyid = ?',  (str(self.id), ))
-        for row in c.fetchall():
-            if self.eo!= None:
-                self.charges.append(charges(row[0], self.eo.decrypt(row[1]), self.eo.decrypt(row[2]), row[3], self.eo))
-            else:
-                #self, id,  name,  value, wchargeid, howManyTimes, encrypted, eo)
+        if self.eo!= None:
+            sString = "select * from charges WHERE sid = ?;"
+            c.execute('select sid, companyid from charges;')
+            for r in c.fetchall():
+                if self.eo.decrypt(r[1]) == str(self.id):
+                    c.execute(sString,  (str(r[0]), ))
+                    for row in c.fetchall():
+                        self.charges.append(charges(row[0], self.eo.decrypt(row[1]), self.eo.decrypt(row[2]), encrypted=row[3], eo=self.eo))
+        else:
+            #self, id,  name,  value, wchargeid, howManyTimes, encrypted, eo)
+            c.execute('select * from charges WHERE companyid = ?',  (str(self.id), ))
+            for row in c.fetchall():
                 self.charges.append(charges(row[0], row[1], row[2], -1,-1,encrypted,  self.eo))
     def createJob(self,  name, place, comment,  hours, correctionHours,  weekendDays,  startdate,  enddate,  leader,  active):
         # (self,  id,  name,  place,  comment,  hours, correctionHours,   startdate,  enddate,  baustellenleiter,  active, companyid):
@@ -341,14 +355,14 @@ class Company:
         try:
             if companyid != -10:
                 if self.eo != None:
-                    c.execute("INSERT INTO charges (name, value, companyid) VALUES (?,?,?)",  ( self.eo.encrypt(name), self.eo.encrypt(value),  self.eo.encrypt(companyid)))
+                    c.execute("INSERT INTO charges (name, value, companyid, encrypted) VALUES (?,?,?,?)",  ( self.eo.encrypt(name), self.eo.encrypt(value),  self.eo.encrypt(companyid), encrypted))
                 else:
-                    c.execute("INSERT INTO charges (name, value, companyid) VALUES (?,?,?)",  ( name, value,  companyid))
+                    c.execute("INSERT INTO charges (name, value, companyid, encrypted) VALUES (?,?,?,?)",  ( name, value,  companyid, encrypted))
             else:
                 if self.eo != None:
-                    c.execute("INSERT INTO charges (name, value, companyid) VALUES (?,?,?)",  ( self.eo.encrypt(name), self.eo.encrypt(value),  self.eo.encrypt(self.id)))
+                    c.execute("INSERT INTO charges (name, value, companyid, encrypted) VALUES (?,?,?,?)",  ( self.eo.encrypt(name), self.eo.encrypt(value),  self.eo.encrypt(self.id), encrypted))
                 else:
-                    c.execute("INSERT INTO charges (name, value, companyid) VALUES (?,?,?)",  ( name, value,  self.id))
+                    c.execute("INSERT INTO charges (name, value, companyid, encrypted) VALUES (?,?,?,?)",  ( name, value,  self.id, encrypted))
             db.commit()
             self.updatechargesList()
         except sqlite3.Error as e:
@@ -362,9 +376,9 @@ class Company:
             tmpMoney = 0
         try:
             if self.eo != None:
-                c.execute("INSERT INTO loanSplit (name, value, money, companyid) VALUES (?,?,?,?)",  ( name, value, tmpMoney,  self.id))
+                c.execute("INSERT INTO loanSplit (name, value, money, companyid, encrypted) VALUES (?,?,?,?,?)",  ( self.eo.encrypt(name), self.eo.encrypt(value), self.eo.encrypt(tmpMoney),  self.eo.encrypt(self.id), encrypted))
             else:
-                c.execute("INSERT INTO loanSplit (name, value, money, companyid) VALUES (?,?,?,?)",  ( name, value, tmpMoney,  self.id))
+                c.execute("INSERT INTO loanSplit (name, value, money, companyid, encrypted) VALUES (?,?,?,?,?)",  ( name, value, tmpMoney,  self.id, encrypted))
             db.commit()
         except sqlite3.Error as e:
             print("An DB-error occurred:", e.args[0])
@@ -382,17 +396,17 @@ class Company:
         try:
             if companyid != -10:
                 if self.eo != None:
-                    c.execute("INSERT INTO credit (name, value, date, payed,active, companyid,encrypted=?) VALUES (?,?,?,?,?,?)",  ( self.eo.encrypt(name),  self.eo.encrypt(value), self.eo.encrypt(date), self.eo.encrypt(tmpPayed),self.eo.encrypt(tmpActive),  self.eo.encrypt(companyid), encrypted))
+                    c.execute("INSERT INTO credit (name, value, date, payed,active, companyid,encrypted) VALUES (?,?,?,?,?,?,?)",  ( self.eo.encrypt(name),  self.eo.encrypt(value), self.eo.encrypt(date), self.eo.encrypt(tmpPayed),self.eo.encrypt(tmpActive),  self.eo.encrypt(companyid), encrypted))
                 else:
-                    c.execute("INSERT INTO credit (name, value, date, payed,active, companyid, encrypted=?) VALUES (?,?,?,?,?,?)",  ( name,  value, date, tmpPayed,tmpActive,  companyid, encrypted))
+                    c.execute("INSERT INTO credit (name, value, date, payed,active, companyid, encrypted) VALUES (?,?,?,?,?,?,?)",  ( name,  value, date, tmpPayed,tmpActive,  companyid, encrypted))
             else:
                 if self.eo != None:
-                    c.execute("INSERT INTO credit (name, value, date, payed,active, companyid,encrypted=?) VALUES (?,?,?,?,?,?)",  ( self.eo.encrypt(name),  self.eo.encrypt(value), self.eo.encrypt(date), self.eo.encrypt(tmpPayed),self.eo.encrypt(tmpActive),  self.eo.encrypt(self.id), encrypted))
+                    c.execute("INSERT INTO credit (name, value, date, payed,active, companyid,encrypted) VALUES (?,?,?,?,?,?,?)",  ( self.eo.encrypt(name),  self.eo.encrypt(value), self.eo.encrypt(date), self.eo.encrypt(tmpPayed),self.eo.encrypt(tmpActive),  self.eo.encrypt(self.id), encrypted))
                 else:
-                    c.execute("INSERT INTO credit (name, value, date, payed,active, companyid, encrypted=?) VALUES (?,?,?,?,?,?)",  ( name,  value, date, tmpPayed,tmpActive,  self.id, encrypted))
+                    c.execute("INSERT INTO credit (name, value, date, payed,active, companyid, encrypted) VALUES (?,?,?,?,?,?,?)",  ( name,  value, date, tmpPayed,tmpActive,  self.id, encrypted))
             db.commit()
         except sqlite3.Error as e:
-            print("An DB-error occurred:", e.args[0])
+            print("create credit An DB-error occurred:", e.args[0])
             return -1
     
     def save(self, name,  loan,  perHours, describtion):
@@ -437,19 +451,24 @@ class Job:
         self.updateWchargesList()
     def updateWchargesList(self):
         self.wcharges = []
-        c.execute('select * from wcharges WHERE jobid = ?',  (str(self.id), ))
-        for co in c.fetchall():
-            c.execute('select * from charges WHERE sid = ?',  (str(co[2])))
-            for row in c.fetchall():
-                if self.eo != None:
-                    self.wcharges.append(charges(row[0], row[1], row[2], co[0], co[3]))
-                else:
+        if self.eo != None:
+            c.execute('select * from wcharges')
+            for tmp1 in c.fetchall():
+                if self.eo.decrypt(tmp1[1]) == str(self.id):
+                    c.execute('select * from charges where sid=?', (self.eo.decrypt(tmp1[2]),  ))
+                    for tmp2 in c.fetchall():
+                        self.wcharges.append(charges(tmp2[0], self.eo.decrypt(tmp2[1]), self.eo.decrypt(tmp2[2]), tmp1[0], self.eo.decrypt(tmp1[3])))
+        else:
+            c.execute('select * from wcharges WHERE jobid = ?',  (str(self.id), ))
+            for co in c.fetchall():
+                c.execute('select * from charges WHERE sid = ?',  (str(co[2])))
+                for row in c.fetchall():
                     self.wcharges.append(charges(row[0], row[1], row[2], co[0], co[3]))
     def addSpese(self,  chargesid, howManyTimes):
         if self.eo != None:
-            c.execute("INSERT INTO wcharges (jobid, chargesid, howManyTimes) VALUES (?,?,?)",  ( self.id, chargesid, howManyTimes))
+            c.execute("INSERT INTO wcharges (jobid, chargesid, howManyTimes,encrypted) VALUES (?,?,?,?)",  ( self.eo.encrypt(self.id), self.eo.encrypt(chargesid), self.eo.encrypt(howManyTimes), encrypted))
         else:
-            c.execute("INSERT INTO wcharges (jobid, chargesid, howManyTimes) VALUES (?,?,?)",  ( self.id, chargesid, howManyTimes))
+            c.execute("INSERT INTO wcharges (jobid, chargesid, howManyTimes,encrypted) VALUES (?,?,?,?)",  ( self.id, chargesid, howManyTimes, encrypted))
         db.commit()
     def removeSpese(self, name,  company):
         for wcharge in self.wcharges:

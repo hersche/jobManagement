@@ -4,8 +4,7 @@
 * Livesearch [done]
 * Blend out savebutton sometimes.. [Did alertboxes instead]
 * Diagramms [first tries.. width: time, height: money]
-* May use credits (i buyed something = -) / charges (someone used money of me or sim = +)  (-1 as company et voilà) 
-to make a personal finance-management
+* Personal Finances integrated
 * Comment to credits..
 * Create static + / - values for specific times in a range OR make that timespace in charges and may loanSplit 
 possible
@@ -18,7 +17,7 @@ Later:
 ------
 * Import/Export as Openoffice-Sheet, pdf, whatever
 * Saves in the Table too (where possible, so not calculated)
-* Sync? (owncloud)
+* Sync? (owncloud,android??)
 * Sheduler? (regular outgoings, etc)
 
 

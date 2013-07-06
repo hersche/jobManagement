@@ -1,5 +1,4 @@
 from staticTools import *
-import base64
 from cryptClass import *
 #the whole gui...
 class Gui(QtGui.QMainWindow):
@@ -20,14 +19,12 @@ class Gui(QtGui.QMainWindow):
         self.ui.setupUi(self)
         if encrypted != "-1" and encrypted != "":
             pw, okCancel = QtGui.QInputDialog.getText(self,  "Passwort eingeben", "Pw igääää")
-            if okCancel:
-                eo = cm(pw, enc)
-                ec = eo.encrypt("hallo Welt und so weiter und so fooooort..")
-                print(ec)
-                print(eo.decrypt(ec))
+            mightyController.eo = cm(pw, enc)
         if singleView:
             #init self.currentCompany
             self.onCompanyItemClick("singleView")
+        mightyController.updateList()
+        mightyController.updatePersonalFinancesList()
         cd = QtCore.QDate.currentDate()
         if singleView == False:
             self.ui.startdate.setDate(cd)
@@ -801,15 +798,3 @@ class Gui(QtGui.QMainWindow):
             for company in mightyController.companylist:
                 if self.ui.companyViewList.currentText() == company.name:
                     self.ui.companyViewText.setText(sdt.createDetailText(company,workCalendar, self.ui.companyViewCalendarFilter.isChecked()))
-#class mathBrain:
-#    def __init__(self, companyList):
-#        self.hours = 0
-#        self.days = 0
-#        self.loan = 0
-#        for company in companyList:
-#            for job in company.jobs:
-#                self.days = sdt.calcDaySpace(job.startdate,  job.enddate,  cm,  weekendDays)
-#            
-#            
-#    def calcDays(self):
-#        self.days = sdt.calcDaySpace(startdate,  enddate,  cm,  weekendDays)

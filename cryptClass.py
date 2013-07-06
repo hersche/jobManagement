@@ -2,8 +2,8 @@ from header import *
 import base64
 #'cryptoclass - cm = cryptoMeta'
 class cm:
-    def __init__(self,  key, pyCryptoModule):
-        
+    def __init__(self,   key, pyCryptoModule):
+        self.name = ""
         self.key = key
         if len(key) < pyCryptoModule.block_size:
             rest = pyCryptoModule.block_size - len(key)
@@ -20,7 +20,9 @@ class cm:
     def unpad(self, s):
         upad = lambda s : s[0:-ord(s[-1])]
         return upad
-    def encrypt(self, message):
+    def encrypt(self, rawMessage):
+        print("encrypt")
+        message=str(rawMessage)
         iv = rand.new().read(self.mod.block_size)
         cipher = self.mod.new(self.key, self.mod.MODE_CBC, iv)
         mLen = len(message)
@@ -37,9 +39,17 @@ class cm:
         t =  base64.b64encode(iv + cipher.encrypt(eMessage))
         return t
     def decrypt(self, encryptedMessage):
+        print("decrypt "+str(encryptedMessage))
+        if encryptedMessage is None:
+            return ""
         tDec = base64.b64decode(encryptedMessage)
         iv = tDec[:self.mod.block_size]
         cipher = self.mod.new(self.key, enc.MODE_CBC, iv)
         clearText = str(cipher.decrypt(tDec[self.mod.block_size:]))
-        return clearText[2:-1]
-    
+        clearText = clearText[2:-1]
+        return clearText.rstrip()
+class scm:
+    @staticmethod
+    def updateAll(oldMod, newMod, controller):
+        for companys in controller.companys:
+            print("static updatemethod")

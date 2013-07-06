@@ -1,20 +1,11 @@
 from header import *
 #semantic designer tools
 class sdt:
-
-    @staticmethod
-    def tB(text):
-        alertBox = QtGui.QInputDialog.getText(ui,  text, text)
-#        alertBox.setInputMode(QtGui.QInputDialog.TextInput)
-#        alertBox.setText(text)
-#        alertBox.exec()
-
     @staticmethod
     def aB(text):
         alertBox = QtGui.QMessageBox()
         alertBox.setText(text)
         alertBox.exec()
-    
     @staticmethod
     def calcDaySpace(startdate,  enddate,  wc,  weekendDays, noCalendar = False):
         if startdate.daysTo(enddate) == 0:

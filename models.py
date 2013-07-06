@@ -480,7 +480,7 @@ class Job:
                 tmpActive = 1
             try:
                 if self.eo != None:
-                    c.execute("UPDATE job SET name=?, place=?, comment=?, hours=?, correctionHours=?, weekendDays=?, startdate=?, enddate=?, leader=?, active=?, companyid=? WHERE jid=?",  (name, place,  comment, hours, correctionHours, weekendDays,  startdate, enddate, leader, tmpActive, companyid, self.id))
+                    c.execute("UPDATE job SET name=?, place=?, comment=?, hours=?, correctionHours=?, weekendDays=?, startdate=?, enddate=?, leader=?, active=?, companyid=? WHERE jid=?",  (self.eo.encrypt(name), self.eo.encrypt(place),  self.eo.encrypt(comment), self.eo.encrypt(hours), self.eo.encrypt(correctionHours), self.eo.encrypt(weekendDays),  self.eo.encrypt(startdate), self.eo.encrypt(enddate), self.eo.encrypt(leader), self.eo.encrypt(tmpActive), self.eo.encrypt(companyid), self.id))
                 else:
                     c.execute("UPDATE job SET name=?, place=?, comment=?, hours=?, correctionHours=?, weekendDays=?, startdate=?, enddate=?, leader=?, active=?, companyid=? WHERE jid=?",  (name, place,  comment, hours, correctionHours, weekendDays,  startdate, enddate, leader, tmpActive, companyid, self.id))
                 db.commit()

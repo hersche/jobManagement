@@ -1,5 +1,9 @@
 from staticTools import *
+from models import *
 from cryptClass import *
+singleView = False
+singleViewId = -1
+mightyController = Controller()
 #the whole gui...
 class Gui(QtGui.QMainWindow):
     """
@@ -10,16 +14,27 @@ class Gui(QtGui.QMainWindow):
         # INIT
         self.currentCompany = None
         self.showInactive = True
-        QtGui.QWidget.__init__(self, parent)
+        
+        if mightyController.encryption != "-1" and mightyController.encryption != "":
+            pw, okCancel = QtGui.QInputDialog.getText(
+                    None,
+                    tr("Password"),
+                    tr("Enter Password"),
+                    QtGui.QLineEdit.Password)
+            mightyController.eo = cm(pw, scm.getMod(mightyController.encryption))
+        if True is not mightyController.singleView :
+            from gui import Ui_MainWindow
 
-        if singleView:
+        QtGui.QWidget.__init__(self, parent)
+        
+        if mightyController.singleView :
             self.ui = Ui_MainWindowSingle()
         else:
             self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        if encrypted != "-1" and encrypted != "":
-            pw, okCancel = QtGui.QInputDialog.getText(self,  "Passwort eingeben", "Pw igääää")
-            mightyController.eo = cm(pw, enc)
+        self.updateCompanyList(selectFirst=True)
+            #pw, okCancel = QtGui.QInputDialog.getText(self,  tr("Enter Password"), tr("Enter PW"))
+            #mightyController.eo.key = mightyController.eo.setKey(pw)
         if singleView:
             #init self.currentCompany
             self.onCompanyItemClick("singleView")
@@ -102,11 +117,6 @@ class Gui(QtGui.QMainWindow):
         self.ui.pfCalendarEnabled.clicked.connect(self.updatePersonalFinanceText)
         self.ui.pfSearchEnabled.clicked.connect(self.updatePersonalFinanceText)
         self.ui.pfSearch.textChanged.connect(self.updatePersonalFinanceText)
-
-        #Credit-Actions
-        #self.ui.createPersonalCredit.clicked.connect(self.onCreatePersonalCredit)
-        #self.ui.savePersonalCredit.clicked.connect(self.onSavePersonalCredit)
-        #self.ui.deletePersonalCredit.clicked.connect(self.onDeletePersonalCredit)
         
         
         #--------------------------
@@ -130,10 +140,10 @@ class Gui(QtGui.QMainWindow):
     def tabUpdater(self,  index=0):
         try: 
             ci = self.ui.mainTab.currentIndex()
-            if ci == 0:
-                self.updateCompanyList(selectFirst=True)
+            #if ci == 0:
+                #self.updateCompanyList(selectFirst=True)
                 #self.updateJobList(selectFirst=True)
-            elif ci == 1:
+            if ci == 1:
                 vci = self.ui.viewTabs.currentIndex()
                 if vci == 0:
                     self.updateInfoExel()
@@ -161,7 +171,7 @@ class Gui(QtGui.QMainWindow):
                 self.ui.companyList.addItem(company.name)
                 print(company.name)
             if selectFirst:
-                self.ui.companyList.setCurrentRow(1)
+                self.ui.companyList.setCurrentRow(0)
                 self.onCompanyItemClick(self.ui.companyList.currentItem())
     def updateJobList(self, selectFirst=False,  name=""):
         self.ui.jobList.clear()
@@ -180,13 +190,6 @@ class Gui(QtGui.QMainWindow):
         if selectFirst:
             self.ui.chargesList.setCurrentRow(0)
             self.onSpeseItemClick(self.ui.chargesList.currentItem())
-    def updatePersonalChargesList(self,  selectFirst=False,  name=""):
-
-        for spese in mightyController.personalCharges:
-            self.ui.personalChargesList.addItem(spese.name)
-        if selectFirst:
-            self.ui.personalChargesList.setCurrentRow(0)
-            self.onPersonalChargeItemClick(self.ui.personalChargesList.currentItem())
     def updatePersonalFinancesList(self,  selectFirst=False,  name=""):
         self.ui.pfList.clear()
         self.updatePersonalFinanceText()
@@ -222,15 +225,6 @@ class Gui(QtGui.QMainWindow):
         if selectFirst:
             self.ui.creditList.setCurrentRow(0)
             self.onCreditItemClick(self.ui.creditList.currentItem())
-    def updatePersonalCreditList(self,  selectFirst=False, valueDate=""):
-        self.ui.personalCreditList.clear()
-        mightyController.updatePersonalCreditList()
-        for credit in mightyController.personalCredits:
-            #if valueDate is not "" and valueDate == str(credit.value) +" "+credit.date:
-            self.ui.personalCreditList.addItem(credit.name+" / "+str(credit.value) +".- "+credit.date.toString(dbDateFormat))
-        if selectFirst:
-            self.ui.personalCreditList.setCurrentRow(0)
-            self.onPersonalCreditItemClick(self.ui.personalCreditList.currentItem())
     def updateWorkchargesList(self,  selectFirst=False,  name=""):
         self.ui.workChargesList.clear()
         cs = self.ui.jobList.currentItem()
@@ -448,41 +442,6 @@ class Gui(QtGui.QMainWindow):
         else:
             self.updatechargesList(True)
     #-------------
-    # PersonalCharges-Actions
-    #--------------
-    def onCreatePersonalCharge(self):
-        self.currentCompany.createSpese(self.ui.personalChargesName.text(), self.ui.personalChargesValue.text(), -1)
-        # @TODO select the created!
-        self.updatePersonalChargesList(True)
-    def onSavePersonalCharge(self):
-        cr = self.ui.personalChargesList.currentRow()
-        cm = self.ui.personalChargesList.currentItem()
-        success = False
-        for spese in mightyController.personalCharges:
-            if cm is not None and spese.name == cm.text():
-                spese.save(self.ui.personalChargesName.text(), self.ui.personalChargesValue.text())
-                success = True
-                self.ui.status.setText(tr("PersonalCharge")+" "+self.ui.personalChargesName.text()+" "+tr("saved"))
-        self.updatePersonalChargesList(True)
-        self.ui.personalChargesList.setCurrentRow(cr)
-        if not success:
-            self.alertBox.setText(tr("PersonalCharge")+" "+tr("could not")+" be "+tr("saved"))
-            self.alertBox.exec()
-        self.ui.personalChargesList.setCurrentItem(cm)
-    def onDeletePersonalCharge(self):
-        cm = self.ui.personalChargesList.currentItem()
-        success = False
-        for spese in mightyController.personalCharges:
-            if cm is not None and spese.name == cm.text():
-                spese.delete()
-                success = True
-                self.ui.status.setText(tr("Charge")+" "+cm.text()+" "+tr("deleted"))
-        if not success:
-            self.alertBox.setText(tr("Charge")+" "+tr("could not")+" be "+tr("deleted"))
-            self.alertBox.exec()
-        else:
-            self.updatePersonalChargesList(True)
-    #-------------
     # loanSplit-Actions
     #--------------
     def onCreateLoanSplit(self):
@@ -527,6 +486,20 @@ class Gui(QtGui.QMainWindow):
         mightyController.createConfig(self.ui.configKey.text(), self.ui.configValue.text())
         # @TODO select the created!
         self.ui.status.setText(tr("Config")+" "+self.ui.configKey.text()+" "+tr("created"))
+        if self.ui.configKey.text() == "encrypted":
+            pw, okCancel = QtGui.QInputDialog.getText(self,  "Passwort eingeben", "Pw igääää")
+            if self.ui.configValue.text() == "1" or self.ui.configValue.text() == "AES":
+                from Crypto.Cipher import AES as enc
+                encrypted = "AES"
+            elif self.ui.configValue.text() == "2"  or self.ui.configValue.text() == "Blowfish":
+                from Crypto.Cipher import Blowfish as enc
+                encrypted = "ARC4"
+            elif self.ui.configValue.text() == "3"  or self.ui.configValue.text() == "DES3":
+                from Crypto.Cipher import DES3 as enc
+                encrypted = "DES3"
+            else:
+                encrypted = "-1"
+            scm.uodateAll(mightyController.eo, )
         self.updateConfigList(True)
     def onSaveConfig(self):
         cr = self.ui.configList.currentRow()
@@ -749,7 +722,6 @@ class Gui(QtGui.QMainWindow):
             company = self.currentCompany
             for job in company.jobs:
                 if cw.insertJobYesNo(self.ui, company, job, infoSearch, workCalendar):
-                    print("insert..")
                     sum += sdt.createJobRow(self.ui,  job, company, workCalendar, rowNr, sum) 
                     rowNr +=1
                     self.ui.infoExel.insertRow(rowNr)

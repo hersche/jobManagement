@@ -4,9 +4,11 @@
 
 from gui_class import *
 import sys
+singleView = False
+singleViewId = -1
 app = QtGui.QApplication(sys.argv)
 translator = QtCore.QTranslator()
-translator.load("lang/"+lang,"./")
+translator.load("./"+mightyController.lang,"./")
 app.installTranslator(translator)
 jobman = Gui()
 jobman.show()

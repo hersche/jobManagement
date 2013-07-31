@@ -1,8 +1,8 @@
 import os.path,  sqlite3
-from PyQt4 import QtCore
+from PyQt4 import QtCore,  QtGui
 from header import *
-from Crypto.Cipher import * 
-dbDateFormat = "dd.MM.yyyy"
+from cryptClass import *
+#from Crypto.Cipher import * 
 fileExist = True
 singleView = False
 encrypted = ""
@@ -32,7 +32,12 @@ if fileExist == False:
 class Controller:
         def __init__(self):
             self.eo = None
-            print(self.eo)
+            self.encryption = ""
+            self.lang = ""
+            self.singleView = False
+            self.singleViewId = -1
+            self.updateConfigList()
+
         def createCompany(self, name,  loan,  perHours,  describtion):
             try:
                 if self.eo != None:
@@ -90,6 +95,23 @@ class Controller:
             c.execute('select * from config;') 
             for row in c.fetchall():
                 self.configlist.append(Config(row[0], row[1], row[2]))
+            for config in self.configlist:
+                if (config.key.lower() == "single" or config.key.lower() == "singleview") and (config.value.lower() == "true" or config.value.lower() == "1"):
+                    self.singleView = True
+                    from gui_single import Ui_MainWindowSingle
+                #elif config.key.lower()== "singleviewcname":
+                    #singleViewName = config.value
+                elif config.key.lower()== "encrypted":
+                    
+                    self.encryption = config.value
+                    
+                elif config.key.lower()== "singleviewcid":
+                    singleViewId = config.value
+                elif config.key == "lang" or config.key == "language":
+                    if os.path.isfile(config.value):
+                        self.lang=config.value
+                    elif os.path.isfile(config.value+".qm"):
+                        self.lang=config.value+".qm"
         def getCompanyById(self, id):
             for company in self.companylist:
                 if company.id == id:
@@ -118,12 +140,12 @@ class personalFinance:
         self.active = tmpActive
         self.encrypted = encrypted
         self.eo = eo
-    def save(self, name, value, date, repeat, timesRepeat, plusMinus, active, encrypted):
+    def save(self, name, value, date, repeat, timesRepeat, plusMinus, active):
         try:
             if self.eo != None:
-                c.execute("UPDATE personalFinance SET name=?,value=?,date=?,repeat=?,timesRepeat=?,plusMinus=?,active=?,encrypted=? WHERE pfid=?",  (self.eo.encrypt(name), self.eo.encrypt(value), self.eo.encrypt(date), self.eo.encrypt(repeat), self.eo.encrypt(timesRepeat), self.eo.encrypt(plusMinus), self.eo.encrypt(active), encrypted,self.id))
+                c.execute("UPDATE personalFinance SET name=?,value=?,date=?,repeat=?,timesRepeat=?,plusMinus=?,active=?,encrypted=? WHERE pfid=?",  (self.eo.encrypt(name), self.eo.encrypt(value), self.eo.encrypt(date), self.eo.encrypt(repeat), self.eo.encrypt(timesRepeat), self.eo.encrypt(plusMinus), self.eo.encrypt(active), self.encrypted,self.id))
             else:
-                c.execute("UPDATE personalFinance SET name=?,value=?,date=?,repeat=?,timesRepeat=?,plusMinus=?,active=?,encrypted=? WHERE pfid=?",  (name, value, date, repeat, timesRepeat, plusMinus, active, encrypted,self.id))
+                c.execute("UPDATE personalFinance SET name=?,value=?,date=?,repeat=?,timesRepeat=?,plusMinus=?,active=?,encrypted=? WHERE pfid=?",  (name, value, date, repeat, timesRepeat, plusMinus, active, self.encrypted,self.id))
             db.commit()
         except sqlite3.Error as e:
             print("An DB-error occurred:", e.args[0])
@@ -484,7 +506,7 @@ class Job:
             if wcharge.name == name:
                 try:
                     if self.eo != None:
-                        c.execute("UPDATE wcharges SET howManyTimes=? WHERE wid=?",  (howManyTimes,  wcharge.wchargeId))
+                        c.execute("UPDATE wcharges SET howManyTimes=? WHERE wid=?",  (self.eo.encrypt(howManyTimes),  self.eo.encrypt(wcharge.wchargeId)))
                     else:
                         c.execute("UPDATE wcharges SET howManyTimes=? WHERE wid=?",  (howManyTimes,  wcharge.wchargeId))
                     db.commit()
@@ -515,38 +537,3 @@ class Job:
             print("An DB-error occurred:", e.args[0])
             return -1
         
-mightyController = Controller()
-mightyController.updateConfigList()
-for config in mightyController.configlist:
-    if (config.key.lower() == "single" or config.key.lower() == "singleview") and (config.value.lower() == "true" or config.value.lower() == "1"):
-        singleView = True
-        from gui_single import Ui_MainWindowSingle
-    elif config.key.lower()== "singleviewcname":
-        singleViewName = config.value
-    elif config.key.lower()== "encrypted":
-        try:
-            from Crypto import Random as rand
-            if config.value == "1" or config.value == "AES":
-                from Crypto.Cipher import AES as enc
-                encrypted = "AES"
-            elif config.value == "2"  or config.value == "Blowfish":
-                from Crypto.Cipher import Blowfish as enc
-                encrypted = "ARC4"
-            elif config.value == "3"  or config.value == "DES3":
-                from Crypto.Cipher import DES3 as enc
-                encrypted = "DES3"
-            else:
-                encrypted = "-1"
-        except  Exception as e:
-            print(tr("Couldn't import pyCrypto, use plaintext Message; "))
-            print(e)
-            #encrypted = -1
-    elif config.key.lower()== "singleviewcid":
-        singleViewId = config.value
-    elif config.key == "lang" or config.key == "language":
-        if os.path.isfile(config.value):
-            lang=config.value
-        elif os.path.isfile(config.value+".qm"):
-            lang=config.value+".qm"
-if True is not singleView:
-    from gui import Ui_MainWindow

@@ -1,13 +1,13 @@
 from header import *
-from Crypto import Random as rand
 import base64
-from Crypto.Cipher import * 
+print("import..")
 #'cryptoclass - cm = cryptoMeta'
 class cm:
     def __init__(self, key, pyCryptoModule):
         self.name = ""
         self.key = key
         self.mod = pyCryptoModule
+        from Crypto import Random as rand
         if len(self.key) < self.mod.block_size:
             rest = self.mod.block_size - len(self.key)
             print(str(rest))

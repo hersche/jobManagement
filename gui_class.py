@@ -20,6 +20,7 @@ class Gui(QtGui.QMainWindow):
                     tr("Password"),
                     tr("Enter Password"),
                     QtGui.QLineEdit.Password)
+            print("here?")
             from cryptClass import cm,  scm
             mightyController.eo = cm(pw, scm.getMod(mightyController.encryption))
         if True is not mightyController.singleView :

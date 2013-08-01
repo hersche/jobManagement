@@ -1,7 +1,6 @@
 import os.path,  sqlite3
 from PyQt4 import QtCore,  QtGui
 from header import *
-from cryptClass import *
 #from Crypto.Cipher import * 
 fileExist = True
 singleView = False

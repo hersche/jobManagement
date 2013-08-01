@@ -1,6 +1,5 @@
 from staticTools import *
 from models import *
-from cryptClass import *
 singleView = False
 singleViewId = -1
 mightyController = Controller()
@@ -21,6 +20,7 @@ class Gui(QtGui.QMainWindow):
                     tr("Password"),
                     tr("Enter Password"),
                     QtGui.QLineEdit.Password)
+            from cryptClass import cm,  scm
             mightyController.eo = cm(pw, scm.getMod(mightyController.encryption))
         if True is not mightyController.singleView :
             from gui import Ui_MainWindow

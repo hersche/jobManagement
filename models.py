@@ -1,5 +1,6 @@
 import os.path,  sqlite3
 from PyQt4 import QtCore,  QtGui
+from cryptClass import *
 from header import *
 #from Crypto.Cipher import * 
 fileExist = True
@@ -36,13 +37,30 @@ class Controller:
             self.singleView = False
             self.singleViewId = -1
             self.updateConfigList()
+        def updateEos(self, cm):
+            print("update Eos"+self.eo.key)
+            self.eo = cm
+            for company in self.companylist :
+                company.eo = cm
+                for charge in company.charges:
+                    charge.eo = cm
+                for job in company.jobs:
+                    job.eo = cm
+                    for wCharge in job.wcharges:
+                        wCharge.eo = cm
+                for ls in company.loanSplits:
+                    ls.eo = cm
+                for credit in company.credits:
+                    credit.eo = cm
+            for pf in self.personalFinances:
+                pf.eo = cm
 
         def createCompany(self, name,  loan,  perHours,  describtion):
             try:
                 if self.eo != None:
-                    c.execute("INSERT INTO company (name, loan,  perHours, describtion, encrypted) VALUES (?,?,?,?,?);",  (self.eo.encrypt(name), self.eo.encrypt(loan),  self.eo.encrypt(perHours), self.eo.encrypt(describtion), encrypted))
+                    c.execute("INSERT INTO company (name, loan,  perHours, describtion, encrypted) VALUES (?,?,?,?,?);",  (self.eo.encrypt(name), self.eo.encrypt(loan),  self.eo.encrypt(perHours), self.eo.encrypt(describtion), self.eo.name))
                 else:
-                    c.execute("INSERT INTO company (name, loan,  perHours, describtion, encrypted) VALUES (?,?,?,?,?);",  (name, loan,  perHours, describtion, encrypted))
+                    c.execute("INSERT INTO company (name, loan,  perHours, describtion, encrypted) VALUES (?,?,?,?,?);",  (name, loan,  perHours, describtion, "-1"))
                 db.commit()
                 self.updateList()
             except sqlite3.Error as e:
@@ -73,9 +91,9 @@ class Controller:
         def createPersonalFinance(self, name,  value, date, repeat, timesRepeat, plusMinus,  active,  encrypted ):
             try:
                 if self.eo != None:
-                    c.execute("INSERT INTO personalFinance (name,  value, date, repeat, timesRepeat, plusMinus,  active,  encrypted) VALUES (?,?,?,?,?,?,?,?);",  (self.eo.encrypt(name),  self.eo.encrypt(value), self.eo.encrypt(date), self.eo.encrypt(repeat), self.eo.encrypt(timesRepeat), self.eo.encrypt(plusMinus),  self.eo.encrypt(active),  encrypted))
+                    c.execute("INSERT INTO personalFinance (name,  value, date, repeat, timesRepeat, plusMinus,  active,  encrypted) VALUES (?,?,?,?,?,?,?,?);",  (self.eo.encrypt(name),  self.eo.encrypt(value), self.eo.encrypt(date), self.eo.encrypt(repeat), self.eo.encrypt(timesRepeat), self.eo.encrypt(plusMinus),  self.eo.encrypt(active), self.eo.name))
                 else:
-                    c.execute("INSERT INTO personalFinance (name,  value, date, repeat, timesRepeat, plusMinus,  active,  encrypted) VALUES (?,?,?,?,?,?,?,?);",  (name,  value, date, repeat, timesRepeat, plusMinus,  active,  encrypted))
+                    c.execute("INSERT INTO personalFinance (name,  value, date, repeat, timesRepeat, plusMinus,  active,  encrypted) VALUES (?,?,?,?,?,?,?,?);",  (name,  value, date, repeat, timesRepeat, plusMinus,  active,  "-1"))
                 db.commit()
                 self.updateConfigList()
             except sqlite3.Error as e:
@@ -101,9 +119,7 @@ class Controller:
                 #elif config.key.lower()== "singleviewcname":
                     #singleViewName = config.value
                 elif config.key.lower()== "encrypted":
-                    
-                    self.encryption = config.value
-                    
+                    self.eo = cm(scm.getMod(config.value))
                 elif config.key.lower()== "singleviewcid":
                     singleViewId = config.value
                 elif config.key == "lang" or config.key == "language":
@@ -142,9 +158,9 @@ class personalFinance:
     def save(self, name, value, date, repeat, timesRepeat, plusMinus, active):
         try:
             if self.eo != None:
-                c.execute("UPDATE personalFinance SET name=?,value=?,date=?,repeat=?,timesRepeat=?,plusMinus=?,active=?,encrypted=? WHERE pfid=?",  (self.eo.encrypt(name), self.eo.encrypt(value), self.eo.encrypt(date), self.eo.encrypt(repeat), self.eo.encrypt(timesRepeat), self.eo.encrypt(plusMinus), self.eo.encrypt(active), self.encrypted,self.id))
+                c.execute("UPDATE personalFinance SET name=?,value=?,date=?,repeat=?,timesRepeat=?,plusMinus=?,active=?,encrypted=? WHERE pfid=?",  (self.eo.encrypt(name), self.eo.encrypt(value), self.eo.encrypt(date), self.eo.encrypt(repeat), self.eo.encrypt(timesRepeat), self.eo.encrypt(plusMinus), self.eo.encrypt(active), self.eo.name,self.id))
             else:
-                c.execute("UPDATE personalFinance SET name=?,value=?,date=?,repeat=?,timesRepeat=?,plusMinus=?,active=?,encrypted=? WHERE pfid=?",  (name, value, date, repeat, timesRepeat, plusMinus, active, self.encrypted,self.id))
+                c.execute("UPDATE personalFinance SET name=?,value=?,date=?,repeat=?,timesRepeat=?,plusMinus=?,active=?,encrypted=? WHERE pfid=?",  (name, value, date, repeat, timesRepeat, plusMinus, active, "-1",self.id))
             db.commit()
         except sqlite3.Error as e:
             print("An DB-error occurred:", e.args[0])
@@ -195,9 +211,9 @@ class loanSplit:
             tmpMoney = "1"
         try:
             if self.eo != None:
-                c.execute("UPDATE loanSplit SET name=?, value=?, money=? WHERE lsid=?",  (self.eo.encrypt(name), self.eo.encrypt(value), self.eo.encrypt(tmpMoney),  self.id))
+                c.execute("UPDATE loanSplit SET name=?, value=?, money=?,encrypted=? WHERE lsid=?",  (self.eo.encrypt(name), self.eo.encrypt(value), self.eo.encrypt(tmpMoney),self.eo.name,   self.id))
             else:
-                c.execute("UPDATE loanSplit SET name=?, value=?, money=? WHERE lsid=?",  (name, float(value), tmpMoney,  self.id))
+                c.execute("UPDATE loanSplit SET name=?, value=?, money=?, encrypted=? WHERE lsid=?",  (name, float(value), tmpMoney,"-1",   self.id))
             db.commit()
         except sqlite3.Error as e:
             print("An DB-error occurred:", e.args[0])
@@ -224,9 +240,9 @@ class charges:
     def save(self, name, value,  howManyTimes=-1):
         try:
             if self.eo != None:
-                c.execute("UPDATE charges SET name=?, value=? WHERE sid=?",  (self.eo.encrypt(name), self.eo.encrypt(value), self.id))
+                c.execute("UPDATE charges SET name=?, value=?,encrypted=? WHERE sid=?",  (self.eo.encrypt(name), self.eo.encrypt(value), self.id))
             else:
-                c.execute("UPDATE charges SET name=?, value=? WHERE sid=?",  (name, float(value), self.id))
+                c.execute("UPDATE charges SET name=?, value=?,encrypted=? WHERE sid=?",  (name, float(value), self.id))
             db.commit()
         except sqlite3.Error as e:
             print("An DB-error occurred:", e.args[0])
@@ -265,9 +281,9 @@ class Credit:
             tmpActive="1"
         try:
             if self.eo != None:
-                c.execute("UPDATE credit SET name=?,value=?, date=?, payed=?,active=? WHERE crid=?",  (self.eo.encrypt(name, self.eo.encrypt(value), self.eo.encrypt(date), self.eo.encrypt(tmpPayed), self.eo.encrypt(tmpActive), str(self.id))))
+                c.execute("UPDATE credit SET name=?,value=?, date=?, payed=?,active=?,encrypted=? WHERE crid=?",  (self.eo.encrypt(name, self.eo.encrypt(value), self.eo.encrypt(date), self.eo.encrypt(tmpPayed), self.eo.encrypt(tmpActive), str(self.id))))
             else:
-                c.execute("UPDATE credit SET name=?,value=?, date=?, payed=?,active=? WHERE crid=?",  (name, value, date, tmpPayed, tmpActive, str(self.id)))
+                c.execute("UPDATE credit SET name=?,value=?, date=?, payed=?,active=?,encrypted=? WHERE crid=?",  (name, value, date, tmpPayed, tmpActive, str(self.id)))
             db.commit()
         except sqlite3.Error as e:
             print("credit save An DB-error occurred:", e.args[0])
@@ -318,7 +334,6 @@ class Company:
             c.execute('select crid, companyid from credit')
             for r in c.fetchall():
                 if self.eo.decrypt(r[1]) == str(self.id):
-                    print(str(r[0]))
                     c.execute(sString,  (str(r[0]), ))
                     for row in c.fetchall():
                         self.credits.append(Credit(row[0], self.eo.decrypt(row[1]), self.eo.decrypt(row[2]),  self.eo.decrypt(row[3]),  self.eo.decrypt(row[4]), self.eo.decrypt(row[5]), self.eo.decrypt(row[6]), row[7],self.eo))
@@ -359,9 +374,9 @@ class Company:
         # (self,  id,  name,  place,  comment,  hours, correctionHours,   startdate,  enddate,  baustellenleiter,  active, companyid):
         try:
             if self.eo != None:
-                c.execute("INSERT INTO job (name, place, comment,hours, correctionHours, weekendDays, startdate, enddate,  leader, active, companyid, encrypted) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",  (self.eo.encrypt(name), self.eo.encrypt(place),  self.eo.encrypt(comment), self.eo.encrypt(hours),self.eo.encrypt(correctionHours),  self.eo.encrypt(weekendDays),  self.eo.encrypt(startdate), self.eo.encrypt(enddate),  self.eo.encrypt(leader), self.eo.encrypt(active),self.eo.encrypt(self.id),encrypted))
+                c.execute("INSERT INTO job (name, place, comment,hours, correctionHours, weekendDays, startdate, enddate,  leader, active, companyid, encrypted) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",  (self.eo.encrypt(name), self.eo.encrypt(place),  self.eo.encrypt(comment), self.eo.encrypt(hours),self.eo.encrypt(correctionHours),  self.eo.encrypt(weekendDays),  self.eo.encrypt(startdate), self.eo.encrypt(enddate),  self.eo.encrypt(leader), self.eo.encrypt(active),self.eo.encrypt(self.id),self.eo.name))
             else:
-                c.execute("INSERT INTO job (name, place, comment,hours, correctionHours, weekendDays, startdate, enddate,  leader, active, companyid,encrypted) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",  (name, place,  comment, hours,correctionHours,  weekendDays,  startdate, enddate,  leader, active,   self.id,encrypted))
+                c.execute("INSERT INTO job (name, place, comment,hours, correctionHours, weekendDays, startdate, enddate,  leader, active, companyid,encrypted) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",  (name, place,  comment, hours,correctionHours,  weekendDays,  startdate, enddate,  leader, active,   self.id,"-1"))
             db.commit()
             self.updateJobList()
         except sqlite3.Error as e:
@@ -376,14 +391,14 @@ class Company:
         try:
             if companyid != -10:
                 if self.eo != None:
-                    c.execute("INSERT INTO charges (name, value, companyid, encrypted) VALUES (?,?,?,?)",  ( self.eo.encrypt(name), self.eo.encrypt(value),  self.eo.encrypt(companyid), encrypted))
+                    c.execute("INSERT INTO charges (name, value, companyid, encrypted) VALUES (?,?,?,?)",  ( self.eo.encrypt(name), self.eo.encrypt(value),  self.eo.encrypt(companyid), self.eo.name))
                 else:
-                    c.execute("INSERT INTO charges (name, value, companyid, encrypted) VALUES (?,?,?,?)",  ( name, value,  companyid, encrypted))
+                    c.execute("INSERT INTO charges (name, value, companyid, encrypted) VALUES (?,?,?,?)",  ( name, value,  companyid, "-1"))
             else:
                 if self.eo != None:
-                    c.execute("INSERT INTO charges (name, value, companyid, encrypted) VALUES (?,?,?,?)",  ( self.eo.encrypt(name), self.eo.encrypt(value),  self.eo.encrypt(self.id), encrypted))
+                    c.execute("INSERT INTO charges (name, value, companyid, encrypted) VALUES (?,?,?,?)",  ( self.eo.encrypt(name), self.eo.encrypt(value),  self.eo.encrypt(self.id), self.eo.name))
                 else:
-                    c.execute("INSERT INTO charges (name, value, companyid, encrypted) VALUES (?,?,?,?)",  ( name, value,  self.id, encrypted))
+                    c.execute("INSERT INTO charges (name, value, companyid, encrypted) VALUES (?,?,?,?)",  ( name, value,  self.id, "-1"))
             db.commit()
             self.updatechargesList()
         except sqlite3.Error as e:
@@ -397,9 +412,9 @@ class Company:
             tmpMoney = 0
         try:
             if self.eo != None:
-                c.execute("INSERT INTO loanSplit (name, value, money, companyid, encrypted) VALUES (?,?,?,?,?)",  ( self.eo.encrypt(name), self.eo.encrypt(value), self.eo.encrypt(tmpMoney),  self.eo.encrypt(self.id), encrypted))
+                c.execute("INSERT INTO loanSplit (name, value, money, companyid, encrypted) VALUES (?,?,?,?,?)",  ( self.eo.encrypt(name), self.eo.encrypt(value), self.eo.encrypt(tmpMoney),  self.eo.encrypt(self.id), self.eo.name))
             else:
-                c.execute("INSERT INTO loanSplit (name, value, money, companyid, encrypted) VALUES (?,?,?,?,?)",  ( name, value, tmpMoney,  self.id, encrypted))
+                c.execute("INSERT INTO loanSplit (name, value, money, companyid, encrypted) VALUES (?,?,?,?,?)",  ( name, value, tmpMoney,  self.id, "-1"))
             db.commit()
         except sqlite3.Error as e:
             print("An DB-error occurred:", e.args[0])
@@ -417,14 +432,14 @@ class Company:
         try:
             if companyid != -10:
                 if self.eo != None:
-                    c.execute("INSERT INTO credit (name, value, date, payed,active, companyid,encrypted) VALUES (?,?,?,?,?,?,?)",  ( self.eo.encrypt(name),  self.eo.encrypt(value), self.eo.encrypt(date), self.eo.encrypt(tmpPayed),self.eo.encrypt(tmpActive),  self.eo.encrypt(companyid), encrypted))
+                    c.execute("INSERT INTO credit (name, value, date, payed,active, companyid,encrypted) VALUES (?,?,?,?,?,?,?)",  ( self.eo.encrypt(name),  self.eo.encrypt(value), self.eo.encrypt(date), self.eo.encrypt(tmpPayed),self.eo.encrypt(tmpActive),  self.eo.encrypt(companyid), self.eo.name))
                 else:
-                    c.execute("INSERT INTO credit (name, value, date, payed,active, companyid, encrypted) VALUES (?,?,?,?,?,?,?)",  ( name,  value, date, tmpPayed,tmpActive,  companyid, encrypted))
+                    c.execute("INSERT INTO credit (name, value, date, payed,active, companyid, encrypted) VALUES (?,?,?,?,?,?,?)",  ( name,  value, date, tmpPayed,tmpActive,  companyid, "-1"))
             else:
                 if self.eo != None:
-                    c.execute("INSERT INTO credit (name, value, date, payed,active, companyid,encrypted) VALUES (?,?,?,?,?,?,?)",  ( self.eo.encrypt(name),  self.eo.encrypt(value), self.eo.encrypt(date), self.eo.encrypt(tmpPayed),self.eo.encrypt(tmpActive),  self.eo.encrypt(self.id), encrypted))
+                    c.execute("INSERT INTO credit (name, value, date, payed,active, companyid,encrypted) VALUES (?,?,?,?,?,?,?)",  ( self.eo.encrypt(name),  self.eo.encrypt(value), self.eo.encrypt(date), self.eo.encrypt(tmpPayed),self.eo.encrypt(tmpActive),  self.eo.encrypt(self.id), self.eo.name))
                 else:
-                    c.execute("INSERT INTO credit (name, value, date, payed,active, companyid, encrypted) VALUES (?,?,?,?,?,?,?)",  ( name,  value, date, tmpPayed,tmpActive,  self.id, encrypted))
+                    c.execute("INSERT INTO credit (name, value, date, payed,active, companyid, encrypted) VALUES (?,?,?,?,?,?,?)",  ( name,  value, date, tmpPayed,tmpActive,  self.id, "-1"))
             db.commit()
         except sqlite3.Error as e:
             print("create credit An DB-error occurred:", e.args[0])
@@ -432,9 +447,9 @@ class Company:
     
     def save(self, name,  loan,  perHours, describtion):
         if self.eo!= None:
-            c.execute("UPDATE company SET name=?, loan=?, perHours=?, describtion=?, encrypted=? WHERE cid=?",  (self.eo.encrypt(name), self.eo.encrypt(loan), self.eo.encrypt(perHours), self.eo.encrypt(describtion),encrypted,   self.id))
+            c.execute("UPDATE company SET name=?, loan=?, perHours=?, describtion=?, encrypted=? WHERE cid=?",  (self.eo.encrypt(name), self.eo.encrypt(loan), self.eo.encrypt(perHours), self.eo.encrypt(describtion),self.eo.name,   self.id))
         else:
-            c.execute("UPDATE company SET name=?, loan=?, perHours=?, describtion=?, encrypted=? WHERE cid=?",  (name, loan, perHours, describtion, encrypted,  self.id))
+            c.execute("UPDATE company SET name=?, loan=?, perHours=?, describtion=?, encrypted=? WHERE cid=?",  (name, loan, perHours, describtion, "-1",  self.id))
         db.commit()
     def delete(self):
         try:
@@ -487,9 +502,9 @@ class Job:
                     self.wcharges.append(charges(row[0], row[1], row[2], co[0], co[3]))
     def addSpese(self,  chargesid, howManyTimes):
         if self.eo != None:
-            c.execute("INSERT INTO wcharges (jobid, chargesid, howManyTimes,encrypted) VALUES (?,?,?,?)",  ( self.eo.encrypt(self.id), self.eo.encrypt(chargesid), self.eo.encrypt(howManyTimes), encrypted))
+            c.execute("INSERT INTO wcharges (jobid, chargesid, howManyTimes,encrypted) VALUES (?,?,?,?)",  ( self.eo.encrypt(self.id), self.eo.encrypt(chargesid), self.eo.encrypt(howManyTimes), self.eo.name))
         else:
-            c.execute("INSERT INTO wcharges (jobid, chargesid, howManyTimes,encrypted) VALUES (?,?,?,?)",  ( self.id, chargesid, howManyTimes, encrypted))
+            c.execute("INSERT INTO wcharges (jobid, chargesid, howManyTimes,encrypted) VALUES (?,?,?,?)",  ( self.id, chargesid, howManyTimes, "-1"))
         db.commit()
     def removeSpese(self, name,  company):
         for wcharge in self.wcharges:
@@ -505,9 +520,9 @@ class Job:
             if wcharge.name == name:
                 try:
                     if self.eo != None:
-                        c.execute("UPDATE wcharges SET howManyTimes=? WHERE wid=?",  (self.eo.encrypt(howManyTimes),  self.eo.encrypt(wcharge.wchargeId)))
+                        c.execute("UPDATE wcharges SET howManyTimes=?,encrypted=? WHERE wid=?",  (self.eo.encrypt(howManyTimes),  self.eo.encrypt(wcharge.wchargeId), self.eo.name))
                     else:
-                        c.execute("UPDATE wcharges SET howManyTimes=? WHERE wid=?",  (howManyTimes,  wcharge.wchargeId))
+                        c.execute("UPDATE wcharges SET howManyTimes=?,encrypted=? WHERE wid=?",  (howManyTimes,  wcharge.wchargeId, "-1"))
                     db.commit()
                     self.updateWchargesList()
                 except sqlite3.Error as e:
@@ -520,9 +535,9 @@ class Job:
                 tmpActive = 1
             try:
                 if self.eo != None:
-                    c.execute("UPDATE job SET name=?, place=?, comment=?, hours=?, correctionHours=?, weekendDays=?, startdate=?, enddate=?, leader=?, active=?, companyid=? WHERE jid=?",  (self.eo.encrypt(name), self.eo.encrypt(place),  self.eo.encrypt(comment), self.eo.encrypt(hours), self.eo.encrypt(correctionHours), self.eo.encrypt(weekendDays),  self.eo.encrypt(startdate), self.eo.encrypt(enddate), self.eo.encrypt(leader), self.eo.encrypt(tmpActive), self.eo.encrypt(companyid), self.id))
+                    c.execute("UPDATE job SET name=?, place=?, comment=?, hours=?, correctionHours=?, weekendDays=?, startdate=?, enddate=?, leader=?, active=?, companyid=?,encrypted=? WHERE jid=?",  (self.eo.encrypt(name), self.eo.encrypt(place),  self.eo.encrypt(comment), self.eo.encrypt(hours), self.eo.encrypt(correctionHours), self.eo.encrypt(weekendDays),  self.eo.encrypt(startdate), self.eo.encrypt(enddate), self.eo.encrypt(leader), self.eo.encrypt(tmpActive), self.eo.encrypt(companyid), self.eo.name,  self.id))
                 else:
-                    c.execute("UPDATE job SET name=?, place=?, comment=?, hours=?, correctionHours=?, weekendDays=?, startdate=?, enddate=?, leader=?, active=?, companyid=? WHERE jid=?",  (name, place,  comment, hours, correctionHours, weekendDays,  startdate, enddate, leader, tmpActive, companyid, self.id))
+                    c.execute("UPDATE job SET name=?, place=?, comment=?, hours=?, correctionHours=?, weekendDays=?, startdate=?, enddate=?, leader=?, active=?, companyid=?,encrypted=? WHERE jid=?",  (name, place,  comment, hours, correctionHours, weekendDays,  startdate, enddate, leader, tmpActive, companyid,"-1",  self.id))
                 db.commit()
             except sqlite3.Error as e:
                 print("An DB-error occurred:", e.args[0])

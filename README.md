@@ -17,10 +17,13 @@ programm supports:
    * Livesearch [jobname, jobplace, jobleader, jobcomment, companyname]
    * Show inactive
 * SingleView (if you just use 1 company.. more limited)
+* Encryption by pycrypto (experimental, but should work, include changing, but needs restart!! and 
+doesn't work for windows, when there's no pycrypto for python 3.. but just let it be like the lemon tree 
+;)
 
 <h3>Install in *buntu</h3>
 open console and put in:
-sudo apt-get install pyqt python3
+sudo apt-get install pyqt python3 pycrypto
 
 download the programm as zip (and unzip it) or check it out by git. after that a click on start.sh 
 should start it. when it doesnt start, try to mark it in file-settings as executable (console: chmod +x 

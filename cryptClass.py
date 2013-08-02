@@ -1,22 +1,30 @@
 from header import *
 import base64
-print("import..")
+import sys
 #'cryptoclass - cm = cryptoMeta'
 class cm:
-    def __init__(self, key, pyCryptoModule):
-        self.name = ""
-        self.key = key
+    def __init__(self, pyCryptoModule,  key=""):
+        self.key =  ""
         self.mod = pyCryptoModule
+        if key != "":
+            self.key = self.setKey(key)
+
+        self.name = self.mod.__name__[14:]
         from Crypto import Random as rand
-        if len(self.key) < self.mod.block_size:
-            rest = self.mod.block_size - len(self.key)
-            print(str(rest))
-            while rest !=0:
-                rest -=1
-                self.key += "."
-        print(self.key)
+        self.rand = rand
+
     def setKey(self, key):
         self.key = key
+        print("setKey "+str(self.mod.block_size)+self.key)
+        if len(self.key) < self.mod.block_size:
+            rest = (self.mod.block_size *2) - len(self.key)
+        else:
+            rest = 16
+            print("rest"+str(rest))
+        while rest !=0:
+            rest -=1
+            self.key += "."
+        return self.key
 
     def pad(self,  s):
         bla = lambda s: s + (self.mod.block_size- len(s) % self.mod.block_size) * chr(self.mod.block_size - len(s) % self.mod.block_size)
@@ -25,10 +33,12 @@ class cm:
         upad = lambda s : s[0:-ord(s[-1])]
         return upad
     def encrypt(self, rawMessage):
+        
         message=str(rawMessage)
         if self.mod == None:
             return rawMessage
-        iv = rand.new().read(self.mod.block_size)
+        print("e "+self.name+" "+self.key)
+        iv = self.rand.new().read(self.mod.block_size)
         cipher = self.mod.new(self.key, self.mod.MODE_CBC, iv)
         mLen = len(message)
         if mLen > self.mod.block_size:
@@ -44,6 +54,7 @@ class cm:
         t =  base64.b64encode(iv + cipher.encrypt(eMessage))
         return t
     def decrypt(self, encryptedMessage):
+        print("d "+self.name)
         if self.mod == None:
             return encryptedMessage
         if encryptedMessage is None:
@@ -54,49 +65,51 @@ class cm:
         clearText = str(cipher.decrypt(tDec[self.mod.block_size:]))
         clearText = clearText[2:-1]
         return clearText.rstrip()
+
+#static crypt manager
 class scm:
     #oldMod - self.eo,
     @staticmethod
-    def updateAll(newCm, controller):
-        controller.eo = newCm
-        for company in controller.companys:
-            company.save(company.name,  company.loan, company.perHours, company.describtion)
-            for charge in company.charges:
-                charge.save( charge.name, charge.value,  charge.howManyTimes)
-            for job in company.jobs:
-                job.save( newCm.encrypt(job.name), job.place, job.comment, job.hours, job.correctionHours, job.weekendDays,  job.startdate, job.enddate,job.leader, job.active, job.companyid)
-                for wCharge in job.wcharges:
-                    wCharge.save( wCharge.name,  wCharge.howManyTimes)
-                    
-            for ls in company.loanSplits:
-                ls.save( ls.name, ls.value,  ls.money)
-            for credit in company.credits:
-                credit.save(credit.name,  credit.value, credit.date, credit.payed, credit.active, company.id)
-        for pf in controller.personalFinances:
-            pf.save(pf.name, pf.value, pf.date, pf.repeat, pf.timesRepeat, pf.plusMinus, pf.active)
-            print("static updatemethod")
+    def updateAll(newCm,  controller):
+        print("st4rt updateEncryption"+newCm.key+ " "+str("old "+controller.eo.name)+ " new"+str(newCm.name))
+        if newCm.name != controller.eo.name:
+            print(controller.eo.key)
+            controller.eo = newCm
+            print(controller.eo.key)
+            controller.updateEos(newCm)
+            for company in controller.companylist:
+                company.save(company.name,  company.loan, company.perHours, company.describtion)
+                for charge in company.charges:
+                    charge.save( charge.name, charge.value,  charge.howManyTimes)
+                for job in company.jobs:
+                    job.save( job.name, job.place, job.comment, job.hours, job.correctionHours, job.weekendDays,  job.startdate, job.enddate,job.leader, job.active, job.companyid)
+                    for wCharge in job.wcharges:
+                        wCharge.save( wCharge.name,  wCharge.howManyTimes)
+                for ls in company.loanSplits:
+                    ls.save( ls.name, ls.value,  ls.money)
+                for credit in company.credits:
+                    credit.save(credit.name,  credit.value, credit.date, credit.payed, credit.active, company.id)
+            for pf in controller.personalFinances:
+                pf.save(pf.name, pf.value, pf.date, pf.repeat, pf.timesRepeat, pf.plusMinus, pf.active)
 
     @staticmethod
     def getMod(configValue):
         configValue = configValue.lower()
-        
-        encrypted = "-1"
         try:
             if configValue == "1" or configValue == "aes":
-                print("return mod" +configValue)
-                from Crypto.Cipher import AES as enc
-                encrypted = "AES"
+                if("AES" not in sys.modules):
+                    from Crypto.Cipher import AES
+                return AES
             elif configValue == "2"  or configValue == "blowfish":
-                from Crypto.Cipher import Blowfish as enc
-                encrypted = "ARC4"
+                if("Blowfish" not in sys.modules):
+                    from Crypto.Cipher import Blowfish
+                return Blowfish
             elif configValue == "3"  or configValue == "des3":
-                from Crypto.Cipher import DES3 as enc
-                encrypted = "DES3"
+                if("DES3" not in sys.modules):
+                    from Crypto.Cipher import DES3
+                return DES3
             else:
-                enc = None
-                encrypted = "-1"
+                return None
         except  Exception as e:
             print(tr("Couldn't import pyCrypto, use plaintext Message; "))
             print(e)
-        print(enc)
-        return enc

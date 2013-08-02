@@ -14,15 +14,13 @@ class Gui(QtGui.QMainWindow):
         self.currentCompany = None
         self.showInactive = True
         
-        if mightyController.encryption != "-1" and mightyController.encryption != "":
+        if mightyController.eo is not None:
             pw, okCancel = QtGui.QInputDialog.getText(
                     None,
                     tr("Password"),
                     tr("Enter Password"),
                     QtGui.QLineEdit.Password)
-            print("here?")
-            from cryptClass import cm,  scm
-            mightyController.eo = cm(pw, scm.getMod(mightyController.encryption))
+            mightyController.eo.setKey(pw)
         if True is not mightyController.singleView :
             from gui import Ui_MainWindow
 
@@ -164,14 +162,15 @@ class Gui(QtGui.QMainWindow):
     # Updaters
     #-----------------------
     def updateCompanyList(self, selectFirst=False):
-        
-        if singleView == False:
+        print("update companys")
+        if mightyController.singleView == False:
             mightyController.updateList()
             self.ui.companyList.clear()
+            print("here=?")
             for company in mightyController.companylist:
                 self.ui.companyList.addItem(company.name)
-                print(company.name)
-            if selectFirst:
+            if selectFirst and len(mightyController.companylist) > 0:
+                print("first=?")
                 self.ui.companyList.setCurrentRow(0)
                 self.onCompanyItemClick(self.ui.companyList.currentItem())
     def updateJobList(self, selectFirst=False,  name=""):
@@ -489,35 +488,33 @@ class Gui(QtGui.QMainWindow):
         self.ui.status.setText(tr("Config")+" "+self.ui.configKey.text()+" "+tr("created"))
         if self.ui.configKey.text() == "encrypted":
             pw, okCancel = QtGui.QInputDialog.getText(self,  "Passwort eingeben", "Pw igääää")
-            if self.ui.configValue.text() == "1" or self.ui.configValue.text() == "AES":
-                from Crypto.Cipher import AES as enc
-                encrypted = "AES"
-            elif self.ui.configValue.text() == "2"  or self.ui.configValue.text() == "Blowfish":
-                from Crypto.Cipher import Blowfish as enc
-                encrypted = "ARC4"
-            elif self.ui.configValue.text() == "3"  or self.ui.configValue.text() == "DES3":
-                from Crypto.Cipher import DES3 as enc
-                encrypted = "DES3"
-            else:
-                encrypted = "-1"
-            scm.uodateAll(mightyController.eo, )
+            nCm = cm(scm.getMod(self.ui.configValue.text()), pw)
+            scm.updateAll(nCm, mightyController)
+            mightyController.updateEos(nCm)
+            #mightyController.updateEos()
         self.updateConfigList(True)
+        #self.updateCompanyList()
+        
     def onSaveConfig(self):
-        cr = self.ui.configList.currentRow()
-        cm = self.ui.configList.currentItem()
-        success = False
+        #cr = self.ui.configList.currentRow()
+        ci = self.ui.configList.currentItem()
         for config in mightyController.configlist:
-            if cm is not None and config.key == cm.text():
+            if ci is not None and config.key == ci.text():
                 config.save(self.ui.configKey.text(), self.ui.configValue.text())
-                success = True
                 self.ui.status.setText(tr("Config")+" "+self.ui.configKey.text()+" "+tr("saved"))
-        if not success:
-            self.alertBox.setText(tr("Charge")+" "+tr("could not")+" be "+tr("saved"))
-            self.alertBox.exec()
-        else:
+                if self.ui.configKey.text() == "encrypted":
+                    pw, okCancel = QtGui.QInputDialog.getText(self,  "Passwort eingeben", "Pw igääää")
+                    nCm = cm(scm.getMod(self.ui.configValue.text()), pw)
+                    print(nCm.key)
+                    scm.updateAll(nCm, mightyController)
+                    mightyController.eo = nCm
+                    mightyController.updateEos(nCm)
+                    print("onSave "+mightyController.eo.key)
+                    #mightyController.updateEos()
             self.updateConfigList()
-            self.ui.configList.setCurrentRow(cr)
-            self.ui.configList.setCurrentItem(cm)
+            #self.updateCompanyList()
+            #self.ui.configList.setCurrentRow(cr)
+            #self.ui.configList.setCurrentItem(cm)
     def onDeleteConfig(self):
         cm = self.ui.configList.currentItem()
         success = False

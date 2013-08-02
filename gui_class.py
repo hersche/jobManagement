@@ -13,13 +13,10 @@ class Gui(QtGui.QMainWindow):
         # INIT
         self.currentCompany = None
         self.showInactive = True
-        
+        self.tmpPw = ""
         if mightyController.eo is not None:
-            pw, okCancel = QtGui.QInputDialog.getText(
-                    None,
-                    tr("Password"),
-                    tr("Enter Password"),
-                    QtGui.QLineEdit.Password)
+            pw, okCancel = QtGui.QInputDialog.getText(None,tr("Password"),tr("Enter Password"),QtGui.QLineEdit.Password)
+            self.tmpPw = pw
             mightyController.eo.setKey(pw)
         if True is not mightyController.singleView :
             from gui import Ui_MainWindow
@@ -37,7 +34,7 @@ class Gui(QtGui.QMainWindow):
         if singleView:
             #init self.currentCompany
             self.onCompanyItemClick("singleView")
-        mightyController.updateList()
+        #mightyController.updateList()
         mightyController.updatePersonalFinancesList()
         cd = QtCore.QDate.currentDate()
         if singleView == False:
@@ -59,8 +56,6 @@ class Gui(QtGui.QMainWindow):
         self.ui.jobList.itemClicked.connect(self.onJobItemClick)
         self.ui.creditList.itemClicked.connect(self.onCreditItemClick)
         self.ui.chargesList.itemClicked.connect(self.onSpeseItemClick)
-        #self.ui.personalCreditList.itemClicked.connect(self.onPersonalCreditItemClick)
-        #self.ui.personalChargesList.itemClicked.connect(self.onPersonalChargeItemClick)
         self.ui.loanSplitList.itemClicked.connect(self.onLoanSplitItemClick)
         self.ui.configList.itemClicked.connect(self.onConfigItemClick)
         self.ui.workChargesList.itemClicked.connect(self.onWChargeItemClick)
@@ -72,8 +67,6 @@ class Gui(QtGui.QMainWindow):
             self.ui.deleteCompany.clicked.connect(self.onDeleteCompany)
         self.ui.saveCompany.clicked.connect(self.onSaveCompany)
         self.ui.companyname.returnPressed.connect(self.onSaveCompany)
-        #self.ui.loan.valueChanged.connect(self.onSaveCompany)
-        #self.ui.perHours.valueChanged.connect(self.onSaveCompany)
         
         #Job-Actions
         self.ui.createJob.clicked.connect(self.onCreateJob)
@@ -164,17 +157,17 @@ class Gui(QtGui.QMainWindow):
     def updateCompanyList(self, selectFirst=False):
         print("update companys")
         if mightyController.singleView == False:
+            mightyController.eo.setKey(self.tmpPw)
             mightyController.updateList()
             self.ui.companyList.clear()
-            print("here=?")
             for company in mightyController.companylist:
                 self.ui.companyList.addItem(company.name)
             if selectFirst and len(mightyController.companylist) > 0:
-                print("first=?")
                 self.ui.companyList.setCurrentRow(0)
                 self.onCompanyItemClick(self.ui.companyList.currentItem())
     def updateJobList(self, selectFirst=False,  name=""):
         self.ui.jobList.clear()
+        mightyController.eo.setKey(self.tmpPw)
         self.currentCompany.updateJobList()
         for job in self.currentCompany.jobs:
             if (self.showInactive == True) or (job.active == 1):
@@ -184,6 +177,7 @@ class Gui(QtGui.QMainWindow):
             self.onJobItemClick(self.ui.jobList.currentItem())
     def updatechargesList(self,  selectFirst=False,  name=""):
         self.ui.chargesList.clear()
+        mightyController.eo.setKey(self.tmpPw)
         self.currentCompany.updatechargesList()
         for charge in self.currentCompany.charges:
             self.ui.chargesList.addItem(charge.name)
@@ -192,6 +186,7 @@ class Gui(QtGui.QMainWindow):
             self.onSpeseItemClick(self.ui.chargesList.currentItem())
     def updatePersonalFinancesList(self,  selectFirst=False,  name=""):
         self.ui.pfList.clear()
+        mightyController.eo.setKey(self.tmpPw)
         self.updatePersonalFinanceText()
         mightyController.updatePersonalFinancesList()
         for pf in mightyController.personalFinances:
@@ -201,6 +196,7 @@ class Gui(QtGui.QMainWindow):
             self.onPersonalFinanceItemClick(self.ui.pfList.currentItem())
     def updateLoanSplitList(self,  selectFirst=False,  name=""):
         self.ui.loanSplitList.clear()
+        mightyController.eo.setKey(self.tmpPw)
         self.currentCompany.updateLoanSplitList()
         for loanSplit in self.currentCompany.loanSplits:
             self.ui.loanSplitList.addItem(loanSplit.name)
@@ -209,6 +205,7 @@ class Gui(QtGui.QMainWindow):
             self.onLoanSplitItemClick(self.ui.loanSplitList.currentItem())
     def updateConfigList(self,  selectFirst=False,  name=""):
         self.ui.configList.clear()
+        mightyController.eo.setKey(self.tmpPw)
         mightyController.updateConfigList()
         for config in mightyController.configlist:
             self.ui.configList.addItem(config.key)
@@ -218,6 +215,7 @@ class Gui(QtGui.QMainWindow):
             
     def updateCreditList(self,  selectFirst=False, valueDate=""):
         self.ui.creditList.clear()
+        mightyController.eo.setKey(self.tmpPw)
         self.currentCompany.updateCreditList()
         for credit in self.currentCompany.credits:
             #if valueDate is not "" and valueDate == str(credit.value) +" "+credit.date:
@@ -227,6 +225,7 @@ class Gui(QtGui.QMainWindow):
             self.onCreditItemClick(self.ui.creditList.currentItem())
     def updateWorkchargesList(self,  selectFirst=False,  name=""):
         self.ui.workChargesList.clear()
+        mightyController.eo.setKey(self.tmpPw)
         cs = self.ui.jobList.currentItem()
         for job in self.currentCompany.jobs:
             if cs is not None and job.name == cs.text():
@@ -487,7 +486,8 @@ class Gui(QtGui.QMainWindow):
         # @TODO select the created!
         self.ui.status.setText(tr("Config")+" "+self.ui.configKey.text()+" "+tr("created"))
         if self.ui.configKey.text() == "encrypted":
-            pw, okCancel = QtGui.QInputDialog.getText(self,  "Passwort eingeben", "Pw igääää")
+            pw, okCancel = QtGui.QInputDialog.getText(None,tr("Password"),tr("Enter Password"),QtGui.QLineEdit.Password)
+            self.tmpPw = pw
             nCm = cm(scm.getMod(self.ui.configValue.text()), pw)
             scm.updateAll(nCm, mightyController)
             mightyController.updateEos(nCm)
@@ -503,13 +503,13 @@ class Gui(QtGui.QMainWindow):
                 config.save(self.ui.configKey.text(), self.ui.configValue.text())
                 self.ui.status.setText(tr("Config")+" "+self.ui.configKey.text()+" "+tr("saved"))
                 if self.ui.configKey.text() == "encrypted":
-                    pw, okCancel = QtGui.QInputDialog.getText(self,  "Passwort eingeben", "Pw igääää")
+                    pw, okCancel = QtGui.QInputDialog.getText(None,tr("Password"),tr("Enter Password"),QtGui.QLineEdit.Password)
+                    self.tmpPw = pw
                     nCm = cm(scm.getMod(self.ui.configValue.text()), pw)
                     print(nCm.key)
                     scm.updateAll(nCm, mightyController)
                     mightyController.eo = nCm
                     mightyController.updateEos(nCm)
-                    print("onSave "+mightyController.eo.key)
                     #mightyController.updateEos()
             self.updateConfigList()
             #self.updateCompanyList()

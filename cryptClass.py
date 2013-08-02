@@ -15,12 +15,12 @@ class cm:
 
     def setKey(self, key):
         self.key = key
-        print("setKey "+str(self.mod.block_size)+self.key)
+        #print("setKey "+str(self.mod.block_size)+self.key)
         if len(self.key) < self.mod.block_size:
             rest = (self.mod.block_size *2) - len(self.key)
         else:
             rest = 16
-            print("rest"+str(rest))
+            #print("rest"+str(rest))
         while rest !=0:
             rest -=1
             self.key += "."
@@ -37,7 +37,7 @@ class cm:
         message=str(rawMessage)
         if self.mod == None:
             return rawMessage
-        print("e "+self.name+" "+self.key)
+        #print("e "+self.name+" "+self.key)
         iv = self.rand.new().read(self.mod.block_size)
         cipher = self.mod.new(self.key, self.mod.MODE_CBC, iv)
         mLen = len(message)
@@ -54,7 +54,7 @@ class cm:
         t =  base64.b64encode(iv + cipher.encrypt(eMessage))
         return t
     def decrypt(self, encryptedMessage):
-        print("d "+self.name)
+        
         if self.mod == None:
             return encryptedMessage
         if encryptedMessage is None:
@@ -64,6 +64,7 @@ class cm:
         cipher = self.mod.new(self.key, self.mod.MODE_CBC, iv)
         clearText = str(cipher.decrypt(tDec[self.mod.block_size:]))
         clearText = clearText[2:-1]
+        #print("d "+self.name+clearText.rstrip())
         return clearText.rstrip()
 
 #static crypt manager
@@ -71,11 +72,11 @@ class scm:
     #oldMod - self.eo,
     @staticmethod
     def updateAll(newCm,  controller):
-        print("st4rt updateEncryption"+newCm.key+ " "+str("old "+controller.eo.name)+ " new"+str(newCm.name))
+        #print("st4rt updateEncryption"+newCm.key+ " "+str("old "+controller.eo.name)+ " new"+str(newCm.name))
         if newCm.name != controller.eo.name:
-            print(controller.eo.key)
+            #print(controller.eo.key)
             controller.eo = newCm
-            print(controller.eo.key)
+            #print(controller.eo.key)
             controller.updateEos(newCm)
             for company in controller.companylist:
                 company.save(company.name,  company.loan, company.perHours, company.describtion)

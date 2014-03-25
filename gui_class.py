@@ -194,6 +194,7 @@ class Gui(QtGui.QMainWindow):
         mightyController.updatePersonalFinancesList()
         self.updatePersonalFinanceText()
         for pf in mightyController.personalFinances:
+            #if cw.ifInsertPersonalFinance(self.ui, pf):
             self.ui.pfList.addItem(pf.name)
         if selectFirst:
             self.ui.pfList.setCurrentRow(0)

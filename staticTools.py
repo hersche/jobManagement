@@ -247,15 +247,15 @@ class cw:
     @staticmethod
     def ifInsertPersonalFinance(ui,  pf):
         pfCal = QtCore.QDate.fromString(str(ui.pfCalendar.monthShown())+"."+str(ui.pfCalendar.yearShown()), "M.yyyy")
-        print(str(pfCal.month())+"."+str(pfCal.year())+"vs"+str(pf.date.month())+"."+str(pf.date.year()))
+        pfSearch = ui.pfSearch.text()
+        pfSearch = pfSearch.lower()
+        #print(str(pfCal.month())+"."+str(pfCal.year())+"vs"+str(pf.date.month())+"."+str(pf.date.year()))
         if ui.pfCalendarEnabled.isChecked() == False and ui.pfSearchEnabled.isChecked()==False:
             return True
         elif ui.pfCalendarEnabled.isChecked() and ui.pfSearchEnabled.isChecked()==False:
             if pf.date.month() == pfCal.month() and pf.date.year() == pfCal.year():
                 return True
         elif  ui.pfCalendarEnabled.isChecked() == False and  ui.pfSearchEnabled.isChecked():
-            pfSearch = ui.pfSearch.text()
-            pfSearch = pfSearch.lower()
             if ui.pfSearch.text() == "":
                 return True
             elif re.search(pfSearch,  pf.name.lower()) is not None:

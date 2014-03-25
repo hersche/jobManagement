@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'gui.ui'
 #
-# Created: Sat Jun 29 18:38:48 2013
-#      by: PyQt4 UI code generator 4.10.2
+# Created: Tue Mar 25 19:09:33 2014
+#      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -65,7 +65,7 @@ class Ui_MainWindow(object):
         self.frame_6.setFrameShadow(QtGui.QFrame.Raised)
         self.frame_6.setObjectName(_fromUtf8("frame_6"))
         self.formLayoutWidget = QtGui.QWidget(self.frame_6)
-        self.formLayoutWidget.setGeometry(QtCore.QRect(20, 10, 361, 372))
+        self.formLayoutWidget.setGeometry(QtCore.QRect(20, 10, 361, 370))
         self.formLayoutWidget.setObjectName(_fromUtf8("formLayoutWidget"))
         self.formLayout = QtGui.QFormLayout(self.formLayoutWidget)
         self.formLayout.setFieldGrowthPolicy(QtGui.QFormLayout.ExpandingFieldsGrow)
@@ -128,20 +128,20 @@ class Ui_MainWindow(object):
         self.jobComment = QtGui.QPlainTextEdit(self.formLayoutWidget)
         self.jobComment.setObjectName(_fromUtf8("jobComment"))
         self.formLayout.setWidget(9, QtGui.QFormLayout.SpanningRole, self.jobComment)
-        self.saveJob = QtGui.QPushButton(self.formLayoutWidget)
-        self.saveJob.setObjectName(_fromUtf8("saveJob"))
-        self.formLayout.setWidget(11, QtGui.QFormLayout.LabelRole, self.saveJob)
         self.active = QtGui.QCheckBox(self.formLayoutWidget)
         self.active.setChecked(True)
         self.active.setObjectName(_fromUtf8("active"))
-        self.formLayout.setWidget(11, QtGui.QFormLayout.FieldRole, self.active)
+        self.formLayout.setWidget(13, QtGui.QFormLayout.FieldRole, self.active)
+        self.deleteJob = QtGui.QPushButton(self.formLayoutWidget)
+        self.deleteJob.setObjectName(_fromUtf8("deleteJob"))
+        self.formLayout.setWidget(15, QtGui.QFormLayout.FieldRole, self.deleteJob)
+        self.saveJob = QtGui.QPushButton(self.formLayoutWidget)
+        self.saveJob.setObjectName(_fromUtf8("saveJob"))
+        self.formLayout.setWidget(15, QtGui.QFormLayout.LabelRole, self.saveJob)
         self.createJob = QtGui.QPushButton(self.formLayoutWidget)
         self.createJob.setEnabled(False)
         self.createJob.setObjectName(_fromUtf8("createJob"))
-        self.formLayout.setWidget(12, QtGui.QFormLayout.LabelRole, self.createJob)
-        self.deleteJob = QtGui.QPushButton(self.formLayoutWidget)
-        self.deleteJob.setObjectName(_fromUtf8("deleteJob"))
-        self.formLayout.setWidget(12, QtGui.QFormLayout.FieldRole, self.deleteJob)
+        self.formLayout.setWidget(13, QtGui.QFormLayout.LabelRole, self.createJob)
         self.formLayoutWidget_9 = QtGui.QWidget(self.frame_6)
         self.formLayoutWidget_9.setGeometry(QtCore.QRect(20, 380, 351, 171))
         self.formLayoutWidget_9.setObjectName(_fromUtf8("formLayoutWidget_9"))
@@ -215,7 +215,7 @@ class Ui_MainWindow(object):
         self.frame_4.setFrameShadow(QtGui.QFrame.Raised)
         self.frame_4.setObjectName(_fromUtf8("frame_4"))
         self.formLayoutWidget_2 = QtGui.QWidget(self.frame_4)
-        self.formLayoutWidget_2.setGeometry(QtCore.QRect(10, 10, 471, 157))
+        self.formLayoutWidget_2.setGeometry(QtCore.QRect(10, 10, 471, 159))
         self.formLayoutWidget_2.setObjectName(_fromUtf8("formLayoutWidget_2"))
         self.formLayout_2 = QtGui.QFormLayout(self.formLayoutWidget_2)
         self.formLayout_2.setSizeConstraint(QtGui.QLayout.SetMaximumSize)
@@ -550,11 +550,11 @@ class Ui_MainWindow(object):
         self.tab_5 = QtGui.QWidget()
         self.tab_5.setObjectName(_fromUtf8("tab_5"))
         self.companyViewText = QtGui.QTextEdit(self.tab_5)
-        self.companyViewText.setGeometry(QtCore.QRect(240, 0, 551, 511))
+        self.companyViewText.setGeometry(QtCore.QRect(420, 0, 551, 511))
         self.companyViewText.setReadOnly(True)
         self.companyViewText.setObjectName(_fromUtf8("companyViewText"))
         self.gridLayoutWidget = QtGui.QWidget(self.tab_5)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(0, 0, 234, 197))
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(0, 0, 362, 205))
         self.gridLayoutWidget.setObjectName(_fromUtf8("gridLayoutWidget"))
         self.gridLayout = QtGui.QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setMargin(0)
@@ -573,7 +573,7 @@ class Ui_MainWindow(object):
         self.tab_6 = QtGui.QWidget()
         self.tab_6.setObjectName(_fromUtf8("tab_6"))
         self.frame_3 = QtGui.QFrame(self.tab_6)
-        self.frame_3.setGeometry(QtCore.QRect(0, 30, 471, 241))
+        self.frame_3.setGeometry(QtCore.QRect(0, 260, 471, 241))
         self.frame_3.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frame_3.setFrameShadow(QtGui.QFrame.Raised)
         self.frame_3.setObjectName(_fromUtf8("frame_3"))
@@ -646,39 +646,41 @@ class Ui_MainWindow(object):
         self.pfDelete = QtGui.QPushButton(self.gridLayoutWidget_2)
         self.pfDelete.setObjectName(_fromUtf8("pfDelete"))
         self.gridLayout_2.addWidget(self.pfDelete, 7, 2, 1, 1)
-        self.checkBox = QtGui.QCheckBox(self.tab_6)
-        self.checkBox.setGeometry(QtCore.QRect(10, 10, 131, 21))
-        self.checkBox.setObjectName(_fromUtf8("checkBox"))
         self.frame_5 = QtGui.QFrame(self.tab_6)
-        self.frame_5.setGeometry(QtCore.QRect(470, 0, 551, 581))
+        self.frame_5.setGeometry(QtCore.QRect(480, 280, 551, 301))
         self.frame_5.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frame_5.setFrameShadow(QtGui.QFrame.Raised)
         self.frame_5.setObjectName(_fromUtf8("frame_5"))
-        self.gridLayoutWidget_3 = QtGui.QWidget(self.frame_5)
-        self.gridLayoutWidget_3.setGeometry(QtCore.QRect(10, 10, 461, 201))
+        self.pfSummary = QtGui.QTextEdit(self.frame_5)
+        self.pfSummary.setGeometry(QtCore.QRect(10, 10, 531, 281))
+        self.pfSummary.setObjectName(_fromUtf8("pfSummary"))
+        self.gridLayoutWidget_3 = QtGui.QWidget(self.tab_6)
+        self.gridLayoutWidget_3.setGeometry(QtCore.QRect(50, 10, 691, 231))
         self.gridLayoutWidget_3.setObjectName(_fromUtf8("gridLayoutWidget_3"))
         self.gridLayout_3 = QtGui.QGridLayout(self.gridLayoutWidget_3)
         self.gridLayout_3.setMargin(0)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
+        self.pfSearchEnabled = QtGui.QCheckBox(self.gridLayoutWidget_3)
+        self.pfSearchEnabled.setChecked(True)
+        self.pfSearchEnabled.setObjectName(_fromUtf8("pfSearchEnabled"))
+        self.gridLayout_3.addWidget(self.pfSearchEnabled, 3, 3, 1, 1)
         self.label_39 = QtGui.QLabel(self.gridLayoutWidget_3)
         self.label_39.setObjectName(_fromUtf8("label_39"))
         self.gridLayout_3.addWidget(self.label_39, 0, 1, 1, 1)
         self.pfSearch = QtGui.QLineEdit(self.gridLayoutWidget_3)
         self.pfSearch.setObjectName(_fromUtf8("pfSearch"))
         self.gridLayout_3.addWidget(self.pfSearch, 0, 3, 1, 1)
-        self.pfCalendarEnabled = QtGui.QCheckBox(self.gridLayoutWidget_3)
-        self.pfCalendarEnabled.setObjectName(_fromUtf8("pfCalendarEnabled"))
-        self.gridLayout_3.addWidget(self.pfCalendarEnabled, 2, 0, 1, 1)
         self.pfCalendar = QtGui.QCalendarWidget(self.gridLayoutWidget_3)
         self.pfCalendar.setObjectName(_fromUtf8("pfCalendar"))
         self.gridLayout_3.addWidget(self.pfCalendar, 0, 0, 1, 1)
-        self.pfSearchEnabled = QtGui.QCheckBox(self.gridLayoutWidget_3)
-        self.pfSearchEnabled.setText(_fromUtf8(""))
-        self.pfSearchEnabled.setObjectName(_fromUtf8("pfSearchEnabled"))
-        self.gridLayout_3.addWidget(self.pfSearchEnabled, 0, 4, 1, 1)
-        self.pfSummary = QtGui.QTextEdit(self.frame_5)
-        self.pfSummary.setGeometry(QtCore.QRect(10, 230, 531, 331))
-        self.pfSummary.setObjectName(_fromUtf8("pfSummary"))
+        self.checkBox = QtGui.QCheckBox(self.gridLayoutWidget_3)
+        self.checkBox.setChecked(True)
+        self.checkBox.setObjectName(_fromUtf8("checkBox"))
+        self.gridLayout_3.addWidget(self.checkBox, 1, 3, 1, 1)
+        self.pfCalendarEnabled = QtGui.QCheckBox(self.gridLayoutWidget_3)
+        self.pfCalendarEnabled.setChecked(True)
+        self.pfCalendarEnabled.setObjectName(_fromUtf8("pfCalendarEnabled"))
+        self.gridLayout_3.addWidget(self.pfCalendarEnabled, 2, 3, 1, 1)
         self.mainTab.addTab(self.tab_6, _fromUtf8(""))
         self.settings = QtGui.QWidget()
         self.settings.setObjectName(_fromUtf8("settings"))
@@ -733,7 +735,7 @@ class Ui_MainWindow(object):
         self.status.setObjectName(_fromUtf8("status"))
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1043, 20))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1043, 21))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
@@ -743,8 +745,8 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.mainTab.setCurrentIndex(1)
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(2)
-        self.viewTabs.setCurrentIndex(0)
+        self.tabWidget_2.setCurrentIndex(0)
+        self.viewTabs.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -761,10 +763,10 @@ class Ui_MainWindow(object):
         self.label_12.setText(_translate("MainWindow", "Correction (allTime)", None))
         self.label_11.setText(_translate("MainWindow", "Weekenddays (per 7d)", None))
         self.jobComment.setPlainText(_translate("MainWindow", "Comments...", None))
-        self.saveJob.setText(_translate("MainWindow", "Save", None))
         self.active.setText(_translate("MainWindow", "Active", None))
-        self.createJob.setText(_translate("MainWindow", "Create", None))
         self.deleteJob.setText(_translate("MainWindow", "Delete", None))
+        self.saveJob.setText(_translate("MainWindow", "Save", None))
+        self.createJob.setText(_translate("MainWindow", "Create", None))
         self.daysCalc.setText(_translate("MainWindow", "how many days..", None))
         self.hoursCalc.setText(_translate("MainWindow", "how many hours @all..", None))
         self.deleteWorkSpese.setText(_translate("MainWindow", "Delete", None))
@@ -861,8 +863,9 @@ class Ui_MainWindow(object):
         self.pfCreate.setText(_translate("MainWindow", "Create", None))
         self.pfSave.setText(_translate("MainWindow", "Save", None))
         self.pfDelete.setText(_translate("MainWindow", "Delete", None))
-        self.checkBox.setText(_translate("MainWindow", "Zeige Inaktive", None))
+        self.pfSearchEnabled.setText(_translate("MainWindow", "  Search (at all)", None))
         self.label_39.setText(_translate("MainWindow", "Search", None))
+        self.checkBox.setText(_translate("MainWindow", "Zeige Inaktive", None))
         self.pfCalendarEnabled.setText(_translate("MainWindow", "Filter Calendar", None))
         self.mainTab.setTabText(self.mainTab.indexOf(self.tab_6), _translate("MainWindow", "Personal finances", None))
         self.label_23.setText(_translate("MainWindow", "Configs", None))
@@ -874,14 +877,14 @@ class Ui_MainWindow(object):
         self.textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:18pt; text-decoration: underline;\">Avaible Config-Keys</span></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">* lang / language = language - put the right filename (*.qm in your folder) there</p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">* singleview = 1 - enables singleView (experimental)</p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">* encrypted : 1=AES, 2=ARC4, 3=DES3 (you may need to install pycrypto)</p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Restart is needed after changes!</p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
+"</style></head><body style=\" font-family:\'Ubuntu\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\'; font-size:18pt; text-decoration: underline;\">Avaible Config-Keys</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\';\">* lang / language = language - put the right filename (*.qm in your folder) there</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\';\">* singleview = 1 - enables singleView (experimental)</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\';\">* encrypted : 1=AES, 2=ARC4, 3=DES3 (you may need to install pycrypto)</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Sans Serif\';\"><br /></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\';\">Restart is needed after changes!</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Sans Serif\';\"><br /></p></body></html>", None))
         self.mainTab.setTabText(self.mainTab.indexOf(self.settings), _translate("MainWindow", "Settings", "en"))
         self.status.setText(_translate("MainWindow", "Status..", None))
 

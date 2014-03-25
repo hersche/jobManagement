@@ -1,4 +1,5 @@
 from header import *
+from PyQt4.uic.Compiler.qtproxies import QtGui
 
 
 #semantic designer tools
@@ -87,6 +88,10 @@ class sdt:
         oldDaySpace = 0.00
         oldValue = 0.00
         allValue = 0
+#         qtPainter = QtGui.QPainter()
+#         brush = QtGui.QBrush()
+#         brush.setColor(QtGui.QColor(120,120,250))
+#         qtPainter.setBackground()
         for company in companyList:
             for job in company.jobs:
                 if cw.insertJobYesNo(ui, company, job, infoSearch, workCalendar):

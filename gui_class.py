@@ -18,12 +18,12 @@ class Gui(QtGui.QMainWindow):
             pw, okCancel = QtGui.QInputDialog.getText(None,tr("Password"),tr("Enter Password"),QtGui.QLineEdit.Password)
             self.tmpPw = pw
             mightyController.eo.setKey(pw)
-        if True is not mightyController.singleView :
+        if True is not mightyController.singleView:
             from gui import Ui_MainWindow
 
         QtGui.QWidget.__init__(self, parent)
         
-        if mightyController.singleView :
+        if mightyController.singleView:
             self.ui = Ui_MainWindowSingle()
         else:
             self.ui = Ui_MainWindow()
@@ -191,8 +191,8 @@ class Gui(QtGui.QMainWindow):
         self.ui.pfList.clear()
         if mightyController.eo is not None:
             mightyController.eo.setKey(self.tmpPw)
-        self.updatePersonalFinanceText()
         mightyController.updatePersonalFinancesList()
+        self.updatePersonalFinanceText()
         for pf in mightyController.personalFinances:
             self.ui.pfList.addItem(pf.name)
         if selectFirst:
@@ -388,7 +388,7 @@ class Gui(QtGui.QMainWindow):
 
         for pf in mightyController.personalFinances:
             if cm is not None and pf.name == cm.text():
-                if pf.save(self.ui.pfName.text(), self.ui.pfValue.text(), self.ui.pfDate.text(), self.ui.pfRepeat.currentText(), self.ui.pfRepeatTimes.value(), self.ui.pfPlusMinus.currentText(), self.ui.pfActive.isChecked(), encrypted) != -1:
+                if pf.save(self.ui.pfName.text(), self.ui.pfValue.text(), self.ui.pfDate.text(), self.ui.pfRepeat.currentText(), self.ui.pfRepeatTimes.value(), self.ui.pfPlusMinus.currentText(), self.ui.pfActive.isChecked()) != -1:
                     self.ui.status.setText(tr("Personal Finance")+" "+self.ui.pfName.text()+" "+tr("saved"))
                 else:
                     sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("saved")+". DB-Error. The name maybe exist allready? ")

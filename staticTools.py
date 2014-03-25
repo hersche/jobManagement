@@ -1,5 +1,5 @@
 from header import *
-from PyQt4.uic.Compiler.qtproxies import QtGui
+from PyQt4 import QtGui
 
 
 #semantic designer tools

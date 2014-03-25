@@ -14,10 +14,10 @@ class Gui(QtGui.QMainWindow):
         self.currentCompany = None
         self.showInactive = True
         self.tmpPw = ""
-        if mightyController.eo is not None:
+        if mightyController.encryptionObject is not None:
             pw, okCancel = QtGui.QInputDialog.getText(None,tr("Password"),tr("Enter Password"),QtGui.QLineEdit.Password)
             self.tmpPw = pw
-            mightyController.eo.setKey(pw)
+            mightyController.encryptionObject.setKey(pw)
         if True is not mightyController.singleView:
             from gui import Ui_MainWindow
 
@@ -29,12 +29,9 @@ class Gui(QtGui.QMainWindow):
             self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.updateCompanyList(selectFirst=True)
-            #pw, okCancel = QtGui.QInputDialog.getText(self,  tr("Enter Password"), tr("Enter PW"))
-            #mightyController.eo.key = mightyController.eo.setKey(pw)
         if singleView:
-            #init self.currentCompany
             self.onCompanyItemClick("singleView")
-        #mightyController.updateList()
+        #mightyController.updateCompanyList()
         mightyController.updatePersonalFinancesList()
         cd = QtCore.QDate.currentDate()
         if singleView == False:
@@ -75,10 +72,10 @@ class Gui(QtGui.QMainWindow):
         self.ui.jobplace.returnPressed.connect(self.onSaveJob)
         self.ui.deleteJob.clicked.connect(self.onDeleteJob)
         #Charge-Actions
-        self.ui.createCharge.clicked.connect(self.onCreateSpese)
-        self.ui.saveCharge.clicked.connect(self.onSaveSpese)
-        self.ui.chargesName.returnPressed.connect(self.onSaveSpese)
-        self.ui.deleteCharge.clicked.connect(self.onDeleteSpese)
+        self.ui.createCharge.clicked.connect(self.onCreateCharge)
+        self.ui.saveCharge.clicked.connect(self.onSaveCharge)
+        self.ui.chargesName.returnPressed.connect(self.onSaveCharge)
+        self.ui.deleteCharge.clicked.connect(self.onDeleteCharge)
         self.ui.deleteWorkSpese.clicked.connect(self.onDeleteWorkSpese)
         self.ui.addChargeToJob.clicked.connect(self.onAddWorkSpese)
         self.ui.wChargeSave.clicked.connect(self.onSaveWorkSpese)
@@ -88,9 +85,9 @@ class Gui(QtGui.QMainWindow):
         self.ui.deleteCredit.clicked.connect(self.onDeleteCredit)
         
         #loanSplit-Actions
-        self.ui.createLoanSplit.clicked.connect(self.onCreateLoanSplit)
-        self.ui.saveLoanSplit.clicked.connect(self.onSaveLoanSplit)
-        self.ui.deleteLoanSplit.clicked.connect(self.onDeleteLoanSplit)
+        self.ui.createLoanDistraction.clicked.connect(self.onCreateLoanDistraction)
+        self.ui.saveLoanDistraction.clicked.connect(self.onSaveLoanSplit)
+        self.ui.deleteLoanDistraction.clicked.connect(self.onDeleteLoanSplit)
         
         #config-Actions
         self.ui.createConfig.clicked.connect(self.onCreateConfig)
@@ -157,9 +154,9 @@ class Gui(QtGui.QMainWindow):
     def updateCompanyList(self, selectFirst=False):
         print("update companys")
         if mightyController.singleView == False:
-            if mightyController.eo is not None:
-                mightyController.eo.setKey(self.tmpPw)
-            mightyController.updateList()
+            if mightyController.encryptionObject is not None:
+                mightyController.encryptionObject.setKey(self.tmpPw)
+            mightyController.updateCompanyList()
             self.ui.companyList.clear()
             for company in mightyController.companylist:
                 self.ui.companyList.addItem(company.name)
@@ -168,8 +165,8 @@ class Gui(QtGui.QMainWindow):
                 self.onCompanyItemClick(self.ui.companyList.currentItem())
     def updateJobList(self, selectFirst=False,  name=""):
         self.ui.jobList.clear()
-        if mightyController.eo is not None:
-            mightyController.eo.setKey(self.tmpPw)
+        if mightyController.encryptionObject is not None:
+            mightyController.encryptionObject.setKey(self.tmpPw)
         self.currentCompany.updateJobList()
         for job in self.currentCompany.jobs:
             if (self.showInactive == True) or (job.active == 1):
@@ -177,11 +174,11 @@ class Gui(QtGui.QMainWindow):
         if selectFirst:
             self.ui.jobList.setCurrentRow(0)
             self.onJobItemClick(self.ui.jobList.currentItem())
-    def updatechargesList(self,  selectFirst=False,  name=""):
+    def updateChargesList(self,  selectFirst=False,  name=""):
         self.ui.chargesList.clear()
-        if mightyController.eo is not None:
-            mightyController.eo.setKey(self.tmpPw)
-        self.currentCompany.updatechargesList()
+        if mightyController.encryptionObject is not None:
+            mightyController.encryptionObject.setKey(self.tmpPw)
+        self.currentCompany.updateChargesList()
         for charge in self.currentCompany.charges:
             self.ui.chargesList.addItem(charge.name)
         if selectFirst:
@@ -189,8 +186,8 @@ class Gui(QtGui.QMainWindow):
             self.onSpeseItemClick(self.ui.chargesList.currentItem())
     def updatePersonalFinancesList(self,  selectFirst=False,  name=""):
         self.ui.pfList.clear()
-        if mightyController.eo is not None:
-            mightyController.eo.setKey(self.tmpPw)
+        if mightyController.encryptionObject is not None:
+            mightyController.encryptionObject.setKey(self.tmpPw)
         mightyController.updatePersonalFinancesList()
         self.updatePersonalFinanceText()
         for pf in mightyController.personalFinances:
@@ -201,8 +198,8 @@ class Gui(QtGui.QMainWindow):
             self.onPersonalFinanceItemClick(self.ui.pfList.currentItem())
     def updateLoanSplitList(self,  selectFirst=False,  name=""):
         self.ui.loanSplitList.clear()
-        if mightyController.eo is not None:
-            mightyController.eo.setKey(self.tmpPw)
+        if mightyController.encryptionObject is not None:
+            mightyController.encryptionObject.setKey(self.tmpPw)
         self.currentCompany.updateLoanSplitList()
         for loanSplit in self.currentCompany.loanSplits:
             self.ui.loanSplitList.addItem(loanSplit.name)
@@ -211,8 +208,8 @@ class Gui(QtGui.QMainWindow):
             self.onLoanSplitItemClick(self.ui.loanSplitList.currentItem())
     def updateConfigList(self,  selectFirst=False,  name=""):
         self.ui.configList.clear()
-        if mightyController.eo is not None:
-            mightyController.eo.setKey(self.tmpPw)
+        if mightyController.encryptionObject is not None:
+            mightyController.encryptionObject.setKey(self.tmpPw)
         mightyController.updateConfigList()
         for config in mightyController.configlist:
             self.ui.configList.addItem(config.key)
@@ -222,8 +219,8 @@ class Gui(QtGui.QMainWindow):
             
     def updateCreditList(self,  selectFirst=False, valueDate=""):
         self.ui.creditList.clear()
-        if mightyController.eo is not None:
-            mightyController.eo.setKey(self.tmpPw)
+        if mightyController.encryptionObject is not None:
+            mightyController.encryptionObject.setKey(self.tmpPw)
         self.currentCompany.updateCreditList()
         for credit in self.currentCompany.credits:
             #if valueDate is not "" and valueDate == str(credit.value) +" "+credit.date:
@@ -233,8 +230,8 @@ class Gui(QtGui.QMainWindow):
             self.onCreditItemClick(self.ui.creditList.currentItem())
     def updateWorkchargesList(self,  selectFirst=False,  name=""):
         self.ui.workChargesList.clear()
-        if mightyController.eo is not None:
-            mightyController.eo.setKey(self.tmpPw)
+        if mightyController.encryptionObject is not None:
+            mightyController.encryptionObject.setKey(self.tmpPw)
         cs = self.ui.jobList.currentItem()
         for job in self.currentCompany.jobs:
             if cs is not None and job.name == cs.text():
@@ -273,7 +270,7 @@ class Gui(QtGui.QMainWindow):
                 self.ui.perHours.setValue(self.currentCompany.perHours)
                 self.ui.companydescription.insertPlainText(str(self.currentCompany.describtion))
             self.updateJobList(True)
-            self.updatechargesList(True)
+            self.updateChargesList(True)
             self.updateCreditList(True)
             self.updateLoanSplitList(True)
     def onSpeseItemClick(self, item):
@@ -417,43 +414,43 @@ class Gui(QtGui.QMainWindow):
     #-------------
     # Charges-Actions
     #--------------
-    def onCreateSpese(self):
+    def onCreateCharge(self):
         self.currentCompany.createSpese(self.ui.chargesName.text(), self.ui.chargesValue.text())
         # @TODO select the created!
-        self.updatechargesList(True)
-    def onSaveSpese(self):
+        self.updateChargesList(True)
+    def onSaveCharge(self):
         cr = self.ui.chargesList.currentRow()
         cm = self.ui.chargesList.currentItem()
 
-        for spese in self.currentCompany.charges:
-            if cm is not None and spese.name == cm.text():
-                if spese.save(self.ui.chargesName.text(), self.ui.chargesValue.text()) != -1:
+        for charge in self.currentCompany.charges:
+            if cm is not None and charge.name == cm.text():
+                if charge.save(self.ui.chargesName.text(), self.ui.chargesValue.text()) != -1:
                     self.ui.status.setText(tr("Charge")+" "+self.ui.chargesName.text()+" "+tr("saved"))
                 else:
                     sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("saved")+". DB-Error. The name maybe exist allready? ")
         else:
-            self.updatechargesList(True)
+            self.updateChargesList(True)
             self.updateWorkchargesList(True)
             self.ui.chargesList.setCurrentRow(cr)
             self.ui.chargesList.setCurrentItem(cm)
-    def onDeleteSpese(self):
+    def onDeleteCharge(self):
         cm = self.ui.chargesList.currentItem()
         success = False
-        for spese in self.currentCompany.charges:
-            if cm is not None and spese.name == cm.text():
-                spese.delete()
+        for charge in self.currentCompany.charges:
+            if cm is not None and charge.name == cm.text():
+                charge.delete()
                 success = True
                 self.ui.status.setText(tr("Charge")+" "+cm.text()+" "+tr("deleted"))
         if not success:
             self.alertBox.setText(tr("Charge")+" "+tr("could not")+" be "+tr("deleted"))
             self.alertBox.exec()
         else:
-            self.updatechargesList(True)
+            self.updateChargesList(True)
     #-------------
     # loanSplit-Actions
     #--------------
-    def onCreateLoanSplit(self):
-        self.currentCompany.createLoanSplit(self.ui.loanSplitName.text(), self.ui.loanSplitValue.text(),  self.ui.loanSplitMoney.isChecked())
+    def onCreateLoanDistraction(self):
+        self.currentCompany.createLoanDistraction(self.ui.loanSplitName.text(), self.ui.loanSplitValue.text(),  self.ui.loanSplitMoney.isChecked())
         # @TODO select the created!
         self.ui.status.setText(tr("LoanSplit")+" "+self.ui.loanSplitName.text()+" "+tr("created"))
         self.updateLoanSplitList(True)
@@ -497,9 +494,10 @@ class Gui(QtGui.QMainWindow):
         if self.ui.configKey.text() == "encrypted":
             pw, okCancel = QtGui.QInputDialog.getText(None,tr("Password"),tr("Enter Password"),QtGui.QLineEdit.Password)
             self.tmpPw = pw
-            nCm = cm(scm.getMod(self.ui.configValue.text()), pw)
-            scm.updateAll(nCm, mightyController)
-            mightyController.updateEos(nCm)
+            newCryptManager = cm(scm.getMod(self.ui.configValue.text()), pw)
+            scm.updateAll(newCryptManager, mightyController)
+            print(newCryptManager.key)
+            mightyController.updateEos(newCryptManager)
             #mightyController.updateEos()
         self.updateConfigList(True)
         #self.updateCompanyList()
@@ -517,7 +515,7 @@ class Gui(QtGui.QMainWindow):
                     nCm = cm(scm.getMod(self.ui.configValue.text()), pw)
                     print(nCm.key)
                     scm.updateAll(nCm, mightyController)
-                    mightyController.eo = nCm
+                    mightyController.encryptionObject = nCm
                     mightyController.updateEos(nCm)
                     #mightyController.updateEos()
             self.updateConfigList()

@@ -3,9 +3,10 @@ import base64
 import sys
 #'cryptoclass - cm = cryptoMeta'
 class cm:
-    def __init__(self, pyCryptoModule,  key=""):
-        self.key =  ""
+    def __init__(self, pyCryptoModule,  key):
+        self.key = key
         self.mod = pyCryptoModule
+        print("key setted to "+self.setKey(self.key))
         if key != "":
             self.key = self.setKey(key)
 
@@ -15,25 +16,22 @@ class cm:
 
     def setKey(self, key):
         self.key = key
-        #print("setKey "+str(self.mod.block_size)+self.key)
         if len(self.key) < self.mod.block_size:
             rest = (self.mod.block_size *2) - len(self.key)
         else:
             rest = 16
-            #print("rest"+str(rest))
         while rest !=0:
             rest -=1
             self.key += "."
         return self.key
 
-    def pad(self,  s):
-        bla = lambda s: s + (self.mod.block_size- len(s) % self.mod.block_size) * chr(self.mod.block_size - len(s) % self.mod.block_size)
-        return bla
-    def unpad(self, s):
-        upad = lambda s : s[0:-ord(s[-1])]
-        return upad
+#     def pad(self,  s):
+#         bla = lambda s: s + (self.mod.block_size- len(s) % self.mod.block_size) * chr(self.mod.block_size - len(s) % self.mod.block_size)
+#         return bla
+#     def unpad(self, s):
+#         upad = lambda s : s[0:-ord(s[-1])]
+#         return upad
     def encrypt(self, rawMessage):
-        
         message=str(rawMessage)
         if self.mod == None:
             return rawMessage
@@ -69,29 +67,25 @@ class cm:
 
 #static crypt manager
 class scm:
-    #oldMod - self.eo,
+    #oldMod - self.encryptionObject,
     @staticmethod
-    def updateAll(newCm,  controller):
-        #print("st4rt updateEncryption"+newCm.key+ " "+str("old "+controller.eo.name)+ " new"+str(newCm.name))
-        if newCm.name != controller.eo.name:
-            #print(controller.eo.key)
-            controller.eo = newCm
-            #print(controller.eo.key)
-            controller.updateEos(newCm)
-            for company in controller.companylist:
-                company.save(company.name,  company.loan, company.perHours, company.describtion)
-                for charge in company.charges:
-                    charge.save( charge.name, charge.value,  charge.howManyTimes)
-                for job in company.jobs:
-                    job.save( job.name, job.place, job.comment, job.hours, job.correctionHours, job.weekendDays,  job.startdate, job.enddate,job.leader, job.active, job.companyid)
-                    for wCharge in job.wcharges:
-                        wCharge.save( wCharge.name,  wCharge.howManyTimes)
-                for ls in company.loanSplits:
-                    ls.save( ls.name, ls.value,  ls.money)
-                for credit in company.credits:
-                    credit.save(credit.name,  credit.value, credit.date, credit.payed, credit.active, company.id)
-            for pf in controller.personalFinances:
-                pf.save(pf.name, pf.value, pf.date, pf.repeat, pf.timesRepeat, pf.plusMinus, pf.active)
+    def updateAll(newCm, controller):
+        controller.encryptionObject = newCm
+        controller.updateEos(newCm)
+        for company in controller.companylist:
+            company.save(company.name,  company.loan, company.perHours, company.describtion)
+            for charge in company.charges:
+                charge.save( charge.name, charge.value,  charge.howManyTimes)
+            for job in company.jobs:
+                job.save( job.name, job.place, job.comment, job.hours, job.correctionHours, job.weekendDays,  job.startdate, job.enddate,job.leader, job.active, job.companyid)
+                for wCharge in job.wcharges:
+                    wCharge.save( wCharge.name,  wCharge.howManyTimes)
+            for ls in company.loanSplits:
+                ls.save( ls.name, ls.value,  ls.money)
+            for credit in company.credits:
+                credit.save(credit.name,  credit.value, credit.date, credit.payed, credit.active, company.id)
+        for pf in controller.personalFinances:
+            pf.save(pf.name, pf.value, pf.date, pf.repeat, pf.timesRepeat, pf.plusMinus, pf.active)
 
     @staticmethod
     def getMod(configValue):

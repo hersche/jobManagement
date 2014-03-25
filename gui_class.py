@@ -157,7 +157,8 @@ class Gui(QtGui.QMainWindow):
     def updateCompanyList(self, selectFirst=False):
         print("update companys")
         if mightyController.singleView == False:
-            mightyController.eo.setKey(self.tmpPw)
+            if mightyController.eo is not None:
+                mightyController.eo.setKey(self.tmpPw)
             mightyController.updateList()
             self.ui.companyList.clear()
             for company in mightyController.companylist:
@@ -167,7 +168,8 @@ class Gui(QtGui.QMainWindow):
                 self.onCompanyItemClick(self.ui.companyList.currentItem())
     def updateJobList(self, selectFirst=False,  name=""):
         self.ui.jobList.clear()
-        mightyController.eo.setKey(self.tmpPw)
+        if mightyController.eo is not None:
+            mightyController.eo.setKey(self.tmpPw)
         self.currentCompany.updateJobList()
         for job in self.currentCompany.jobs:
             if (self.showInactive == True) or (job.active == 1):
@@ -177,7 +179,8 @@ class Gui(QtGui.QMainWindow):
             self.onJobItemClick(self.ui.jobList.currentItem())
     def updatechargesList(self,  selectFirst=False,  name=""):
         self.ui.chargesList.clear()
-        mightyController.eo.setKey(self.tmpPw)
+        if mightyController.eo is not None:
+            mightyController.eo.setKey(self.tmpPw)
         self.currentCompany.updatechargesList()
         for charge in self.currentCompany.charges:
             self.ui.chargesList.addItem(charge.name)
@@ -186,7 +189,8 @@ class Gui(QtGui.QMainWindow):
             self.onSpeseItemClick(self.ui.chargesList.currentItem())
     def updatePersonalFinancesList(self,  selectFirst=False,  name=""):
         self.ui.pfList.clear()
-        mightyController.eo.setKey(self.tmpPw)
+        if mightyController.eo is not None:
+            mightyController.eo.setKey(self.tmpPw)
         self.updatePersonalFinanceText()
         mightyController.updatePersonalFinancesList()
         for pf in mightyController.personalFinances:
@@ -196,7 +200,8 @@ class Gui(QtGui.QMainWindow):
             self.onPersonalFinanceItemClick(self.ui.pfList.currentItem())
     def updateLoanSplitList(self,  selectFirst=False,  name=""):
         self.ui.loanSplitList.clear()
-        mightyController.eo.setKey(self.tmpPw)
+        if mightyController.eo is not None:
+            mightyController.eo.setKey(self.tmpPw)
         self.currentCompany.updateLoanSplitList()
         for loanSplit in self.currentCompany.loanSplits:
             self.ui.loanSplitList.addItem(loanSplit.name)
@@ -205,7 +210,8 @@ class Gui(QtGui.QMainWindow):
             self.onLoanSplitItemClick(self.ui.loanSplitList.currentItem())
     def updateConfigList(self,  selectFirst=False,  name=""):
         self.ui.configList.clear()
-        mightyController.eo.setKey(self.tmpPw)
+        if mightyController.eo is not None:
+            mightyController.eo.setKey(self.tmpPw)
         mightyController.updateConfigList()
         for config in mightyController.configlist:
             self.ui.configList.addItem(config.key)
@@ -215,7 +221,8 @@ class Gui(QtGui.QMainWindow):
             
     def updateCreditList(self,  selectFirst=False, valueDate=""):
         self.ui.creditList.clear()
-        mightyController.eo.setKey(self.tmpPw)
+        if mightyController.eo is not None:
+            mightyController.eo.setKey(self.tmpPw)
         self.currentCompany.updateCreditList()
         for credit in self.currentCompany.credits:
             #if valueDate is not "" and valueDate == str(credit.value) +" "+credit.date:
@@ -225,7 +232,8 @@ class Gui(QtGui.QMainWindow):
             self.onCreditItemClick(self.ui.creditList.currentItem())
     def updateWorkchargesList(self,  selectFirst=False,  name=""):
         self.ui.workChargesList.clear()
-        mightyController.eo.setKey(self.tmpPw)
+        if mightyController.eo is not None:
+            mightyController.eo.setKey(self.tmpPw)
         cs = self.ui.jobList.currentItem()
         for job in self.currentCompany.jobs:
             if cs is not None and job.name == cs.text():

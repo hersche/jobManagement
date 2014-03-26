@@ -13,10 +13,14 @@ class TestSequenceFunctions(unittest.TestCase):
         encrypted = self.cm.encrypt("Test")
         decrypted =self.cm.decrypt(encrypted)
         self.assertEqual("Test", decrypted)
-    def test_enDecryptNr(self):
+    def test_enDecryptInt(self):
         encrypted = self.cm.encrypt(34)
         decrypted =self.cm.decrypt(encrypted)
-        self.assertEqual(float(34), float(decrypted))
+        self.assertEqual(34, int(decrypted))
+    def test_enDecryptFloat(self):
+        encrypted = self.cm.encrypt(3.14)
+        decrypted =self.cm.decrypt(encrypted)
+        self.assertEqual(3.14, float(decrypted))
 
 
 if __name__ == '__main__':

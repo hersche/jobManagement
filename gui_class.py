@@ -507,6 +507,7 @@ class Gui(QtGui.QMainWindow):
         
     def onSaveConfig(self):
         #cr = self.ui.configList.currentRow()
+        logger.debug("|Ui|onSaveConfig|Nr1")
         cI = self.ui.configList.currentItem()
         ciText = cI.text()
         for config in mightyController.configlist:
@@ -520,7 +521,7 @@ class Gui(QtGui.QMainWindow):
                     scm.updateAll(nCm, mightyController)
                     mightyController.encryptionObject = nCm
                     mightyController.updateEos(nCm)
-            self.updateConfigList(False,self.ui.configKey.text())
+        self.updateConfigList(False,self.ui.configKey.text())
     def onDeleteConfig(self):
         cm = self.ui.configList.currentItem()
         success = False

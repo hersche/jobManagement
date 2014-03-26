@@ -17,10 +17,12 @@ programm supports:
    * Livesearch [jobname, jobplace, jobleader, jobcomment, companyname]
    * Show inactive
 * SingleView (if you just use 1 company.. more limited)
-* Encryption by pycrypto (experimental, but should work, include changing of content, but needs restart!! and 
+* Encryption by pycrypto (experimental, but should work, include changing of content, <del>but needs restart!!</del> and 
 doesn't work for windows, when there's no pycrypto for python 3.. but just let it be like the lemon tree 
 ;)
-
+<h3>Passwords and Programreseting</h3>
+Since encryption, the dev-Database is often encrypted. If you like to test it out of the box, use the password "haha" or "hihi", sometimes it change betwen them 4 testing.
+To make a "factory reset" just delete the file jobmanagement.db .
 <h3>Install in *buntu</h3>
 open console and put in:
 sudo apt-get install python3-pyqt4 python3 python3-crypto

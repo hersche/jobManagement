@@ -1,7 +1,7 @@
 import os.path,  sqlite3
 from PyQt4 import QtCore,  QtGui
-from cryptClass import *
-from header import *
+from lib.cryptClass import *
+from lib.header import *
 #from Crypto.Cipher import * 
 fileExist = True
 singleView = False
@@ -23,7 +23,7 @@ if fileExist == False:
     c.execute("CREATE TABLE wcharges (wid  INTEGER PRIMARY KEY, jobid text, chargesid text, howManyTimes text, encrypted text)")
     # if money is false, the measure is in percent..
     c.execute("CREATE TABLE loanDistraction (lsid  INTEGER PRIMARY KEY, name TEXT, value text, money text, companyid text, encrypted text)")
-    c.execute("CREATE TABLE personalFinance (pfid  INTEGER PRIMARY KEY, name TEXT UNIQUE, value text, date TEXT,repeat TEXT, timesRepeat text, plusMinus TEXT, active text, encrypted text)")
+    c.execute("CREATE TABLE personalFinance (pfid  INTEGER PRIMARY KEY, name TEXT UNIQUE, value text, date TEXT, endDate TEXT,repeat TEXT, timesRepeat text, plusMinus TEXT, active text, encrypted text)")
     c.execute("CREATE TABLE config (coid INTEGER PRIMARY KEY,  key TEXT UNIQUE,  value TEXT, encrypted text)")
     
     #for testing only
@@ -66,7 +66,7 @@ class Controller:
 
 
         def updateCompanyList(self):
-            logger.debug("Update companyList")
+            logger.debug("|Models| Update companyList")
             self.companylist = []
             c.execute('select * from company;') 
             for row in c.fetchall():
@@ -81,9 +81,9 @@ class Controller:
                 c.execute('select * from personalFinance')
                 for row in c.fetchall():
                     if self.encryptionObject != None:
-                        self.personalFinances.append(personalFinance(row[0], self.encryptionObject.decrypt(row[1]), self.encryptionObject.decrypt(row[2]), self.encryptionObject.decrypt(row[3]), self.encryptionObject.decrypt(row[4]), self.encryptionObject.decrypt(row[5]), self.encryptionObject.decrypt(row[6]), self.encryptionObject.decrypt(row[7]), row[8], self.encryptionObject))
+                        self.personalFinances.append(personalFinance(row[0], self.encryptionObject.decrypt(row[1]), self.encryptionObject.decrypt(row[2]), self.encryptionObject.decrypt(row[3]), self.encryptionObject.decrypt(row[4]), self.encryptionObject.decrypt(row[5]), self.encryptionObject.decrypt(row[6]), self.encryptionObject.decrypt(row[7]),self.encryptionObject.decrypt(row[8]), row[9], self.encryptionObject))
                     else:
-                        self.personalFinances.append(personalFinance(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], self.encryptionObject))
+                        self.personalFinances.append(personalFinance(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8],row[9], self.encryptionObject))
             except sqlite3.Error as e:
                 logger.error("An DB-error occurred:", e.args[0])
                 return -1
@@ -155,13 +155,14 @@ class Controller:
      
       #CREATE TABLE personalFinance (pfid  INTEGER PRIMARY KEY, name TEXT UNIQUE, value REAL, date TEXT,repeat TEXT, timesRepeat INTEGER, plusMinus TEXT, active INTEGER, encrypted integer)")   
 class personalFinance:
-    def __init__(self, id, name, value, date, repeat, timesRepeat, plusMinus,  active,  encrypted, eo):
-        logger.debug("Init personal Finance "+name)
+    def __init__(self, id, name, value, date,endDate, repeat, timesRepeat, plusMinus,  active,  encrypted, eo):
+        logger.debug("|Models| Init personal Finance "+name)
         self.id = id
         self.name = name
         self.value = float(value)
         self.date=QtCore.QDate.fromString(date, dbDateFormat)
-        self.repeat =repeat
+        self.endDate=QtCore.QDate.fromString(endDate, dbDateFormat)
+        self.repeat=repeat
         self.timesRepeat = int(timesRepeat)
         self.plusMinus=plusMinus
         tmpActive = False
@@ -170,12 +171,14 @@ class personalFinance:
         self.active = tmpActive
         self.encrypted = encrypted
         self.encryptionObject = eo
-    def save(self, name, value, date, repeat, timesRepeat, plusMinus, active):
+
+                
+    def save(self, name, value, date,endDate, repeat, timesRepeat, plusMinus, active):
         try:
             if self.encryptionObject != None:
-                c.execute("UPDATE personalFinance SET name=?,value=?,date=?,repeat=?,timesRepeat=?,plusMinus=?,active=?,encrypted=? WHERE pfid=?",  (self.encryptionObject.encrypt(name), self.encryptionObject.encrypt(value), self.encryptionObject.encrypt(date), self.encryptionObject.encrypt(repeat), self.encryptionObject.encrypt(timesRepeat), self.encryptionObject.encrypt(plusMinus), self.encryptionObject.encrypt(active), self.encryptionObject.name,self.id))
+                c.execute("UPDATE personalFinance SET name=?,value=?,date=?,endDate=?,repeat=?,timesRepeat=?,plusMinus=?,active=?,encrypted=? WHERE pfid=?",  (self.encryptionObject.encrypt(name), self.encryptionObject.encrypt(value), self.encryptionObject.encrypt(date), self.encryptionObject.encrypt(endDate),self.encryptionObject.encrypt(repeat), self.encryptionObject.encrypt(timesRepeat), self.encryptionObject.encrypt(plusMinus), self.encryptionObject.encrypt(active), self.encryptionObject.name,self.id))
             else:
-                c.execute("UPDATE personalFinance SET name=?,value=?,date=?,repeat=?,timesRepeat=?,plusMinus=?,active=?,encrypted=? WHERE pfid=?",  (name, value, date, repeat, timesRepeat, plusMinus, active, "-1",self.id))
+                c.execute("UPDATE personalFinance SET name=?,value=?,date=?,endDate=?,repeat=?,timesRepeat=?,plusMinus=?,active=?,encrypted=? WHERE pfid=?",  (name, value, date,endDate,repeat, timesRepeat, plusMinus, active, "-1",self.id))
             db.commit()
         except sqlite3.Error as e:
             logger.error("An DB-error occurred:", e.args[0])("An DB-error occurred:", e.args[0])
@@ -188,7 +191,7 @@ class personalFinance:
 class Config:
     #"CREATE TABLE config (coid INTEGER PRIMARY KEY,  key TEXT,  value TEXT)
     def __init__(self,  id,  key,  value):
-        logger.debug("Init config "+key+"="+value)
+        logger.debug("|Models| Init config "+key+"="+value)
         self.id = id
         self.key = key
         self.value = value
@@ -210,7 +213,7 @@ class Config:
 class loanDistraction:
     #CREATE TABLE loanDistraction (lsid  INTEGER PRIMARY KEY, name TEXT, value REAL, money INTEGER, companyid INTEGER)"
     def __init__(self, id,  name, value,  money, encrypted, eo):
-        logger.debug("Init loan Distraction "+name)
+        logger.debug("|Models| Init loanDistraction "+name)
         self.id = id
         self.name = name
         self.value = float(value)
@@ -245,7 +248,7 @@ class loanDistraction:
 #sid  INTEGER PRIMARY KEY, name text, value text, companyid text, encrypted text)")
 class charges:
     def __init__(self, id,  name,  value, wchargeid=-1, howManyTimes=-1, encrypted="", eo=None):
-        logger.debug("Init charge "+name)
+        logger.debug("|Models| Init charge "+name)
         self.id = id
         self.name = name
         self.value = float(value)
@@ -275,7 +278,7 @@ class charges:
         
 class Credit:
     def __init__(self, id, name,  value,  date, payed, active,  company, encrypted, eo):
-        logger.debug("Init credit "+name)
+        logger.debug("|Models| Init credit "+name)
         self.id = id
         self.name = name
         self.value = float(value)
@@ -318,7 +321,7 @@ class Credit:
 
 class Company:
     def __init__(self, id,  name,  loan, perHours,  describtion,encrypted,  eo):
-        logger.debug(" |Models| Init company "+name)
+        logger.debug("|Models| Init company "+name)
         self.id = id
         self.name = name
         self.encryptionObject = eo

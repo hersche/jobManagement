@@ -1,4 +1,4 @@
-from header import *
+from lib.header import *
 import base64
 import sys
 #'cryptoclass - cm = cryptoMeta'

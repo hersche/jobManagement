@@ -2,7 +2,7 @@
 #License @ http://www.gnu.org/licenses/gpl.txt
 #Author: skamster
 
-from gui_class import *
+from lib.guiController import *
 import sys
 
 singleView = False
@@ -11,7 +11,7 @@ app = QtGui.QApplication(sys.argv)
 translator = QtCore.QTranslator()
 translator.load("./"+mightyController.lang,"./")
 app.installTranslator(translator)
-jobman = Gui()
-jobman.show()
+gui = Gui()
+gui.show()
 
 sys.exit(app.exec_())

@@ -1,7 +1,7 @@
 from lib.header import *
 import base64
 import sys
-from Crypto.Hash import SHA
+from Crypto.Hash import SHA512
 #'cryptoclass - cm = cryptoMeta'
 class cm:
     def __init__(self, pyCryptoModule,  key=""):
@@ -13,12 +13,12 @@ class cm:
           self.name = "None"
         if self.key != "encryptionInit" and self.key != "":
             self.setKey(self.key)    
-        logger.error("|Crypt| Init cm/cryptoMeta with module "+self.name)
+        logger.debug("|Crypt| Init cm/cryptoMeta with module "+self.name)
         from Crypto import Random as rand
         self.rand = rand
 
     def setKey(self, key):
-        hash = SHA.new(bytes(key,'ascii'))
+        hash = SHA512.new(bytes(key,'ascii'))
         self.key = hash.hexdigest()
         if self.name == "CAST" or self.name=="IDEA":
            self.key = self.key[0:16]

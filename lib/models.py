@@ -564,7 +564,7 @@ class Job:
             tmpActive = 0
             startdate = startdate.toString(dbDateFormat)
             enddate = enddate.toString(dbDateFormat)
-            logger.error(str(name+place + comment+ str(hours)+ str(correctionHours)+ str(weekendDays)+  str(startdate)+ str(enddate)+ leader+ str(tmpActive)+ str(companyid)))
+            #logger.debug(str(name+place + comment+ str(hours)+ str(correctionHours)+ str(weekendDays)+  str(startdate)+ str(enddate)+ leader+ str(tmpActive)+ str(companyid)))
             if active == True:
                 tmpActive = 1
             try:

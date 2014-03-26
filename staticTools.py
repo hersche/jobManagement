@@ -53,19 +53,19 @@ class sdt:
         colNr = colNr + 1
         ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(job.leader) ))
         colNr = colNr + 1
-        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(loanSum) + ".- ("+sdt.rounder(realHourLoan)+"/std)" ))
+        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(maths.rounder(loanSum) + ".- ("+maths.rounder(realHourLoan)+"/std)" ))
         colNr = colNr + 1
-        w = QtGui.QTableWidgetItem(sdt.rounder((daySpace * job.hours)+job.correctionHours) +" Std")
-        w.setToolTip(tr("From")+" "+job.startdate.toString(dbDateFormat)+" to "+job.enddate.toString(dbDateFormat)+ "<hr />"+sdt.rounder(daySpace)+ "d (*"+str(job.hours)+"h)+"+str(job.correctionHours)+"correctionH. "+str(weekendPart)+"d was Weekenddays")
+        w = QtGui.QTableWidgetItem(maths.rounder((daySpace * job.hours)+job.correctionHours) +" Std")
+        w.setToolTip(tr("From")+" "+job.startdate.toString(dbDateFormat)+" to "+job.enddate.toString(dbDateFormat)+ "<hr />"+maths.rounder(daySpace)+ "d (*"+str(job.hours)+"h)+"+str(job.correctionHours)+"correctionH. "+str(weekendPart)+"d was Weekenddays")
         ui.infoExel.setItem(rowNr,  colNr,   w)
         colNr = colNr + 1
-        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(chargeSum)+".- " ))
+        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(maths.rounder(chargeSum)+".- " ))
         colNr = colNr + 1
-        w = QtGui.QTableWidgetItem(sdt.rounder(realHourSplitSum)+".- @all")
-        w.setToolTip(sdt.rounder(loanDistractionSum)+".-/"+str(company.perHours)+tr("h")+")")
+        w = QtGui.QTableWidgetItem(maths.rounder(realHourSplitSum)+".- @all")
+        w.setToolTip(maths.rounder(loanDistractionSum)+".-/"+str(company.perHours)+tr("h")+")")
         ui.infoExel.setItem(rowNr,  colNr,   w)
         colNr = colNr + 1
-        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(sum + loanSum)+".-" ))
+        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(maths.rounder(sum + loanSum)+".-" ))
         return loanSum
     @staticmethod
     def colorChanger(color):
@@ -75,8 +75,8 @@ class sdt:
             return color + 53
     @staticmethod
     def updateGraphicView(ui, companyList, workCalendar, infoSearch):
-        pen= QtGui.QPen(QtCore.Qt.red)
-        r, g, b=(233, 36, 99)
+        pen=QtGui.QPen(QtCore.Qt.red)
+        r, g, b=(120, 77, 99)
         pen.setCapStyle(QtCore.Qt.RoundCap)
         pen.setWidth(4)
         if ui.filterAll.isChecked() and ui.filterCalendar.isChecked():
@@ -84,6 +84,13 @@ class sdt:
         else:
             widthPerHour = 2.0
         scene = QtGui.QGraphicsScene()
+        pen.setColor(QtGui.QColor(188, 188, 188))
+        scene.addLine(0,0,450,0,pen)
+        pen=QtGui.QPen(QtCore.Qt.yellow)
+        r, g, b=(120, 77, 99)
+        pen.setColor(QtGui.QColor(r, g, b))
+        pen.setCapStyle(QtCore.Qt.RoundCap)
+        pen.setWidth(1)
         #lastLine = 0
         oldDaySpace = 0.00
         oldValue = 0.00
@@ -101,15 +108,33 @@ class sdt:
                     daySpace = (daySpace + oldDaySpace) / 2
                     value = ((company.loan/10)*daySpace)
                     allValue += value
-                    #print(job.name+"="+str(value)+":"+str(daySpace))
-                    scene.addLine(float(oldDaySpace),float(-oldValue) ,   float(daySpace*widthPerHour), float(-loanSum/50),  pen)
+                    scene.addLine(float(oldDaySpace),0,float(daySpace*widthPerHour)/2,float(-loanSum/40),pen)
+                    scene.addLine(float(daySpace*widthPerHour)/2,float(-loanSum/40),float(daySpace*widthPerHour),0,pen)
+                    # old - scene.addLine(float(oldDaySpace),float(-oldValue),float(daySpace*widthPerHour),float(-loanSum/50),pen)
                     oldDaySpace = daySpace*widthPerHour
-                    oldValue = loanSum/50
+                    #oldValue = loanSum/50
                     r=sdt.colorChanger(r)
                     g=sdt.colorChanger(g)
                     b=sdt.colorChanger(b)
                     pen.setColor(QtGui.QColor(r, g, b))
         ui.graphView.setScene(scene)
+        
+    @staticmethod 
+    def createCreditTextBox(company, ui):
+        wc = QtCore.QDate.fromString(str(ui.workCalendar.monthShown())+"."+str(ui.workCalendar.yearShown()),"M.yyyy")
+        creditString =""
+        fCreditString = ""
+        creditSum = 0
+        #change to check credit-list-size
+        for credit in company.credits:
+            if (ui.filterCalendar.isChecked() and credit.date.month() == wc.month() and credit.date.year() == wc.year()) or ui.filterCalendar.isChecked() == False:
+                creditSum += credit.value
+                creditString += "<li><pre>"+credit.name+" @"+credit.date.toString(dbDateFormat)+":      "+str(credit.value)+"</pre><li/>"
+        if len(company.credits) > 0 and creditSum > 0:
+            fCreditString = "<ul>"
+            creditString += "</ul>"+company.name+": "+str(creditSum)+"<br />"
+            fCreditString += creditString
+        return (fCreditString,  creditSum)
     @staticmethod
     def createDetailText(company, workCalendar, cvCalIsChecked):
         text = ""
@@ -125,10 +150,10 @@ class sdt:
             else:
                 inMoney = (company.loan / 100) * ls.value
                 loanDistractionSum += inMoney
-                text += "% ("+sdt.rounder(inMoney)+".-) </li>"
+                text += "% ("+maths.rounder(inMoney)+".-) </li>"
         text += "</ul>"
         if loanDistractionSum > 0:
-            text += tr("Loandistractionsum")+": "+sdt.rounder(loanDistractionSum)+".-/"+str(company.perHours)+" "+tr("h")+"<hr />"
+            text += tr("Loandistractionsum")+": "+maths.rounder(loanDistractionSum)+".-/"+str(company.perHours)+" "+tr("h")+"<hr />"
         creditSum = 0
         text += "<h4>"+tr("Credits")+"</h4><ul><pre>"
         for credit in company.credits:
@@ -141,7 +166,7 @@ class sdt:
                     text +=".-      "+ tr("is NOT")+" "+tr("payed")+"</li>"
         text += "</ul></pre>"
         if creditSum > 0:
-            text += tr("Creditsum")+": "+sdt.rounder(creditSum)+".- <hr />"
+            text += tr("Creditsum")+": "+maths.rounder(creditSum)+".- <hr />"
         jobSum = 0
         jobDays = 0
         jobHours = 0
@@ -162,17 +187,17 @@ class sdt:
                 hourSpace = days * (job.hours / company.perHours ) +job.correctionHours
                 jobHours += hourSpace
                 jobSum += company.loan * hourSpace
-                text += "<li>"+job.name+": "+sdt.rounder(days)+"d * ("+sdt.rounder(job.hours)+"h /"+str(company.perHours)+" )+" +str(job.correctionHours)+"h = "+sdt.rounder(hourSpace)+"h * " + str(company.loan)+".-  ="+sdt.rounder(hourSpace*company.loan)+".- </li>"
+                text += "<li>"+job.name+": "+maths.rounder(days)+"d * ("+maths.rounder(job.hours)+"h /"+str(company.perHours)+" )+" +str(job.correctionHours)+"h = "+maths.rounder(hourSpace)+"h * " + str(company.loan)+".-  ="+maths.rounder(hourSpace*company.loan)+".- </li>"
                 text += "<ul>"
                 for charge in job.wcharges:
                     if charge.howManyTimes > 0:
                         chargeSum += charge.value * charge.howManyTimes
-                        text += "<li><pre>"+charge.name+": "+str(charge.value)+".- * "+str(charge.howManyTimes)+" times = "+sdt.rounder(charge.value * charge.howManyTimes)+".-     (Sum: "+sdt.rounder(chargeSum)+")</pre></li>"
+                        text += "<li><pre>"+charge.name+": "+str(charge.value)+".- * "+str(charge.howManyTimes)+" times = "+maths.rounder(charge.value * charge.howManyTimes)+".-     (Sum: "+maths.rounder(chargeSum)+")</pre></li>"
                     else:
                         chargeSum += charge.value * days
-                        text += "<li><pre>"+charge.name+": "+str(charge.value)+".- * "+str(days)+" days = "+sdt.rounder(charge.value * days)+".-     (Sum: "+sdt.rounder(chargeSum)+")</pre></li>"
+                        text += "<li><pre>"+charge.name+": "+str(charge.value)+".- * "+str(days)+" days = "+maths.rounder(charge.value * days)+".-     (Sum: "+maths.rounder(chargeSum)+")</pre></li>"
                 text += "</ul>"
-        text += "</ul> Sum: "+sdt.rounder(jobSum)+".- in "+sdt.rounder(jobHours)+"h / "+sdt.rounder(jobDays )+" d (+ "+sdt.rounder(chargeSum)+".- charges) <hr />"
+        text += "</ul> Sum: "+maths.rounder(jobSum)+".- in "+maths.rounder(jobHours)+"h / "+maths.rounder(jobDays )+" d (+ "+maths.rounder(chargeSum)+".- charges) <hr />"
         if jobDays != 0:
             loanDistractionSumDays = loanDistractionSum * (jobDays * (jobHours/jobDays))
         else:
@@ -180,24 +205,9 @@ class sdt:
         result = jobSum - loanDistractionSumDays - creditSum + chargeSum
         #the end of all results..
         text += "<h4>"+tr("Summary")+"</h4>"
-        text += "<ul><li><b>"+sdt.rounder(jobSum)+".-</b> </li><li><b> - "+sdt.rounder(loanDistractionSumDays)+".-  </b>"+tr("Splits")+"</li><li><b> - "+sdt.rounder(creditSum)+".- </b>"+tr(  "Credits")+"</li> <li><b> + "+sdt.rounder(chargeSum)+".- </b> "+tr("Charges")+"</li></ul><hr /> "+tr("Your company should pay")+"<b> "+sdt.rounder(result)+".- </b>"
+        text += "<ul><li><b>"+maths.rounder(jobSum)+".-</b> </li><li><b> - "+maths.rounder(loanDistractionSumDays)+".-  </b>"+tr("Splits")+"</li><li><b> - "+maths.rounder(creditSum)+".- </b>"+tr(  "Credits")+"</li> <li><b> + "+maths.rounder(chargeSum)+".- </b> "+tr("Charges")+"</li></ul><hr /> "+tr("Your company should pay")+"<b> "+maths.rounder(result)+".- </b>"
         return text
-    @staticmethod
-    def rounder(nr):
-        origNr = nr
-        intNr = int(nr)
-        afterComma = nr - intNr
-        stringComma = str(afterComma)
-        if len(stringComma) >= 5:
-            stringComma = str(abs(float(stringComma)))
-            if int(stringComma[4:5]) > 5:
-                correctAfterComma = int(stringComma[2:3]) + 1
-            else:
-                correctAfterComma = int(stringComma[2:3]) 
-            floatString = str(intNr)+"."+str(correctAfterComma)
-            return floatString
-        else:
-            return str(origNr)
+
     @staticmethod
     def createPersonalFinancesHtml(pfList, ui):
         pfHtml = "<ul>"
@@ -215,6 +225,23 @@ class sdt:
         
         
 class maths:
+    @staticmethod
+    def rounder(nr):
+        origNr = nr
+        intNr = int(nr)
+        afterComma = nr - intNr
+        stringComma = str(afterComma)
+        if len(stringComma) >= 5:
+            stringComma = str(abs(float(stringComma)))
+            if int(stringComma[4:5]) > 5:
+                correctAfterComma = int(stringComma[2:3]) + 1
+            else:
+                correctAfterComma = int(stringComma[2:3]) 
+            floatString = str(intNr)+"."+str(correctAfterComma)
+            return floatString
+        else:
+            return str(origNr)
+    
     @staticmethod
     def calcJobSum(company,  job, workCalendar):
         daySpace,  weekendPart = sdt.calcDaySpace(job.startdate, job.enddate, workCalendar,  job.weekendDays)

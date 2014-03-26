@@ -45,7 +45,7 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Personal finances&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="data">
      <property name="sizePolicy">
@@ -1042,7 +1042,7 @@ When you &quot;add to job&quot; it, it becames a workcharge, means it is active 
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_4">
        <attribute name="title">
@@ -1293,7 +1293,7 @@ When you &quot;add to job&quot; it, it becames a workcharge, means it is active 
         </property>
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
-          <widget class="QComboBox" name="companyViewList"/>
+          <widget class="QComboBox" name="companyViewSelect"/>
          </item>
          <item row="2" column="0">
           <widget class="QCalendarWidget" name="companyViewCalendar"/>

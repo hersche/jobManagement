@@ -54,20 +54,20 @@ class cm:
         iv = tDec[:self.mod.block_size]
         cipher = self.mod.new(self.key, self.mod.MODE_CBC, iv)
         clearText = str(cipher.decrypt(tDec[self.mod.block_size:]))
+        #workAround for b'-signed floats and ints..
         if clearText[0:2] == "b'":
             clearText = clearText[2:-1]
         else:
             clearText = clearText[0:-1]
-        #print("d "+self.name+clearText.rstrip())
         return clearText.rstrip()
 
 #static crypt manager
 class scm:
     #oldMod - self.encryptionObject,
     @staticmethod
-    def updateAll(newCm, controller):
-        controller.encryptionObject = newCm
-        controller.updateEos(newCm)
+    def migrateEncryptionData(newCryptManager, controller):
+        controller.encryptionObject = newCryptManager
+        controller.updateEos(newCryptManager)
         for company in controller.companylist:
             company.save(company.name,  company.loan, company.perHours, company.describtion)
             for charge in company.charges:

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/gui.ui'
 #
-# Created: Wed Mar 26 04:57:47 2014
+# Created: Wed Mar 26 11:27:59 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -555,9 +555,9 @@ class Ui_MainWindow(object):
         self.gridLayout = QtGui.QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setMargin(0)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.companyViewList = QtGui.QComboBox(self.gridLayoutWidget)
-        self.companyViewList.setObjectName(_fromUtf8("companyViewList"))
-        self.gridLayout.addWidget(self.companyViewList, 0, 0, 1, 1)
+        self.companyViewSelect = QtGui.QComboBox(self.gridLayoutWidget)
+        self.companyViewSelect.setObjectName(_fromUtf8("companyViewSelect"))
+        self.gridLayout.addWidget(self.companyViewSelect, 0, 0, 1, 1)
         self.companyViewCalendar = QtGui.QCalendarWidget(self.gridLayoutWidget)
         self.companyViewCalendar.setObjectName(_fromUtf8("companyViewCalendar"))
         self.gridLayout.addWidget(self.companyViewCalendar, 2, 0, 1, 1)
@@ -739,10 +739,10 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.mainTab.setCurrentIndex(3)
+        self.mainTab.setCurrentIndex(1)
         self.tabWidget.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(1)
-        self.viewTabs.setCurrentIndex(0)
+        self.viewTabs.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

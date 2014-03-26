@@ -122,7 +122,7 @@ class Gui(QtGui.QMainWindow):
         # CompanyView
         #---------------------------
         if not singleView:
-            self.ui.companyViewList.currentIndexChanged.connect(self.updateCompanyView)
+            self.ui.companyViewSelect.currentIndexChanged.connect(self.updateCompanyView)
         self.ui.companyViewCalendar.currentPageChanged.connect(self.updateCompanyView)
         self.ui.companyViewCalendarFilter.clicked.connect(self.updateCompanyView)
     
@@ -137,7 +137,7 @@ class Gui(QtGui.QMainWindow):
                 if vci == 0:
                     self.updateInfoExel()
                 elif vci == 1:
-                    self.updateCompanyViewList()
+                    self.updateCompanyViewSelect()
                     self.updateCompanyView()
             elif ci == 2:
                 self.updatePersonalFinancesList()
@@ -501,8 +501,8 @@ class Gui(QtGui.QMainWindow):
             pw, okCancel = QtGui.QInputDialog.getText(None,tr("Password"),tr("Enter Password"),QtGui.QLineEdit.Password)
             self.tmpPw = pw
             newCryptManager = cm(scm.getMod(self.ui.configValue.text()), pw)
-            scm.updateAll(newCryptManager, mightyController)
-            mightyController.updateEos(newCryptManager)
+            scm.migrateEncryptionData(newCryptManager, mightyController)
+            #mightyController.updateEos(newCryptManager)
         self.updateConfigList(False,self.ui.configKey.text())
         
     def onSaveConfig(self):
@@ -691,7 +691,7 @@ class Gui(QtGui.QMainWindow):
                     sum += sdt.createJobRow(self.ui,  job, company, workCalendar, rowNr, sum) 
                     rowNr +=1
                     self.ui.infoExel.insertRow(rowNr)
-            creditString, creditSumFinale = self.createCreditTextBox(self.currentCompany, workCalendar, sum)
+            creditString, creditSumFinale = sdt.createCreditTextBox(self.currentCompany, self.ui)
         else:
             for company in mightyController.companylist:
                 sl = sorted(company.jobs, key=lambda job: job.startdate,  reverse=True)
@@ -700,39 +700,23 @@ class Gui(QtGui.QMainWindow):
                         sum += sdt.createJobRow(self.ui,  job, company, workCalendar, rowNr, sum) 
                         rowNr +=1
                         self.ui.infoExel.insertRow(rowNr)
-                creditString,  creditSum = self.createCreditTextBox(company, workCalendar, sum)
+                creditString,  creditSum = sdt.createCreditTextBox(company, self.ui)
                 creditSumFinale += creditSum
                 creditStringFinale += creditString
         creditStringFinale+="<hr />Of all companys: "+str(creditSumFinale)+".-"
         self.ui.infoExelCredits.setText(creditStringFinale)
         self.ui.amount.display(sum-creditSumFinale)
 
-
-    def createCreditTextBox(self, company, wc, sum):
-        creditString =""
-        fCreditString = ""
-        creditSum = 0
-        #change to check credit-list-size
-        for credit in company.credits:
-            if (self.ui.filterCalendar.isChecked() and credit.date.month() == wc.month() and credit.date.year() == wc.year()) or self.ui.filterCalendar.isChecked() == False:
-                creditSum += credit.value
-                creditString += "<li><pre>"+credit.name+" @"+credit.date.toString(dbDateFormat)+":      "+str(credit.value)+"</pre><li/>"
-        if len(company.credits) > 0 and creditSum > 0:
-            fCreditString = "<ul>"
-            creditString += "</ul>"+company.name+": "+str(creditSum)+"<br />"
-            fCreditString += creditString
-        return (fCreditString,  creditSum)
-
-    def updateCompanyViewList(self):
+    def updateCompanyViewSelect(self):
         if singleView == False:
-            self.ui.companyViewList.clear()
+            self.ui.companyViewSelect.clear()
             for company in mightyController.companylist:
-                self.ui.companyViewList.addItem(company.name)
+                self.ui.companyViewSelect.addItem(company.name)
     def updateCompanyView(self):
         workCalendar = QtCore.QDate.fromString(str(self.ui.companyViewCalendar.monthShown())+"."+str(self.ui.companyViewCalendar.yearShown()),"M.yyyy")
         if singleView:
             self.ui.companyViewText.setText(sdt.createDetailText(self.currentCompany, workCalendar,  self.ui.companyViewCalendarFilter.isChecked()))
         else:
             for company in mightyController.companylist:
-                if self.ui.companyViewList.currentText() == company.name:
+                if self.ui.companyViewSelect.currentText() == company.name:
                     self.ui.companyViewText.setText(sdt.createDetailText(company,workCalendar, self.ui.companyViewCalendarFilter.isChecked()))

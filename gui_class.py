@@ -207,8 +207,8 @@ class Gui(QtGui.QMainWindow):
         if mightyController.encryptionObject is not None:
             mightyController.encryptionObject.setKey(self.tmpPw)
         self.currentCompany.updateLoanDistractionList()
-        for loanSplit in self.currentCompany.loanDistractions:
-            self.ui.loanDistractionList.addItem(loanSplit.name)
+        for loanDistraction in self.currentCompany.loanDistractions:
+            self.ui.loanDistractionList.addItem(loanDistraction.name)
         if selectFirst:
             self.ui.loanDistractionList.setCurrentRow(0)
             self.onLoanDistractionItemClick(self.ui.loanDistractionList.currentItem())
@@ -314,7 +314,7 @@ class Gui(QtGui.QMainWindow):
         for loanDistraction in self.currentCompany.loanDistractions:
             if loanDistraction.name == item.text():
                 self.ui.loanDistractionName.setText(loanDistraction.name)
-                self.ui.loanDistractionalue.setValue(loanDistraction.value)
+                self.ui.loanDistractionValue.setValue(loanDistraction.value)
                 self.ui.loanDistractionMoney.setChecked(loanDistraction.money)
     def onConfigItemClick(self, item):
         for config in mightyController.configlist:
@@ -506,8 +506,6 @@ class Gui(QtGui.QMainWindow):
         self.updateConfigList(False,self.ui.configKey.text())
         
     def onSaveConfig(self):
-        #cr = self.ui.configList.currentRow()
-        logger.debug("|Ui|onSaveConfig|Nr1")
         cI = self.ui.configList.currentItem()
         ciText = cI.text()
         for config in mightyController.configlist:

@@ -38,7 +38,7 @@ class sdt:
         else:
             daySpace,  weekendPart = (workCalendar.daysInMonth() - (job.weekendDays * 4), job.weekendDays)
         #minSpace = daySpace * job.hours * 60
-        loanSum,  loanSplitSum, realHourLoan, realHourSplitSum,  chargeSum = maths.calcJobSum(company,  job,  workCalendar)
+        loanSum,  loanDistractionSum, realHourLoan, realHourSplitSum,  chargeSum = maths.calcJobSum(company,  job,  workCalendar)
         #building table..
         if not singleView:
             w = QtGui.QTableWidgetItem(str(company.name))
@@ -62,7 +62,7 @@ class sdt:
         ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(chargeSum)+".- " ))
         colNr = colNr + 1
         w = QtGui.QTableWidgetItem(sdt.rounder(realHourSplitSum)+".- @all")
-        w.setToolTip(sdt.rounder(loanSplitSum)+".-/"+str(company.perHours)+tr("h")+")")
+        w.setToolTip(sdt.rounder(loanDistractionSum)+".-/"+str(company.perHours)+tr("h")+")")
         ui.infoExel.setItem(rowNr,  colNr,   w)
         colNr = colNr + 1
         ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(sdt.rounder(sum + loanSum)+".-" ))
@@ -96,7 +96,7 @@ class sdt:
             for job in company.jobs:
                 if cw.insertJobYesNo(ui, company, job, infoSearch, workCalendar):
                     daySpace,  weekendPart = sdt.calcDaySpace(job.startdate, job.enddate, workCalendar,  job.weekendDays)
-                    loanSum,  loanSplitSum, realHourLoan,  realHourSplitSum,  chargeSum = maths.calcJobSum(company,  job,  workCalendar)
+                    loanSum,  loanDistractionSum, realHourLoan,  realHourSplitSum,  chargeSum = maths.calcJobSum(company,  job,  workCalendar)
                     daySpace = ((daySpace * job.hours) + job.correctionHours )
                     daySpace = (daySpace + oldDaySpace) / 2
                     value = ((company.loan/10)*daySpace)
@@ -114,21 +114,21 @@ class sdt:
     def createDetailText(company, workCalendar, cvCalIsChecked):
         text = ""
         text += "<h1>"+company.name+"</h1>"+company.describtion+"<br />"+tr("Loan")+": "+str(company.loan)+" (per "+str(company.perHours)+tr("h")+")<hr />"
-        loanSplitSum = 0
+        loanDistractionSum = 0
         #LoanSplits
-        text += "<h4>"+tr("LoanSplits")+"</h4><ul>"
-        for ls in  company.loanSplits:
+        text += "<h4>"+tr("loanDistractions")+"</h4><ul>"
+        for ls in  company.loanDistractions:
             text += "<li>"+ls.name+": "+str(ls.value)
             if ls.money:
-                loanSplitSum += ls.value
+                loanDistractionSum += ls.value
                 text += ".- </li>"
             else:
                 inMoney = (company.loan / 100) * ls.value
-                loanSplitSum += inMoney
+                loanDistractionSum += inMoney
                 text += "% ("+sdt.rounder(inMoney)+".-) </li>"
         text += "</ul>"
-        if loanSplitSum > 0:
-            text += tr("Loansplitsum")+": "+sdt.rounder(loanSplitSum)+".-/"+str(company.perHours)+" "+tr("h")+"<hr />"
+        if loanDistractionSum > 0:
+            text += tr("Loandistractionsum")+": "+sdt.rounder(loanDistractionSum)+".-/"+str(company.perHours)+" "+tr("h")+"<hr />"
         creditSum = 0
         text += "<h4>"+tr("Credits")+"</h4><ul><pre>"
         for credit in company.credits:
@@ -174,13 +174,13 @@ class sdt:
                 text += "</ul>"
         text += "</ul> Sum: "+sdt.rounder(jobSum)+".- in "+sdt.rounder(jobHours)+"h / "+sdt.rounder(jobDays )+" d (+ "+sdt.rounder(chargeSum)+".- charges) <hr />"
         if jobDays != 0:
-            loanSplitSumDays = loanSplitSum * (jobDays * (jobHours/jobDays))
+            loanDistractionSumDays = loanDistractionSum * (jobDays * (jobHours/jobDays))
         else:
-            loanSplitSumDays = 0
-        result = jobSum - loanSplitSumDays - creditSum + chargeSum
+            loanDistractionSumDays = 0
+        result = jobSum - loanDistractionSumDays - creditSum + chargeSum
         #the end of all results..
         text += "<h4>"+tr("Summary")+"</h4>"
-        text += "<ul><li><b>"+sdt.rounder(jobSum)+".-</b> </li><li><b> - "+sdt.rounder(loanSplitSumDays)+".-  </b>"+tr("Splits")+"</li><li><b> - "+sdt.rounder(creditSum)+".- </b>"+tr(  "Credits")+"</li> <li><b> + "+sdt.rounder(chargeSum)+".- </b> "+tr("Charges")+"</li></ul><hr /> "+tr("Your company should pay")+"<b> "+sdt.rounder(result)+".- </b>"
+        text += "<ul><li><b>"+sdt.rounder(jobSum)+".-</b> </li><li><b> - "+sdt.rounder(loanDistractionSumDays)+".-  </b>"+tr("Splits")+"</li><li><b> - "+sdt.rounder(creditSum)+".- </b>"+tr(  "Credits")+"</li> <li><b> + "+sdt.rounder(chargeSum)+".- </b> "+tr("Charges")+"</li></ul><hr /> "+tr("Your company should pay")+"<b> "+sdt.rounder(result)+".- </b>"
         return text
     @staticmethod
     def rounder(nr):
@@ -226,16 +226,16 @@ class maths:
             else:
                 chargeValue = charge.howManyTimes * charge.value
             chargeSum += chargeValue
-        loanSplitSum = 0
-        for loanSplit in company.loanSplits:
-            if loanSplit.money:
-                loanSplitSum += loanSplit.value
+        loanDistractionSum = 0
+        for loanDistraction in company.loanDistractions:
+            if loanDistraction.money:
+                loanDistractionSum += loanDistraction.value
             else:
-                loanSplitSum += (company.loan / 100) * loanSplit.value
-        realHourLoan = (company.loan - loanSplitSum) 
-        realHourSplitSum= loanSplitSum * (hrSpace / company.perHours)
+                loanDistractionSum += (company.loan / 100) * loanDistraction.value
+        realHourLoan = (company.loan - loanDistractionSum) 
+        realHourSplitSum= loanDistractionSum * (hrSpace / company.perHours)
         loanSum = realHourLoan * (hrSpace / company.perHours) + chargeSum
-        return  (loanSum,  loanSplitSum, realHourLoan, realHourSplitSum,  chargeSum)
+        return  (loanSum,  loanDistractionSum, realHourLoan, realHourSplitSum,  chargeSum)
 
 #cw = condition-wrapper
 class cw:

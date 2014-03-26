@@ -26,12 +26,20 @@ if fileExist == False:
     c.execute("CREATE TABLE personalFinance (pfid  INTEGER PRIMARY KEY, name TEXT UNIQUE, value text, date TEXT,repeat TEXT, timesRepeat text, plusMinus TEXT, active text, encrypted text)")
     c.execute("CREATE TABLE config (coid INTEGER PRIMARY KEY,  key TEXT UNIQUE,  value TEXT, encrypted text)")
     
+    #for testing only
+    c.execute("INSERT INTO company (name, loan,  perHours, describtion, encrypted) VALUES (?,?,?,?,?);",  ("Company One", 22,  1.0, "a COMPANY", "-1"))
+    c.execute("INSERT INTO company (name, loan,  perHours, describtion, encrypted) VALUES (?,?,?,?,?);",  ("NSA", 270,  1.0, "when i didn't do that, someone else do :p", "-1"))
+    c.execute("INSERT INTO company (name, loan,  perHours, describtion, encrypted) VALUES (?,?,?,?,?);",  ("FoxCon", 1.2,  10.0, "badass-company!!", "-1"))
+    
+    c.execute("INSERT INTO job (name, place, comment,hours, correctionHours, weekendDays, startdate, enddate,  leader, active, companyid,encrypted) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",  ("A Job", "There",  "Was default", 8.5,1,  2,  "12.3.2014", "19.3.2014",  "The Boss", 1, 1,"-1"))
+    c.execute("INSERT INTO job (name, place, comment,hours, correctionHours, weekendDays, startdate, enddate,  leader, active, companyid,encrypted) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",  ("A second Job", "Not There",  "Was special", 6,1,  2,  "2.3.2014", "11.3.2014",  "Some Boss", 1, 1,"-1"))
+    c.execute("INSERT INTO job (name, place, comment,hours, correctionHours, weekendDays, startdate, enddate,  leader, active, companyid,encrypted) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",  ("Spy you", "Hidden",  "nervous", 2,1,  2,  "20.3.2014", "7.4.2014",  "ce", 1, 2,"-1"))
     db.commit()
     
 
 class Controller:
         def __init__(self):
-            logger.debug("Init Controller")
+            logger.debug(" |Models| Init Controller")
             self.encryptionObject = None
             self.encryption = ""
             self.lang = ""
@@ -39,7 +47,7 @@ class Controller:
             self.singleViewId = -1
             self.updateConfigList()
         def updateEos(self, cm):
-            logger.debug("Update encrypted Objects")
+            logger.debug(" |Models| Update encrypted Objects")
             self.encryptionObject = cm
             for company in self.companylist :
                 company.encryptionObject = cm
@@ -56,6 +64,29 @@ class Controller:
             for pf in self.personalFinances:
                 pf.encryptionObject = cm
 
+
+        def updateCompanyList(self):
+            logger.debug("Update companyList")
+            self.companylist = []
+            c.execute('select * from company;') 
+            for row in c.fetchall():
+                if self.encryptionObject != None:
+                    self.companylist.append(Company(row[0], self.encryptionObject.decrypt(row[1]), self.encryptionObject.decrypt(row[2]), self.encryptionObject.decrypt(row[3]), self.encryptionObject.decrypt(row[4]),row[5],  self.encryptionObject))
+                else:
+                    self.companylist.append(Company(row[0], row[1], row[2], row[3], row[4],row[5],  self.encryptionObject))
+        def updatePersonalFinancesList(self):
+            logger.debug(" |Models| Update personalFinancesList")
+            self.personalFinances = []
+            try:
+                c.execute('select * from personalFinance')
+                for row in c.fetchall():
+                    if self.encryptionObject != None:
+                        self.personalFinances.append(personalFinance(row[0], self.encryptionObject.decrypt(row[1]), self.encryptionObject.decrypt(row[2]), self.encryptionObject.decrypt(row[3]), self.encryptionObject.decrypt(row[4]), self.encryptionObject.decrypt(row[5]), self.encryptionObject.decrypt(row[6]), self.encryptionObject.decrypt(row[7]), row[8], self.encryptionObject))
+                    else:
+                        self.personalFinances.append(personalFinance(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], self.encryptionObject))
+            except sqlite3.Error as e:
+                logger.error("An DB-error occurred:", e.args[0])
+                return -1
         def createCompany(self, name,  loan,  perHours,  describtion):
             logger.debug("create Company: "+name)
             try:
@@ -69,28 +100,6 @@ class Controller:
                 logger.error("An DB-error occurred:", e.args[0])
                 if e.args[0] == "column name is not unique":
                     return -2
-                return -1
-        def updateCompanyList(self):
-            logger.debug("Update companyList")
-            self.companylist = []
-            c.execute('select * from company;') 
-            for row in c.fetchall():
-                if self.encryptionObject != None:
-                    self.companylist.append(Company(row[0], self.encryptionObject.decrypt(row[1]), self.encryptionObject.decrypt(row[2]), self.encryptionObject.decrypt(row[3]), self.encryptionObject.decrypt(row[4]),row[5],  self.encryptionObject))
-                else:
-                    self.companylist.append(Company(row[0], row[1], row[2], row[3], row[4],row[5],  self.encryptionObject))
-        def updatePersonalFinancesList(self):
-            logger.debug("Update personalFinancesList")
-            self.personalFinances = []
-            try:
-                c.execute('select * from personalFinance')
-                for row in c.fetchall():
-                    if self.encryptionObject != None:
-                        self.personalFinances.append(personalFinance(row[0], self.encryptionObject.decrypt(row[1]), self.encryptionObject.decrypt(row[2]), self.encryptionObject.decrypt(row[3]), self.encryptionObject.decrypt(row[4]), self.encryptionObject.decrypt(row[5]), self.encryptionObject.decrypt(row[6]), self.encryptionObject.decrypt(row[7]), row[8], self.encryptionObject))
-                    else:
-                        self.personalFinances.append(personalFinance(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], self.encryptionObject))
-            except sqlite3.Error as e:
-                logger.error("An DB-error occurred:", e.args[0])
                 return -1
         def createPersonalFinance(self, name,  value, date, repeat, timesRepeat, plusMinus,  active,  encrypted ):
             try:
@@ -111,7 +120,7 @@ class Controller:
                 logger.error("An DB-error occurred:", e.args[0])("An DB-error occurred:", e.args[0])
                 return -1
         def updateConfigList(self):
-            logger.debug("Update configList")
+            logger.debug(" |Models| Update configList")
             self.configlist = []
             c.execute('select * from config;') 
             for row in c.fetchall():
@@ -296,7 +305,7 @@ class Credit:
                 c.execute("UPDATE credit SET name=?,value=?, date=?, payed=?,active=?,encrypted=? WHERE crid=?",  (name, value, date, tmpPayed, tmpActive, str(self.id)))
             db.commit()
         except sqlite3.Error as e:
-            logger.error("credit save An DB-error occurred:", e.args[0])
+            logger.error("An DB-error occurred:", e.args[0])
             return -1
     def delete(self):
         try:
@@ -309,7 +318,7 @@ class Credit:
 
 class Company:
     def __init__(self, id,  name,  loan, perHours,  describtion,encrypted,  eo):
-        logger.debug("Init company "+name)
+        logger.debug(" |Models| Init company "+name)
         self.id = id
         self.name = name
         self.encryptionObject = eo
@@ -317,14 +326,15 @@ class Company:
         self.loan = float(loan)
         self.perHours = float(perHours)
         self.describtion = describtion
-        #self.updateJobList()
-        #self.updateChargesList()
-        #self.updateCreditList()
-        #self.updateLoanDistractionList()
+        self.updateJobList()
+        self.updateChargesList()
+        self.updateCreditList()
+        self.updateLoanDistractionList()
 
         
 
     def updateLoanDistractionList(self):
+        logger.debug(" |Models| Update loanDistraction List")
         self.loanDistractions = []
         if self.encryptionObject != None:
             sString = "select * from loanDistraction WHERE lsid = ?"
@@ -335,11 +345,11 @@ class Company:
                     for row in c.fetchall():
                         self.loanDistractions.append(loanDistraction(row[0], self.encryptionObject.decrypt(row[1]),self.encryptionObject.decrypt(row[2]),self.encryptionObject.decrypt(row[3]), row[4], self.encryptionObject))
         else:
+            c.execute("SELECT * FROM loanDistraction WHERE companyid = ?", (str(self.id), ))
             for row in c.fetchall():
-                c.execute("SELECT * FROM loanDistraction WHERE companyid = ?", (str(self.id), ))
                 self.loanDistractions.append(loanDistraction(row[0], row[1],row[2],row[3], row[4], self.encryptionObject))
     def updateCreditList(self):
-        logger.debug("Update creditList")
+        logger.debug(" |Models| Update creditList")
         self.credits = []
         if self.encryptionObject != None:
             sString = "select * from credit WHERE crid=?"
@@ -354,7 +364,7 @@ class Company:
             for row in c.fetchall():
                 self.credits.append(Credit(row[0], row[1], row[2],  row[3],  row[4], row[5], row[6], row[7], self.encryptionObject))
     def updateJobList(self):
-        logger.debug("Update jobList")
+        logger.debug(" |Models| Update jobList")
         self.jobs = []
         if self.encryptionObject is None:
             c.execute('select * from job WHERE companyid = ? ORDER BY startdate',  (str(self.id), ))
@@ -369,6 +379,7 @@ class Company:
                     for row in c.fetchall():
                         self.jobs.append(Job(row[0], self.encryptionObject.decrypt(row[1]), self.encryptionObject.decrypt(row[2]), self.encryptionObject.decrypt(row[3]), self.encryptionObject.decrypt(row[4]),self.encryptionObject.decrypt(row[5]),  self.encryptionObject.decrypt(row[6]),self.encryptionObject.decrypt(row[7]), self.encryptionObject.decrypt(row[8]),self.encryptionObject.decrypt(row[9]),self.encryptionObject.decrypt(row[10]), self.encryptionObject.decrypt(row[11]),self.encryptionObject.decrypt(row[12]), row[13], self.encryptionObject))
     def updateChargesList(self):
+        logger.debug(" |Models| Update chargesList")
         self.charges = []
         if self.encryptionObject!= None:
             sString = "select * from charges WHERE sid = ?;"
@@ -385,7 +396,7 @@ class Company:
                 self.charges.append(charges(row[0], row[1], row[2], -1,-1,encrypted,  self.encryptionObject))
     def createJob(self,  name, place, comment,  hours, correctionHours,  weekendDays,  startdate,  enddate,  leader,  active):
         # (self,  id,  name,  place,  comment,  hours, correctionHours,   startdate,  enddate,  baustellenleiter,  active, companyid):
-        logger.debug("Create job "+name)
+        logger.debug(" |Models| Create job "+name)
         try:
             if self.encryptionObject != None:
                 c.execute("INSERT INTO job (name, place, comment,hours, correctionHours, weekendDays, startdate, enddate,  leader, active, companyid, encrypted) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",  (self.encryptionObject.encrypt(name), self.encryptionObject.encrypt(place),  self.encryptionObject.encrypt(comment), self.encryptionObject.encrypt(hours),self.encryptionObject.encrypt(correctionHours),  self.encryptionObject.encrypt(weekendDays),  self.encryptionObject.encrypt(startdate), self.encryptionObject.encrypt(enddate),  self.encryptionObject.encrypt(leader), self.encryptionObject.encrypt(active),self.encryptionObject.encrypt(self.id),self.encryptionObject.name))
@@ -420,7 +431,8 @@ class Company:
             logger.error("An DB-error occurred:", e.args[0])
             return -1
             
-    def createLoanSplit(self, name, value, money):
+    def createLoanDistraction(self, name, value, money):
+        logger.debug(" |Models| Create loanDistraction")
         if money == True:
             tmpMoney = 1
         else:

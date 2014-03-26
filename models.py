@@ -99,7 +99,6 @@ class Controller:
                 else:
                     c.execute("INSERT INTO personalFinance (name,  value, date, repeat, timesRepeat, plusMinus,  active,  encrypted) VALUES (?,?,?,?,?,?,?,?);",  (name,  value, date, repeat, timesRepeat, plusMinus,  active,  "-1"))
                 db.commit()
-                self.updateConfigList()
             except sqlite3.Error as e:
                 logger.error("An DB-error occurred:", e.args[0])("An DB-error occurred:", e.args[0])
                 return -1
@@ -178,9 +177,9 @@ class personalFinance:
         except sqlite3.Error as e:
             logger.error("An DB-error occurred:", e.args[0])
 class Config:
-    logger.debug("Init config "+name)
     #"CREATE TABLE config (coid INTEGER PRIMARY KEY,  key TEXT,  value TEXT)
     def __init__(self,  id,  key,  value):
+        logger.debug("Init config "+key+"="+value)
         self.id = id
         self.key = key
         self.value = value
@@ -319,9 +318,9 @@ class Company:
         self.perHours = float(perHours)
         self.describtion = describtion
         #self.updateJobList()
-        self.updateChargesList()
-        self.updateCreditList()
-        self.updateLoanDistractionList()
+        #self.updateChargesList()
+        #self.updateCreditList()
+        #self.updateLoanDistractionList()
 
         
 

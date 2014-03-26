@@ -54,7 +54,10 @@ class cm:
         iv = tDec[:self.mod.block_size]
         cipher = self.mod.new(self.key, self.mod.MODE_CBC, iv)
         clearText = str(cipher.decrypt(tDec[self.mod.block_size:]))
-        clearText = clearText[2:-1]
+        if clearText[0:2] == "b'":
+            clearText = clearText[2:-1]
+        else:
+            clearText = clearText[0:-1]
         #print("d "+self.name+clearText.rstrip())
         return clearText.rstrip()
 

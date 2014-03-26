@@ -510,7 +510,7 @@ class Gui(QtGui.QMainWindow):
         cI = self.ui.configList.currentItem()
         ciText = cI.text()
         for config in mightyController.configlist:
-            if ci is not None and config.key == ciText:
+            if cI is not None and config.key == ciText:
                 config.save(self.ui.configKey.text(), self.ui.configValue.text())
                 self.ui.status.setText(tr("Config")+" "+self.ui.configKey.text()+" "+tr("saved"))
                 if self.ui.configKey.text() == "encrypted":

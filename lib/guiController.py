@@ -1,5 +1,5 @@
 from lib.models import *
-from lib.semanticDesignerTools import sdt
+from lib.staticTools import *
 singleView = False
 singleViewId = -1
 mightyController = Controller()
@@ -9,10 +9,11 @@ class Gui(QtGui.QMainWindow):
         logger.debug("|GUI| Init Gui")
         self.roundSum = 0
         # INIT
+        
         self.currentCompany = None
         self.showInactive = True
         self.tmpPw = ""
-        if mightyController.encryptionObject is not None:
+        if mightyController.encryptionObject is not None and mightyController.encryptionObject.name is not "None":
             pw, okCancel = QtGui.QInputDialog.getText(None,tr("Password"),tr("Enter Password"),QtGui.QLineEdit.Password)
             self.tmpPw = pw
             mightyController.encryptionObject.setKey(pw)
@@ -37,6 +38,7 @@ class Gui(QtGui.QMainWindow):
             self.ui.enddate.setDate(cd)
         self.ui.creditDate.setDate(cd)
         self.ui.pfDate.setDate(cd)
+        self.ui.pfEndDate.setDate(cd)
         self.tabUpdater()
         
         self.ui.mainTab.currentChanged.connect(self.tabUpdater)
@@ -68,6 +70,8 @@ class Gui(QtGui.QMainWindow):
         self.ui.jobname.returnPressed.connect(self.onSaveJob)
         self.ui.jobplace.returnPressed.connect(self.onSaveJob)
         self.ui.deleteJob.clicked.connect(self.onDeleteJob)
+        self.ui.startdate.dateChanged.connect(self.onJobStartDateChanged)
+        #self.ui.enddate.dateChanged.connect(self.onJobStartDateChanged)
         #Charge-Actions
         self.ui.createCharge.clicked.connect(self.onCreateCharge)
         self.ui.saveCharge.clicked.connect(self.onSaveCharge)
@@ -80,6 +84,7 @@ class Gui(QtGui.QMainWindow):
         self.ui.createCredit.clicked.connect(self.onCreateCredit)
         self.ui.saveCredit.clicked.connect(self.onSaveCredit)
         self.ui.deleteCredit.clicked.connect(self.onDeleteCredit)
+        
         
         #loanSplit-Actions
         self.ui.createLoanDistraction.clicked.connect(self.onCreateLoanDistraction)
@@ -98,6 +103,7 @@ class Gui(QtGui.QMainWindow):
         self.ui.pfCreate.clicked.connect(self.onCreatePersonalFinance)
         self.ui.pfSave.clicked.connect(self.onSavePersonalFinance)
         self.ui.pfDelete.clicked.connect(self.onDeletePersonalFinance)
+        self.ui.pfDate.dateChanged.connect(self.onPfStartDateChanged)
 
         self.ui.pfCalendar.currentPageChanged.connect(self.updatePersonalFinanceText)
         self.ui.pfCalendarEnabled.clicked.connect(self.updatePersonalFinanceText)
@@ -263,6 +269,14 @@ class Gui(QtGui.QMainWindow):
     #-------------------------------
     # List-Clicks
     #--------------------------------
+    
+    def onJobStartDateChanged(self):
+        self.ui.enddate.setMinimumDate(self.ui.startdate.date())
+        logger.debug("Refreshed minimum Enddate")
+        
+    def onPfStartDateChanged(self):
+        self.ui.pfEndDate.setMinimumDate(self.ui.pfDate.date())
+    
     def onCompanyItemClick(self,  item):
         self.ui.createJob.setEnabled(True) 
         if singleView:
@@ -361,6 +375,7 @@ class Gui(QtGui.QMainWindow):
                 self.ui.weekendDays.setValue(job.weekendDays)
                 if singleView == False:
                     self.ui.startdate.setDate(job.startdate)
+                    self.ui.enddate.setMinimumDate(job.startdate)
                     self.ui.enddate.setDate(job.enddate)
                     self.ui.daysCalc.setText(str(job.startdate.daysTo(job.enddate)+1)+ " "+ tr("days"))
                     self.ui.hoursCalc.setText(str((job.startdate.daysTo(job.enddate)+1)*job.hours)+" "+ tr(" hours"))
@@ -488,12 +503,12 @@ class Gui(QtGui.QMainWindow):
         mightyController.createConfig(self.ui.configKey.text(), self.ui.configValue.text())
         # @TODO select the created!
         self.ui.status.setText(tr("Config")+" "+self.ui.configKey.text()+" "+tr("created"))
-        if self.ui.configKey.text() == "encrypted":
+        if self.ui.configKey.text() == "encrypted" and self.ui.configValue.text() != "None":
             pw, okCancel = QtGui.QInputDialog.getText(None,tr("Password"),tr("Enter Password"),QtGui.QLineEdit.Password)
             self.tmpPw = pw
             newCryptManager = cm(scm.getMod(self.ui.configValue.text()), pw)
+            mightyController.updateEos(newCryptManager)
             scm.migrateEncryptionData(newCryptManager, mightyController)
-            #mightyController.updateEos(newCryptManager)
         self.updateConfigList(False,self.ui.configKey.text())
         
     def onSaveConfig(self):
@@ -504,10 +519,14 @@ class Gui(QtGui.QMainWindow):
                 config.save(self.ui.configKey.text(), self.ui.configValue.text())
                 self.ui.status.setText(tr("Config")+" "+self.ui.configKey.text()+" "+tr("saved"))
                 if self.ui.configKey.text() == "encrypted":
-                    pw, okCancel = QtGui.QInputDialog.getText(None,tr("Password"),tr("Enter Password"),QtGui.QLineEdit.Password)
-                    self.tmpPw = pw
-                    nCm = cm(scm.getMod(self.ui.configValue.text()), pw)
-                    scm.updateAll(nCm, mightyController)
+                    if self.ui.configValue.text() != "None":
+                      logger.error("not none but "+self.ui.configValue.text())
+                      pw, okCancel = QtGui.QInputDialog.getText(None,tr("Password"),tr("Enter Password"),QtGui.QLineEdit.Password)
+                      self.tmpPw = pw
+                      nCm = cm(scm.getMod(self.ui.configValue.text()), pw)
+                    else:
+                      nCm = None
+                    scm.migrateEncryptionData(nCm, mightyController)
                     mightyController.encryptionObject = nCm
                     mightyController.updateEos(nCm)
         self.updateConfigList(False,self.ui.configKey.text())

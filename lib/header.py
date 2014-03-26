@@ -1,4 +1,4 @@
-from PyQt4 import QtCore,  QtGui
+from PyQt4 import QtCore,QtGui
 from binascii import b2a_hex
 import re
 import logging
@@ -15,7 +15,7 @@ logger.setLevel(logging.DEBUG)
 fh = logging.FileHandler('jobManagement.log')
 fh.setLevel(logging.ERROR)
 ch = logging.StreamHandler()
-ch.setLevel(logging.ERROR)
+ch.setLevel(logging.DEBUG)
 # create formatter and add it to the handlers
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 fh.setFormatter(formatter)

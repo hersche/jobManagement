@@ -47,7 +47,7 @@ class Controller:
             self.singleViewId = -1
             self.updateConfigList()
         def updateEos(self, cm):
-            logger.debug(" |Models| Update encrypted Objects")
+            logger.debug("|Models| Update encrypted Objects")
             self.encryptionObject = cm
             for company in self.companylist :
                 company.encryptionObject = cm
@@ -85,10 +85,10 @@ class Controller:
                     else:
                         self.personalFinances.append(personalFinance(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8],row[9], self.encryptionObject))
             except sqlite3.Error as e:
-                logger.error("An DB-error occurred:", e.args[0])
+                logger.error("An DB-error occurred: "+e.args[0])
                 return -1
         def createCompany(self, name,  loan,  perHours,  describtion):
-            logger.debug("create Company: "+name)
+            logger.debug("|Model|create Company: "+name)
             try:
                 if self.encryptionObject != None:
                     c.execute("INSERT INTO company (name, loan,  perHours, describtion, encrypted) VALUES (?,?,?,?,?);",  (self.encryptionObject.encrypt(name), self.encryptionObject.encrypt(loan),  self.encryptionObject.encrypt(perHours), self.encryptionObject.encrypt(describtion), self.encryptionObject.name))
@@ -97,7 +97,7 @@ class Controller:
                 db.commit()
                 self.updateCompanyList()
             except sqlite3.Error as e:
-                logger.error("An DB-error occurred:", e.args[0])
+                logger.error("An DB-error occurred: "+e.args[0])
                 if e.args[0] == "column name is not unique":
                     return -2
                 return -1
@@ -109,7 +109,7 @@ class Controller:
                     c.execute("INSERT INTO personalFinance (name,  value, date, repeat, timesRepeat, plusMinus,  active,  encrypted) VALUES (?,?,?,?,?,?,?,?);",  (name,  value, date, repeat, timesRepeat, plusMinus,  active,  "-1"))
                 db.commit()
             except sqlite3.Error as e:
-                logger.error("An DB-error occurred:", e.args[0])("An DB-error occurred:", e.args[0])
+                logger.error("An DB-error occurred: "+e.args[0])
                 return -1
         def createConfig(self, key,  value):
             try:
@@ -117,10 +117,10 @@ class Controller:
                 db.commit()
                 self.updateConfigList()
             except sqlite3.Error as e:
-                logger.error("An DB-error occurred:", e.args[0])("An DB-error occurred:", e.args[0])
+                logger.error("An DB-error occurred: "+e.args[0])
                 return -1
         def updateConfigList(self):
-            logger.debug(" |Models| Update configList")
+            logger.debug("|Models| Update configList")
             self.configlist = []
             c.execute('select * from config;') 
             for row in c.fetchall():
@@ -153,7 +153,7 @@ class Controller:
            
         
      
-      #CREATE TABLE personalFinance (pfid  INTEGER PRIMARY KEY, name TEXT UNIQUE, value REAL, date TEXT,repeat TEXT, timesRepeat INTEGER, plusMinus TEXT, active INTEGER, encrypted integer)")   
+#CREATE TABLE personalFinance (name TEXT UNIQUE, value REAL, date TEXT,repeat TEXT, timesRepeat INTEGER, plusMinus TEXT, active INTEGER, encrypted integer)")   
 class personalFinance:
     def __init__(self, id, name, value, date,endDate, repeat, timesRepeat, plusMinus,  active,  encrypted, eo):
         logger.debug("|Models| Init personal Finance "+name)
@@ -181,13 +181,13 @@ class personalFinance:
                 c.execute("UPDATE personalFinance SET name=?,value=?,date=?,endDate=?,repeat=?,timesRepeat=?,plusMinus=?,active=?,encrypted=? WHERE pfid=?",  (name, value, date,endDate,repeat, timesRepeat, plusMinus, active, "-1",self.id))
             db.commit()
         except sqlite3.Error as e:
-            logger.error("An DB-error occurred:", e.args[0])("An DB-error occurred:", e.args[0])
+            logger.error("An DB-error occurred: "+e.args[0])
     def delete(self):
         try:
             c.execute("DELETE FROM personalFinance WHERE pfid=?",  (self.id, ))
             db.commit()
         except sqlite3.Error as e:
-            logger.error("An DB-error occurred:", e.args[0])
+            logger.error("An DB-error occurred: "+e.args[0])
 class Config:
     #"CREATE TABLE config (coid INTEGER PRIMARY KEY,  key TEXT,  value TEXT)
     def __init__(self,  id,  key,  value):
@@ -201,13 +201,13 @@ class Config:
             c.execute("UPDATE config SET key=?, value=? WHERE coid=?",  (key, value,  self.id))
             db.commit()
         except sqlite3.Error as e:
-            logger.error("An DB-error occurred:", e.args[0])("An DB-error occurred:", e.args[0])
+            logger.error("An DB-error occurred: "+e.args[0])("An DB-error occurred: "+e.args[0])
     def delete(self):
         try:
             c.execute("DELETE FROM config WHERE coid=?",  (self.id, ))
             db.commit()
         except sqlite3.Error as e:
-            logger.error("An DB-error occurred:", e.args[0])("An DB-error occurred:", e.args[0])
+            logger.error("An DB-error occurred: "+e.args[0])("An DB-error occurred: "+e.args[0])
         
                 
 class loanDistraction:
@@ -236,14 +236,14 @@ class loanDistraction:
                 c.execute("UPDATE loanDistraction SET name=?, value=?, money=?, encrypted=? WHERE lsid=?",  (name, float(value), tmpMoney,"-1",   self.id))
             db.commit()
         except sqlite3.Error as e:
-            logger.error("An DB-error occurred:", e.args[0])("An DB-error occurred:", e.args[0])
+            logger.error("An DB-error occurred: "+e.args[0])("An DB-error occurred: "+e.args[0])
             return -1
     def delete(self):
         try:
             c.execute("DELETE FROM loanDistraction WHERE lsid=?",  (self.id, ))
             db.commit()
         except sqlite3.Error as e:
-            logger.error("An DB-error occurred:", e.args[0])("An DB-error occurred:", e.args[0])
+            logger.error("An DB-error occurred: "+e.args[0])("An DB-error occurred: "+e.args[0])
             return -1
 #sid  INTEGER PRIMARY KEY, name text, value text, companyid text, encrypted text)")
 class charges:
@@ -266,14 +266,14 @@ class charges:
                 c.execute("UPDATE charges SET name=?, value=?,encrypted=? WHERE sid=?",  (name, float(value), self.id))
             db.commit()
         except sqlite3.Error as e:
-            logger.error("An DB-error occurred:", e.args[0])
+            logger.error("An DB-error occurred: "+e.args[0])
             return -1
     def delete(self):
         try:
             c.execute("DELETE FROM charges WHERE sid=?",  (self.id, ))
             db.commit()
         except sqlite3.Error as e:
-            logger.error("An DB-error occurred:", e.args[0])
+            logger.error("An DB-error occurred: "+e.args[0])
             return -1
         
 class Credit:
@@ -308,14 +308,14 @@ class Credit:
                 c.execute("UPDATE credit SET name=?,value=?, date=?, payed=?,active=?,encrypted=? WHERE crid=?",  (name, value, date, tmpPayed, tmpActive, str(self.id)))
             db.commit()
         except sqlite3.Error as e:
-            logger.error("An DB-error occurred:", e.args[0])
+            logger.error("An DB-error occurred: "+e.args[0])
             return -1
     def delete(self):
         try:
             c.execute("DELETE FROM credit WHERE crid=?",  (self.id, ))
             db.commit()
         except sqlite3.Error as e:
-            logger.error("An DB-error occurred:", e.args[0])
+            logger.error("An DB-error occurred: "+e.args[0])
             return -1
         
 
@@ -412,7 +412,7 @@ class Company:
                 logger.warning("An DB-error occurred: column name is not unique")
                 return -2
             else:
-                logger.error("An DB-error occurred:", e.args[0])
+                logger.error("An DB-error occurred: "+e.args[0])
                 return -1
         #except Exception as e:
             #logger.error("An Error occurred:", e.args[0])
@@ -431,7 +431,7 @@ class Company:
             db.commit()
             self.updateChargesList()
         except sqlite3.Error as e:
-            logger.error("An DB-error occurred:", e.args[0])
+            logger.error("An DB-error occurred: "+e.args[0])
             return -1
             
     def createLoanDistraction(self, name, value, money):
@@ -447,7 +447,7 @@ class Company:
                 c.execute("INSERT INTO loanDistraction (name, value, money, companyid, encrypted) VALUES (?,?,?,?,?)",  ( name, value, tmpMoney,  self.id, "-1"))
             db.commit()
         except sqlite3.Error as e:
-            logger.error("An DB-error occurred:", e.args[0])
+            logger.error("An DB-error occurred: "+e.args[0])
             return -1
         
     def createCredit(self, name,  value, date, payed,  active,  companyid = -10):
@@ -472,7 +472,7 @@ class Company:
                     c.execute("INSERT INTO credit (name, value, date, payed,active, companyid, encrypted) VALUES (?,?,?,?,?,?,?)",  ( name,  value, date, tmpPayed,tmpActive,  self.id, "-1"))
             db.commit()
         except sqlite3.Error as e:
-            logger.error("An DB-error occurred:", e.args[0])
+            logger.error("An DB-error occurred: "+e.args[0])
             return -1
     
     def save(self, name,  loan,  perHours, describtion):
@@ -489,7 +489,7 @@ class Company:
             c.execute("DELETE FROM company WHERE cid=?",  (self.id, ))
             db.commit()
         except sqlite3.Error as e:
-            logger.error("An DB-error occurred:", e.args[0])
+            logger.error("An DB-error occurred: "+e.args[0])
             return -1
             
 
@@ -544,7 +544,7 @@ class Job:
                     c.execute("DELETE FROM wcharges WHERE chargesid=?",  (wcharge.wchargeId, ))
                     db.commit()
                 except sqlite3.Error as e:
-                    logger.error("An DB-error occurred:", e.args[0])
+                    logger.error("An DB-error occurred: "+e.args[0])
                     return -1
     def saveCharge(self, name,  howManyTimes):
         for wcharge in self.wcharges:
@@ -557,11 +557,14 @@ class Job:
                     db.commit()
                     self.updateWchargesList()
                 except sqlite3.Error as e:
-                    logger.error("An DB-error occurred:", e.args[0])
+                    logger.error("An DB-error occurred: "+e.args[0])
                     return -1
         
     def save(self, name,  place, comment, hours, correctionHours, weekendDays,  startdate, enddate,leader, active, companyid):
             tmpActive = 0
+            startdate = startdate.toString(dbDateFormat)
+            enddate = enddate.toString(dbDateFormat)
+            logger.error(str(name+place + comment+ str(hours)+ str(correctionHours)+ str(weekendDays)+  str(startdate)+ str(enddate)+ leader+ str(tmpActive)+ str(companyid)))
             if active == True:
                 tmpActive = 1
             try:
@@ -571,7 +574,7 @@ class Job:
                     c.execute("UPDATE job SET name=?, place=?, comment=?, hours=?, correctionHours=?, weekendDays=?, startdate=?, enddate=?, leader=?, active=?, companyid=?,encrypted=? WHERE jid=?",  (name, place,  comment, hours, correctionHours, weekendDays,  startdate, enddate, leader, tmpActive, companyid,"-1",  self.id))
                 db.commit()
             except sqlite3.Error as e:
-                logger.error("An DB-error occurred:", e.args[0])
+                logger.error("An DB-error occurred: "+e.args[0])
                 return -1
     def delete(self):
         try:
@@ -579,6 +582,6 @@ class Job:
             c.execute("DELETE FROM job WHERE jid=?",  (self.id, ))
             db.commit()
         except sqlite3.Error as e:
-            logger.error("An DB-error occurred:", e.args[0])
+            logger.error("An DB-error occurred: "+e.args[0])
             return -1
         

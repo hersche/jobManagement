@@ -8,7 +8,7 @@ class sdt:
     def aB(text):
         alertBox = QtGui.QMessageBox()
         alertBox.setText(text)
-        alertBox.exec()
+        alertBox.exec__()
     @staticmethod
     def calcDaySpace(startdate,  enddate,  wc,  weekendDays, noCalendar = False):
         if startdate.daysTo(enddate) == 0:

@@ -52,7 +52,7 @@ class Gui(QtGui.QMainWindow):
             self.ui.companyList.itemClicked.connect(self.onCompanyItemClick)
         self.ui.jobList.itemClicked.connect(self.onJobItemClick)
         self.ui.creditList.itemClicked.connect(self.onCreditItemClick)
-        self.ui.chargesList.itemClicked.connect(self.onSpeseItemClick)
+        self.ui.chargesList.itemClicked.connect(self.onChargeItemClick)
         self.ui.loanSplitList.itemClicked.connect(self.onLoanSplitItemClick)
         self.ui.configList.itemClicked.connect(self.onConfigItemClick)
         self.ui.workChargesList.itemClicked.connect(self.onWChargeItemClick)
@@ -159,7 +159,6 @@ class Gui(QtGui.QMainWindow):
             for company in mightyController.companylist:
                 self.ui.companyList.addItem(company.name)
                 if name == company.name:
-                    print(name)
                     self.ui.companyList.setCurrentRow(i)
                     self.onCompanyItemClick(self.ui.companyList.currentItem())
                 i+=1
@@ -191,7 +190,7 @@ class Gui(QtGui.QMainWindow):
             self.ui.chargesList.addItem(charge.name)
         if selectFirst:
             self.ui.chargesList.setCurrentRow(0)
-            self.onSpeseItemClick(self.ui.chargesList.currentItem())
+            self.onChargeItemClick(self.ui.chargesList.currentItem())
     def updatePersonalFinancesList(self,  selectFirst=False,  name=""):
         self.ui.pfList.clear()
         if mightyController.encryptionObject is not None:
@@ -283,11 +282,11 @@ class Gui(QtGui.QMainWindow):
             self.updateChargesList(True)
             self.updateCreditList(True)
             self.updateLoanSplitList(True)
-    def onSpeseItemClick(self, item):
-        for spese in self.currentCompany.charges:
-            if spese.name == item.text():
-                self.ui.chargesName.setText(spese.name)
-                self.ui.chargesValue.setValue(spese.value)
+    def onChargeItemClick(self, item):
+        for charge in self.currentCompany.charges:
+            if charge.name == item.text():
+                self.ui.chargesName.setText(charge.name)
+                self.ui.chargesValue.setValue(charge.value)
     def onPersonalFinanceItemClick(self, item):
         for pf in mightyController.personalFinances:
             if pf.name == item.text():
@@ -381,7 +380,7 @@ class Gui(QtGui.QMainWindow):
     # personal Finance-Actions
     #--------------
     def onCreatePersonalFinance(self):
-        #self.currentCompany.createSpese(self.ui.chargesName.text(), self.ui.chargesValue.text())
+        #self.currentCompany.createCharge(self.ui.chargesName.text(), self.ui.chargesValue.text())
         mightyController.createPersonalFinance(self.ui.pfName.text(), self.ui.pfValue.text(), self.ui.pfDate.text(), self.ui.pfRepeat.currentText(), self.ui.pfRepeatTimes.value(), self.ui.pfPlusMinus.currentText(), self.ui.pfActive.isChecked(), encrypted)
         # @TODO select the created!
         self.updatePersonalFinancesList(True)
@@ -408,8 +407,8 @@ class Gui(QtGui.QMainWindow):
                 success = True
                 self.ui.status.setText(tr("Charge")+" "+cm.text()+" "+tr("deleted"))
         if not success:
-            self.alertBox.setText(tr("Charge")+" "+tr("could not")+" be "+tr("deleted"))
-            self.alertBox.exec()
+            sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("deleted"))
+            
         else:
             self.updatePersonalFinancesList(True)
     def updatePersonalFinanceText(self):
@@ -420,7 +419,7 @@ class Gui(QtGui.QMainWindow):
     # Charges-Actions
     #--------------
     def onCreateCharge(self):
-        self.currentCompany.createSpese(self.ui.chargesName.text(), self.ui.chargesValue.text())
+        self.currentCompany.createCharge(self.ui.chargesName.text(), self.ui.chargesValue.text())
         # @TODO select the created!
         self.updateChargesList(True)
     def onSaveCharge(self):
@@ -447,8 +446,7 @@ class Gui(QtGui.QMainWindow):
                 success = True
                 self.ui.status.setText(tr("Charge")+" "+cm.text()+" "+tr("deleted"))
         if not success:
-            self.alertBox.setText(tr("Charge")+" "+tr("could not")+" be "+tr("deleted"))
-            self.alertBox.exec()
+            sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("deleted"))
         else:
             self.updateChargesList(True)
     #-------------
@@ -469,8 +467,8 @@ class Gui(QtGui.QMainWindow):
                 success = True
                 self.ui.status.setText(tr("LoanSplit")+" "+self.ui.loanSplitName.text()+" "+tr("saved"))
         if not success:
-            self.alertBox.setText(tr("LoanSplit")+" "+tr("could not")+" be "+tr("saved"))
-            self.alertBox.exec()
+            sdt.aB(tr("LoanSplit")+" "+tr("could not")+" be "+tr("saved"))
+            
         else:
             self.updateLoanSplitList()
             self.ui.loanSplitList.setCurrentRow(cr)
@@ -484,8 +482,7 @@ class Gui(QtGui.QMainWindow):
                 success = True
                 self.ui.status.setText(tr("LoanSplit")+" "+cm.text()+" "+tr("deleted"))
         if not success:
-            self.alertBox.setText(tr("Charge")+" "+tr("could not")+" be "+tr("saved"))
-            self.alertBox.exec()
+            sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("saved"))
         else:
             self.updateLoanSplitList(True)
         
@@ -531,8 +528,7 @@ class Gui(QtGui.QMainWindow):
                 success = True
                 self.ui.status.setText(tr("Charge")+" "+cm.text()+" "+tr("deleted"))
         if not success:
-            self.alertBox.setText(tr("Charge")+" "+tr("could not")+" be "+tr("saved"))
-            self.alertBox.exec()
+            sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("saved"))
         else:
             self.updateConfigList(True)
         
@@ -554,8 +550,7 @@ class Gui(QtGui.QMainWindow):
                 success = True
                 self.ui.status.setText(tr("Credit")+" "+self.ui.creditName.text()+":"+self.ui.creditValue.text()+" "+tr("saved"))
         if not success:
-            self.alertBox.setText(tr("Credit")+" "+tr("could not")+" be "+tr("saved"))
-            self.alertBox.exec()
+            sdt.aB(tr("Credit")+" "+tr("could not")+" be "+tr("saved"))
         else:
             self.updateCreditList()
             self.ui.creditList.setCurrentRow(cr)
@@ -568,8 +563,7 @@ class Gui(QtGui.QMainWindow):
                 success = True
                 self.ui.status.setText(tr("Credit")+" "+self.ui.creditValue.text()+" "+tr("deleted"))
         if not success:
-            self.alertBox.setText(tr("Credit")+" "+tr("could not")+" be "+tr("deleted"))
-            self.alertBox.exec()
+            sdt.aB(tr("Credit")+" "+tr("could not")+" be "+tr("deleted"))
         else:
             self.updateCreditList(True)
         
@@ -592,15 +586,13 @@ class Gui(QtGui.QMainWindow):
             else:
                 self.currentCompany.save(self.ui.companyname.text(),  self.ui.loan.text(), self.ui.perHours.text(), self.ui.companydescription.toPlainText())
         else:
-            self.alertBox.setText("Company could not be saved")
-            self.alertBox.exec()
+            sdt.aB("Company could not be saved")
         self.updateCompanyList(False,self.ui.companyname.text())
     def onDeleteCompany(self):
         if self.currentCompany is not None:
             self.currentCompany.delete()
         else:
-            self.alertBox.setText("Company could not be deleted")
-            self.alertBox.exec()
+            sdt.aB("Company could not be deleted")
         self.updateCompanyList(True)
         
         

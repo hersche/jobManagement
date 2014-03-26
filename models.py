@@ -386,7 +386,7 @@ class Company:
                 return -1
         #except Exception as e:
             #print("An Error occurred:", e.args[0])
-    def createSpese(self,  name, value, companyid = -10):
+    def createCharge(self,  name, value, companyid = -10):
         try:
             if companyid != -10:
                 if self.encryptionObject != None:

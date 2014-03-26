@@ -9,6 +9,7 @@ class Gui(QtGui.QMainWindow):
     
    """
     def __init__(self, parent=None):
+        logger.debug("Init Gui")
         self.roundSum = 0
         # INIT
         self.currentCompany = None
@@ -40,7 +41,6 @@ class Gui(QtGui.QMainWindow):
         self.ui.creditDate.setDate(cd)
         self.ui.pfDate.setDate(cd)
         self.tabUpdater()
-        self.alertBox = QtGui.QMessageBox()
         
         self.ui.mainTab.currentChanged.connect(self.tabUpdater)
         self.ui.viewTabs.currentChanged.connect(self.tabUpdater)
@@ -53,7 +53,7 @@ class Gui(QtGui.QMainWindow):
         self.ui.jobList.itemClicked.connect(self.onJobItemClick)
         self.ui.creditList.itemClicked.connect(self.onCreditItemClick)
         self.ui.chargesList.itemClicked.connect(self.onChargeItemClick)
-        self.ui.loanSplitList.itemClicked.connect(self.onLoanSplitItemClick)
+        self.ui.loanDistractionList.itemClicked.connect(self.onLoanDistractionItemClick)
         self.ui.configList.itemClicked.connect(self.onConfigItemClick)
         self.ui.workChargesList.itemClicked.connect(self.onWChargeItemClick)
         self.ui.pfList.itemClicked.connect(self.onPersonalFinanceItemClick)
@@ -86,8 +86,8 @@ class Gui(QtGui.QMainWindow):
         
         #loanSplit-Actions
         self.ui.createLoanDistraction.clicked.connect(self.onCreateLoanDistraction)
-        self.ui.saveLoanDistraction.clicked.connect(self.onSaveLoanSplit)
-        self.ui.deleteLoanDistraction.clicked.connect(self.onDeleteLoanSplit)
+        self.ui.saveLoanDistraction.clicked.connect(self.onSaveLoanDistraction)
+        self.ui.deleteLoanDistraction.clicked.connect(self.onDeleteLoanDistraction)
         
         #config-Actions
         self.ui.createConfig.clicked.connect(self.onCreateConfig)
@@ -202,19 +202,18 @@ class Gui(QtGui.QMainWindow):
         if selectFirst:
             self.ui.pfList.setCurrentRow(0)
             self.onPersonalFinanceItemClick(self.ui.pfList.currentItem())
-    def updateLoanSplitList(self,  selectFirst=False,  name=""):
-        self.ui.loanSplitList.clear()
+    def updateLoanDistractionList(self,  selectFirst=False,  name=""):
+        self.ui.loanDistractionList.clear()
         if mightyController.encryptionObject is not None:
             mightyController.encryptionObject.setKey(self.tmpPw)
-        self.currentCompany.updateLoanSplitList()
-        for loanSplit in self.currentCompany.loanSplits:
-            self.ui.loanSplitList.addItem(loanSplit.name)
+        self.currentCompany.updateLoanDistractionList()
+        for loanSplit in self.currentCompany.loanDistractions:
+            self.ui.loanDistractionList.addItem(loanSplit.name)
         if selectFirst:
-            self.ui.loanSplitList.setCurrentRow(0)
-            self.onLoanSplitItemClick(self.ui.loanSplitList.currentItem())
+            self.ui.loanDistractionList.setCurrentRow(0)
+            self.onLoanDistractionItemClick(self.ui.loanDistractionList.currentItem())
     def updateConfigList(self,selectFirst=False,name=""):
         self.ui.configList.clear()
-        print(name)
         mightyController.updateConfigList()
         i=0
         for config in mightyController.configlist:
@@ -258,7 +257,6 @@ class Gui(QtGui.QMainWindow):
     # List-Clicks
     #--------------------------------
     def onCompanyItemClick(self,  item):
-        self.ui.jobList.clear()
         self.ui.createJob.setEnabled(True) 
         if singleView:
             if singleViewId != -1:
@@ -281,7 +279,7 @@ class Gui(QtGui.QMainWindow):
             self.updateJobList(True)
             self.updateChargesList(True)
             self.updateCreditList(True)
-            self.updateLoanSplitList(True)
+            self.updateLoanDistractionList(True)
     def onChargeItemClick(self, item):
         for charge in self.currentCompany.charges:
             if charge.name == item.text():
@@ -312,12 +310,12 @@ class Gui(QtGui.QMainWindow):
                 for charge in job.wcharges:
                     if charge.name == item.text():
                         self.ui.wChargeTimes.setValue(charge.howManyTimes)
-    def onLoanSplitItemClick(self, item):
-        for loanSplit in self.currentCompany.loanSplits:
-            if loanSplit.name == item.text():
-                self.ui.loanSplitName.setText(loanSplit.name)
-                self.ui.loanSplitValue.setValue(loanSplit.value)
-                self.ui.loanSplitMoney.setChecked(loanSplit.money)
+    def onLoanDistractionItemClick(self, item):
+        for loanDistraction in self.currentCompany.loanDistractions:
+            if loanDistraction.name == item.text():
+                self.ui.loanDistractionName.setText(loanDistraction.name)
+                self.ui.loanDistractionalue.setValue(loanDistraction.value)
+                self.ui.loanDistractionMoney.setChecked(loanDistraction.money)
     def onConfigItemClick(self, item):
         for config in mightyController.configlist:
             if config.key == item.text():
@@ -393,7 +391,8 @@ class Gui(QtGui.QMainWindow):
                 if pf.save(self.ui.pfName.text(), self.ui.pfValue.text(), self.ui.pfDate.text(), self.ui.pfRepeat.currentText(), self.ui.pfRepeatTimes.value(), self.ui.pfPlusMinus.currentText(), self.ui.pfActive.isChecked()) != -1:
                     self.ui.status.setText(tr("Personal Finance")+" "+self.ui.pfName.text()+" "+tr("saved"))
                 else:
-                    sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("saved")+". DB-Error. The name maybe exist allready? ")
+                    logger.error(tr("Personal Finance")+" "+tr("could not")+" be "+tr("saved")+". DB-Error. The name maybe exist allready?")
+                    sdt.aB(tr("Personal Finance")+" "+tr("could not")+" be "+tr("saved")+". DB-Error. The name maybe exist allready?")
         else:
             self.ui.pfList.setCurrentRow(cr)
             self.ui.pfList.setCurrentItem(cm)
@@ -407,6 +406,7 @@ class Gui(QtGui.QMainWindow):
                 success = True
                 self.ui.status.setText(tr("Charge")+" "+cm.text()+" "+tr("deleted"))
         if not success:
+            logger.error(tr("Charge")+" "+tr("could not")+" be "+tr("deleted"))
             sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("deleted"))
             
         else:
@@ -431,7 +431,8 @@ class Gui(QtGui.QMainWindow):
                 if charge.save(self.ui.chargesName.text(), self.ui.chargesValue.text()) != -1:
                     self.ui.status.setText(tr("Charge")+" "+self.ui.chargesName.text()+" "+tr("saved"))
                 else:
-                    sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("saved")+". DB-Error. The name maybe exist allready? ")
+                    logger.error(tr("Charge")+" "+tr("could not")+" be "+tr("saved")+". DB-Error. The name maybe exist allready?")
+                    sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("saved")+". DB-Error. The name maybe exist allready?")
         else:
             self.updateChargesList(True)
             self.updateWorkchargesList(True)
@@ -446,45 +447,48 @@ class Gui(QtGui.QMainWindow):
                 success = True
                 self.ui.status.setText(tr("Charge")+" "+cm.text()+" "+tr("deleted"))
         if not success:
+            logger.error(tr("Charge")+" "+tr("could not")+" be "+tr("deleted"))
             sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("deleted"))
         else:
             self.updateChargesList(True)
     #-------------
-    # loanSplit-Actions
+    # loanDistraction-Actions
     #--------------
     def onCreateLoanDistraction(self):
-        self.currentCompany.createLoanDistraction(self.ui.loanSplitName.text(), self.ui.loanSplitValue.text(),  self.ui.loanSplitMoney.isChecked())
+        self.currentCompany.createLoanDistraction(self.ui.loanDistractionName.text(), self.ui.loanDistractionValue.text(),  self.ui.loanDistractionMoney.isChecked())
         # @TODO select the created!
-        self.ui.status.setText(tr("LoanSplit")+" "+self.ui.loanSplitName.text()+" "+tr("created"))
-        self.updateLoanSplitList(True)
-    def onSaveLoanSplit(self):
-        cr = self.ui.loanSplitList.currentRow()
-        cm = self.ui.loanSplitList.currentItem()
+        self.ui.status.setText(tr("LoanDistraction")+" "+self.ui.loanDistractionName.text()+" "+tr("created"))
+        self.updateLoanDistractionList(True)
+    def onSaveLoanDistraction(self):
+        cr = self.ui.loanDistractionList.currentRow()
+        cm = self.ui.loanDistractionList.currentItem()
         success = False
-        for loanSplit in self.currentCompany.loanSplits:
-            if cm is not None and loanSplit.name == cm.text():
-                loanSplit.save(self.ui.loanSplitName.text(), self.ui.loanSplitValue.text(),  self.ui.loanSplitMoney.isChecked())
+        for loanDistraction in self.currentCompany.loanDistractions:
+            if cm is not None and loanDistraction.name == cm.text():
+                loanDistraction.save(self.ui.loanDistractionName.text(), self.ui.loanDistractionValue.text(),  self.ui.loanDistractionMoney.isChecked())
                 success = True
                 self.ui.status.setText(tr("LoanSplit")+" "+self.ui.loanSplitName.text()+" "+tr("saved"))
         if not success:
+            logger.error(tr("LoanSplit")+" "+tr("could not")+" be "+tr("saved"))
             sdt.aB(tr("LoanSplit")+" "+tr("could not")+" be "+tr("saved"))
             
         else:
-            self.updateLoanSplitList()
-            self.ui.loanSplitList.setCurrentRow(cr)
-            self.ui.loanSplitList.setCurrentItem(cm)
-    def onDeleteLoanSplit(self):
-        cm = self.ui.loanSplitList.currentItem()
+            self.updateLoanDistractionList()
+            self.ui.loanDistractionList.setCurrentRow(cr)
+            self.ui.loanDistractionList.setCurrentItem(cm)
+    def onDeleteLoanDistraction(self):
+        cm = self.ui.loanDistractionList.currentItem()
         success = False
-        for loanSplit in self.currentCompany.loanSplits:
-            if cm is not None and loanSplit.name == cm.text():
-                loanSplit.delete()
+        for loanDistraction in self.currentCompany.loanDistractions:
+            if cm is not None and loanDistraction.name == cm.text():
+                loanDistraction.delete()
                 success = True
                 self.ui.status.setText(tr("LoanSplit")+" "+cm.text()+" "+tr("deleted"))
         if not success:
+            logger.error(tr("Charge")+" "+tr("could not")+" be "+tr("saved"))
             sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("saved"))
         else:
-            self.updateLoanSplitList(True)
+            self.updateLoanDistractionList(True)
         
     #-------------
     # config-Actions
@@ -506,9 +510,7 @@ class Gui(QtGui.QMainWindow):
         cI = self.ui.configList.currentItem()
         ciText = cI.text()
         for config in mightyController.configlist:
-            print(ciText+" and "+config.key)
             if ci is not None and config.key == ciText:
-                print("save!")
                 config.save(self.ui.configKey.text(), self.ui.configValue.text())
                 self.ui.status.setText(tr("Config")+" "+self.ui.configKey.text()+" "+tr("saved"))
                 if self.ui.configKey.text() == "encrypted":
@@ -528,6 +530,7 @@ class Gui(QtGui.QMainWindow):
                 success = True
                 self.ui.status.setText(tr("Charge")+" "+cm.text()+" "+tr("deleted"))
         if not success:
+            logger.error(tr("Charge")+" "+tr("could not")+" be "+tr("saved"))
             sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("saved"))
         else:
             self.updateConfigList(True)
@@ -550,6 +553,7 @@ class Gui(QtGui.QMainWindow):
                 success = True
                 self.ui.status.setText(tr("Credit")+" "+self.ui.creditName.text()+":"+self.ui.creditValue.text()+" "+tr("saved"))
         if not success:
+            logger.error(tr("Credit")+" "+tr("could not")+" be "+tr("saved"))
             sdt.aB(tr("Credit")+" "+tr("could not")+" be "+tr("saved"))
         else:
             self.updateCreditList()
@@ -563,6 +567,7 @@ class Gui(QtGui.QMainWindow):
                 success = True
                 self.ui.status.setText(tr("Credit")+" "+self.ui.creditValue.text()+" "+tr("deleted"))
         if not success:
+            logger.error(tr("Credit")+" "+tr("could not")+" be "+tr("deleted"))
             sdt.aB(tr("Credit")+" "+tr("could not")+" be "+tr("deleted"))
         else:
             self.updateCreditList(True)
@@ -574,8 +579,10 @@ class Gui(QtGui.QMainWindow):
     def onCreateCompany(self):
         b = mightyController.createCompany(self.ui.companyname.text(),  self.ui.loan.text(),  self.ui.perHours.text(),  self.ui.companydescription.toPlainText()) 
         if b== -2:
+            logger.error(tr("Company already exist, please choose another name"))
             sdt.aB(tr("Company already exist, please choose another name"))
         elif b == -1:
+            logger.error(tr("A DB-Failure is happent. Please check the console."))
             sdt.aB(tr("A DB-Failure is happent. Please check the console."))
         else:
             self.updateCompanyList(False,self.ui.companyname.text())

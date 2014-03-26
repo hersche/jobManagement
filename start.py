@@ -4,6 +4,7 @@
 
 from gui_class import *
 import sys
+
 singleView = False
 singleViewId = -1
 app = QtGui.QApplication(sys.argv)

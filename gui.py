@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'gui.ui'
+# Form implementation generated from reading ui file 'ui/gui.ui'
 #
-# Created: Tue Mar 25 22:32:58 2014
+# Created: Wed Mar 26 03:24:31 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -335,9 +335,9 @@ class Ui_MainWindow(object):
         self.formLayout_6.setFieldGrowthPolicy(QtGui.QFormLayout.ExpandingFieldsGrow)
         self.formLayout_6.setMargin(0)
         self.formLayout_6.setObjectName(_fromUtf8("formLayout_6"))
-        self.loanSplitList = QtGui.QListWidget(self.formLayoutWidget_6)
-        self.loanSplitList.setObjectName(_fromUtf8("loanSplitList"))
-        self.formLayout_6.setWidget(0, QtGui.QFormLayout.SpanningRole, self.loanSplitList)
+        self.loanDistractionList = QtGui.QListWidget(self.formLayoutWidget_6)
+        self.loanDistractionList.setObjectName(_fromUtf8("loanDistractionList"))
+        self.formLayout_6.setWidget(0, QtGui.QFormLayout.SpanningRole, self.loanDistractionList)
         self.createLoanDistraction = QtGui.QPushButton(self.tab_2)
         self.createLoanDistraction.setGeometry(QtCore.QRect(0, 110, 91, 23))
         self.createLoanDistraction.setObjectName(_fromUtf8("createLoanDistraction"))
@@ -356,19 +356,19 @@ class Ui_MainWindow(object):
         self.label_21 = QtGui.QLabel(self.formLayoutWidget_8)
         self.label_21.setObjectName(_fromUtf8("label_21"))
         self.formLayout_8.setWidget(0, QtGui.QFormLayout.LabelRole, self.label_21)
-        self.loanSplitName = QtGui.QLineEdit(self.formLayoutWidget_8)
-        self.loanSplitName.setObjectName(_fromUtf8("loanSplitName"))
-        self.formLayout_8.setWidget(0, QtGui.QFormLayout.FieldRole, self.loanSplitName)
+        self.loanDistractionName = QtGui.QLineEdit(self.formLayoutWidget_8)
+        self.loanDistractionName.setObjectName(_fromUtf8("loanDistractionName"))
+        self.formLayout_8.setWidget(0, QtGui.QFormLayout.FieldRole, self.loanDistractionName)
         self.label_22 = QtGui.QLabel(self.formLayoutWidget_8)
         self.label_22.setObjectName(_fromUtf8("label_22"))
         self.formLayout_8.setWidget(1, QtGui.QFormLayout.LabelRole, self.label_22)
-        self.loanSplitValue = QtGui.QDoubleSpinBox(self.formLayoutWidget_8)
-        self.loanSplitValue.setMaximum(9999.99)
-        self.loanSplitValue.setObjectName(_fromUtf8("loanSplitValue"))
-        self.formLayout_8.setWidget(1, QtGui.QFormLayout.FieldRole, self.loanSplitValue)
-        self.loanSplitMoney = QtGui.QCheckBox(self.formLayoutWidget_8)
-        self.loanSplitMoney.setObjectName(_fromUtf8("loanSplitMoney"))
-        self.formLayout_8.setWidget(2, QtGui.QFormLayout.FieldRole, self.loanSplitMoney)
+        self.loanDistractionValue = QtGui.QDoubleSpinBox(self.formLayoutWidget_8)
+        self.loanDistractionValue.setMaximum(9999.99)
+        self.loanDistractionValue.setObjectName(_fromUtf8("loanDistractionValue"))
+        self.formLayout_8.setWidget(1, QtGui.QFormLayout.FieldRole, self.loanDistractionValue)
+        self.loanDistractionMoney = QtGui.QCheckBox(self.formLayoutWidget_8)
+        self.loanDistractionMoney.setObjectName(_fromUtf8("loanDistractionMoney"))
+        self.formLayout_8.setWidget(2, QtGui.QFormLayout.FieldRole, self.loanDistractionMoney)
         self.plainTextEdit_4 = QtGui.QPlainTextEdit(self.tab_2)
         self.plainTextEdit_4.setGeometry(QtCore.QRect(0, 130, 481, 101))
         self.plainTextEdit_4.setObjectName(_fromUtf8("plainTextEdit_4"))
@@ -741,7 +741,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.mainTab.setCurrentIndex(0)
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(0)
+        self.tabWidget_2.setCurrentIndex(1)
         self.viewTabs.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -795,7 +795,7 @@ class Ui_MainWindow(object):
         self.deleteLoanDistraction.setText(_translate("MainWindow", "Delete", None))
         self.label_21.setText(_translate("MainWindow", "Name", None))
         self.label_22.setText(_translate("MainWindow", "Value", None))
-        self.loanSplitMoney.setText(_translate("MainWindow", "on=money,off=percent", None))
+        self.loanDistractionMoney.setText(_translate("MainWindow", "on=money,off=percent", None))
         self.plainTextEdit_4.setPlainText(_translate("MainWindow", "When there\'s go something substracted, as example insurances, taxes, etc", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_2), _translate("MainWindow", "Loan Distractions", None))
         self.label_17.setText(_translate("MainWindow", "Name", None))

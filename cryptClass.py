@@ -6,11 +6,11 @@ class cm:
     def __init__(self, pyCryptoModule,  key):
         self.key = key
         self.mod = pyCryptoModule
-        print("key setted to "+self.setKey(self.key))
         if key != "":
             self.key = self.setKey(key)
 
         self.name = self.mod.__name__[14:]
+        logger.debug("Init cm/cryptoMeta with module "+self.name)
         from Crypto import Random as rand
         self.rand = rand
 

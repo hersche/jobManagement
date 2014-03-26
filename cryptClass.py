@@ -25,17 +25,10 @@ class cm:
             self.key += "."
         return self.key
 
-#     def pad(self,  s):
-#         bla = lambda s: s + (self.mod.block_size- len(s) % self.mod.block_size) * chr(self.mod.block_size - len(s) % self.mod.block_size)
-#         return bla
-#     def unpad(self, s):
-#         upad = lambda s : s[0:-ord(s[-1])]
-#         return upad
     def encrypt(self, rawMessage):
         message=str(rawMessage)
         if self.mod == None:
             return rawMessage
-        #print("e "+self.name+" "+self.key)
         iv = self.rand.new().read(self.mod.block_size)
         cipher = self.mod.new(self.key, self.mod.MODE_CBC, iv)
         mLen = len(message)

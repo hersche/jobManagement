@@ -249,7 +249,6 @@ class cw:
         pfCal = QtCore.QDate.fromString(str(ui.pfCalendar.monthShown())+"."+str(ui.pfCalendar.yearShown()), "M.yyyy")
         pfSearch = ui.pfSearch.text()
         pfSearch = pfSearch.lower()
-        #print(str(pfCal.month())+"."+str(pfCal.year())+"vs"+str(pf.date.month())+"."+str(pf.date.year()))
         if ui.pfCalendarEnabled.isChecked() == False and ui.pfSearchEnabled.isChecked()==False:
             return True
         elif ui.pfCalendarEnabled.isChecked() and ui.pfSearchEnabled.isChecked()==False:

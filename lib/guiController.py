@@ -1,15 +1,25 @@
+
 from lib.models import *
 from lib.staticTools import *
+from lib.toxTry import *
 singleView = False
 singleViewId = -1
 mightyController = Controller()
 #the whole gui...
+class toxThread(QtCore.QThread):
+ def __init__(self,tt):
+  QtCore.QThread.__init__(self)
+  self.tt = tt
+ def run(self):
+    self.tt.loop()
+    self.emit( QtCore.SIGNAL('update(QString)'), "from tox thread " + str(i) )
+    return
 class Gui(QtGui.QMainWindow):
     def __init__(self, parent=None):
         logger.debug("|GUI| Init Gui")
         self.roundSum = 0
         # INIT
-        
+
         self.currentCompany = None
         self.showInactive = True
         self.tmpPw = ""
@@ -27,6 +37,9 @@ class Gui(QtGui.QMainWindow):
         else:
             self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.tt = ToxTry(self.ui)
+        self.toxThread = toxThread(self.tt)
+        self.toxThread.start()
         self.updateCompanyList(selectFirst=True)
         if singleView:
             self.onCompanyItemClick("singleView")
@@ -128,7 +141,12 @@ class Gui(QtGui.QMainWindow):
             self.ui.companyViewSelect.currentIndexChanged.connect(self.updateCompanyView)
         self.ui.companyViewCalendar.currentPageChanged.connect(self.updateCompanyView)
         self.ui.companyViewCalendarFilter.clicked.connect(self.updateCompanyView)
+        self.ui.toxTrySendButton.clicked.connect(self.onSendToxMessage)
     
+    def onSendToxMessage(self):
+        message = self.ui.toxTrySendText.text()
+        self.tt.send_message(self.tt.currentId, message)
+        self.ui.toxTryChat.append('ToxTry: %s' % message)
     def tabUpdater(self,  index=0):
         try: 
             ci = self.ui.mainTab.currentIndex()

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/gui.ui'
 #
-# Created: Wed Mar 26 21:54:05 2014
+# Created: Thu Mar 27 00:58:15 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -729,6 +729,27 @@ class Ui_MainWindow(object):
         self.textEdit.setReadOnly(True)
         self.textEdit.setObjectName(_fromUtf8("textEdit"))
         self.mainTab.addTab(self.settings, _fromUtf8(""))
+        self.tab_9 = QtGui.QWidget()
+        self.tab_9.setObjectName(_fromUtf8("tab_9"))
+        self.toxTryChat = QtGui.QTextEdit(self.tab_9)
+        self.toxTryChat.setGeometry(QtCore.QRect(10, 20, 451, 341))
+        self.toxTryChat.setObjectName(_fromUtf8("toxTryChat"))
+        self.toxTrySendText = QtGui.QLineEdit(self.tab_9)
+        self.toxTrySendText.setGeometry(QtCore.QRect(20, 380, 281, 23))
+        self.toxTrySendText.setObjectName(_fromUtf8("toxTrySendText"))
+        self.toxTrySendButton = QtGui.QPushButton(self.tab_9)
+        self.toxTrySendButton.setGeometry(QtCore.QRect(320, 380, 91, 24))
+        self.toxTrySendButton.setObjectName(_fromUtf8("toxTrySendButton"))
+        self.toxTryFriends = QtGui.QListWidget(self.tab_9)
+        self.toxTryFriends.setGeometry(QtCore.QRect(490, 20, 256, 192))
+        self.toxTryFriends.setObjectName(_fromUtf8("toxTryFriends"))
+        self.toxTryId = QtGui.QLineEdit(self.tab_9)
+        self.toxTryId.setGeometry(QtCore.QRect(400, 460, 361, 23))
+        self.toxTryId.setObjectName(_fromUtf8("toxTryId"))
+        self.label_25 = QtGui.QLabel(self.tab_9)
+        self.label_25.setGeometry(QtCore.QRect(400, 440, 53, 15))
+        self.label_25.setObjectName(_fromUtf8("label_25"))
+        self.mainTab.addTab(self.tab_9, _fromUtf8(""))
         self.status = QtGui.QLabel(self.centralwidget)
         self.status.setGeometry(QtCore.QRect(760, 10, 271, 16))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
@@ -748,7 +769,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.mainTab.setCurrentIndex(3)
+        self.mainTab.setCurrentIndex(4)
         self.tabWidget.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(1)
         self.viewTabs.setCurrentIndex(1)
@@ -893,5 +914,8 @@ class Ui_MainWindow(object):
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\';\">Restart is needed after changes!</span></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Sans Serif\';\"><br /></p></body></html>", None))
         self.mainTab.setTabText(self.mainTab.indexOf(self.settings), _translate("MainWindow", "Settings", "en"))
+        self.toxTrySendButton.setText(_translate("MainWindow", "send", None))
+        self.label_25.setText(_translate("MainWindow", "Your ID", None))
+        self.mainTab.setTabText(self.mainTab.indexOf(self.tab_9), _translate("MainWindow", "ToxTry", None))
         self.status.setText(_translate("MainWindow", "Status..", None))
 

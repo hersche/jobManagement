@@ -13,7 +13,7 @@ class ToxTry(Tox):
         self.load_from_file('./toxData')
       else:
         self.set_name("ToxTry")
-      self.statusMsg = QtCore.SIGNAL("blaaa")
+      #self.statusMsg = QtCore.SIGNAL("blaaa")
       self.ui.toxTryUsername.setText(self.get_self_name())
       self.ui.toxTryId.setText(self.get_address())
       #self.addPublicKey = QtCore.SIGNAL("addPublicKey")
@@ -54,6 +54,7 @@ class ToxTry(Tox):
       #QtCore.QObject.addPK.emit(pk)
       self.FriendRequest = [True, pk]
       logger.error("here i create the user!")
+      self.tmc.addToxUser("name",pk,message)
       #self.tmc.createToxUser("as",pk,"aa")
       #self.emit(QtCore.SIGNAL("addPublicKey"), pk, pk)
       # self.toxModelController.createToxUser("",pk, "")
@@ -70,6 +71,5 @@ class ToxTry(Tox):
       
   def on_status_message(self,friendId, news):
       self.statusMessage=[True,friendId,news]
-      emit(self.statusMsg)
       logger.error("newsStatus: "+str(friendId)+" "+str(news))
       #self.tmc.createToxUser(str(friendId),"publigg",str(news))

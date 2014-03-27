@@ -7,20 +7,13 @@ singleViewId = -1
 mightyController = Controller()
 #the whole gui...
 class toxThread(QtCore.QThread):
- def __init__(self,ui):
+ def __init__(self,ui,tmc):
   QtCore.QThread.__init__(self)
-  self.tmc = toxController("","")
+  self.tmc = tmc
   self.tt = ToxTry(ui,self.tmc)
-  self.tmc.updateToxUsers()
  def run(self):
     self.tt.loop(self.tmc)
-    if self.tt.FriendRequest[0]:
-      logger.error("friend request with value: "+self.tt.FriendRequest[1])
-      self.tt.FriendRequest=False,""
-    if self.tt.statusMessage[0]:
-      logger.error("statusMessage request with value: "+self.tt.FriendRequest[1]+" and "+self.tt.FriendRequest[2])
-    #self.emit( QtCore.SIGNAL('update(QString)'), "from tox thread " + str(i) )
-    #return
+
 class Gui(QtGui.QMainWindow):
     def __init__(self, parent=None):
         logger.debug("|GUI| Init Gui")
@@ -44,10 +37,13 @@ class Gui(QtGui.QMainWindow):
         else:
             self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.toxThread = toxThread(self.ui)
+        self.tmc = toxController("","")
+        self.toxThread = toxThread(self.ui,self.tmc)
         #self.connect(self.toxThread,QtCore.SIGNAL("addPK"),self.createToxUser)
         self.toxThread.start()
-        
+        self.tmc.toxuserappend.connect(self.createToxUser)
+        #QtCore.QObject.connect(self.tmc,self.tmc.toxuserappend,self.createToxUser)
+        #self.tmc.toxuserappend.connect(self.createToxUser)
         self.updateCompanyList(selectFirst=True)
         if singleView:
             self.onCompanyItemClick("singleView")
@@ -153,12 +149,15 @@ class Gui(QtGui.QMainWindow):
         self.ui.toxTrySendButton.clicked.connect(self.onSendToxMessage)
         self.ui.toxTrySendText.returnPressed.connect(self.onSendToxMessage)
         self.ui.toxTryUsername.returnPressed.connect(self.onSaveToxUsername)
-        self.toxThread.tt.statusMsg.connect(self.createToxUser)
+        #self.toxThread.tt.statusMsg.connect(self.createToxUser)
         self.updateToxUserList()
         
         
     def createToxUser(self, pk=""):
         logger.error("das signal ist daaaaaa!!")
+        logger.error("cache: "+str(len(self.tmc.cachedToxUsers)))
+        for tU in self.tmc.cachedToxUsers:
+          self.tmc.createToxUser(tU)
         #self.tt.toxModelController.createToxUser("",pk,"")
     def updateToxUserList(self):
         self.ui.toxTryFriends.clear()

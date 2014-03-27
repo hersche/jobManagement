@@ -13,16 +13,12 @@ class ToxTry(Tox):
         self.load_from_file('./toxData')
       else:
         self.set_name("ToxTry")
-      #self.statusMsg = QtCore.SIGNAL("blaaa")
       self.ui.toxTryUsername.setText(self.get_self_name())
       self.ui.toxTryId.setText(self.get_address())
-      #self.addPublicKey = QtCore.SIGNAL("addPublicKey")
-      self.addPK = QtCore.pyqtSignal(str)
       for tUser in tmc.toxUserList:
+        logger.error(tUser.pubKey)
         self.add_friend_norequest(tUser.pubKey)
       self.save_to_file('toxData')
-      self.FriendRequest = [False,""]
-      self.statusMessage=[False,"",""]
       self.bootstrap_from_address(SERVER[0], 1, SERVER[1], SERVER[2])
 
   def loop(self,tmc):
@@ -50,14 +46,7 @@ class ToxTry(Tox):
   def on_friend_request(self, pk, message):
       self.ui.toxTryChat.append('Friend request from %s: %s' % (pk, message))
       self.add_friend_norequest(pk)
-      #self.emit(self.addPublicKey, pk)
-      #QtCore.QObject.addPK.emit(pk)
-      self.FriendRequest = [True, pk]
-      logger.error("here i create the user!")
       self.tmc.addToxUser("name",pk,message)
-      #self.tmc.createToxUser("as",pk,"aa")
-      #self.emit(QtCore.SIGNAL("addPublicKey"), pk, pk)
-      # self.toxModelController.createToxUser("",pk, "")
       self.save_to_file('toxData')
       self.ui.toxTryChat.append('Accepted.')
 
@@ -72,4 +61,3 @@ class ToxTry(Tox):
   def on_status_message(self,friendId, news):
       self.statusMessage=[True,friendId,news]
       logger.error("newsStatus: "+str(friendId)+" "+str(news))
-      #self.tmc.createToxUser(str(friendId),"publigg",str(news))

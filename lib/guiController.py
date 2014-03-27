@@ -39,11 +39,8 @@ class Gui(QtGui.QMainWindow):
         self.ui.setupUi(self)
         self.tmc = toxController("","")
         self.toxThread = toxThread(self.ui,self.tmc)
-        #self.connect(self.toxThread,QtCore.SIGNAL("addPK"),self.createToxUser)
+        self.updateToxUserList()
         self.toxThread.start()
-        self.tmc.toxuserappend.connect(self.createToxUser)
-        #QtCore.QObject.connect(self.tmc,self.tmc.toxuserappend,self.createToxUser)
-        #self.tmc.toxuserappend.connect(self.createToxUser)
         self.updateCompanyList(selectFirst=True)
         if singleView:
             self.onCompanyItemClick("singleView")
@@ -149,18 +146,12 @@ class Gui(QtGui.QMainWindow):
         self.ui.toxTrySendButton.clicked.connect(self.onSendToxMessage)
         self.ui.toxTrySendText.returnPressed.connect(self.onSendToxMessage)
         self.ui.toxTryUsername.returnPressed.connect(self.onSaveToxUsername)
-        #self.toxThread.tt.statusMsg.connect(self.createToxUser)
-        self.updateToxUserList()
-        
-        
-    def createToxUser(self, pk=""):
-        logger.error("das signal ist daaaaaa!!")
-        logger.error("cache: "+str(len(self.tmc.cachedToxUsers)))
-        for tU in self.tmc.cachedToxUsers:
-          self.tmc.createToxUser(tU)
-        #self.tt.toxModelController.createToxUser("",pk,"")
+
     def updateToxUserList(self):
+        self.tmc.updateToxUsers()
         self.ui.toxTryFriends.clear()
+        for tU in self.tmc.toxUserList:
+          self.ui.toxTryFriends.append(tU.pubKey)
 
     def onSaveToxUsername(self):
         self.tt.set_name(self.ui.toxTryUsername.text())

@@ -32,3 +32,37 @@
 2014-03-27 02:15:58,172 - jobManagement - ERROR - Alive!
 2014-03-27 02:16:06,154 - jobManagement - ERROR - Connected to DHT.
 2014-03-27 02:16:06,155 - jobManagement - ERROR - Waiting for friend request
+2014-03-27 05:25:26,446 - jobManagement - ERROR - 7085968702A504102C88824ED03860D206923C6C0548DCCB63583CDF630C4157
+2014-03-27 05:43:12,741 - jobManagement - ERROR - appears in createToxUser
+2014-03-27 05:43:12,741 - jobManagement - ERROR - An DB-error occurred: SQLite objects created in a thread can only be used in that same thread.The object was created in thread id 140655815341888 and this is thread id 140655367808768
+2014-03-27 07:29:10,376 - jobManagement - ERROR - appears in createToxUser
+2014-03-27 07:29:10,377 - jobManagement - ERROR - An DB-error occurred: SQLite objects created in a thread can only be used in that same thread.The object was created in thread id 140070215653184 and this is thread id 140069768197888
+2014-03-27 07:29:13,419 - jobManagement - ERROR - newsStatus: 0 smoking....
+2014-03-27 07:31:23,492 - jobManagement - ERROR - appears in createToxUser
+2014-03-27 07:31:23,492 - jobManagement - ERROR - An DB-error occurred: SQLite objects created in a thread can only be used in that same thread.The object was created in thread id 140091675785024 and this is thread id 140091227924224
+2014-03-27 07:31:29,333 - jobManagement - ERROR - newsStatus: 0 smoking....
+2014-03-27 07:31:29,333 - jobManagement - ERROR - userStatus: 0 0
+2014-03-27 07:41:14,173 - jobManagement - ERROR - newsStatus: 0 smoking....
+2014-03-27 07:41:14,263 - jobManagement - ERROR - userStatus: 0 0
+2014-03-27 07:46:32,886 - jobManagement - ERROR - appears in createToxUser
+2014-03-27 07:46:32,887 - jobManagement - ERROR - An DB-error occurred: SQLite objects created in a thread can only be used in that same thread.The object was created in thread id 140600724707136 and this is thread id 140600277001984
+2014-03-27 07:46:39,410 - jobManagement - ERROR - newsStatus: 0 smoking....
+2014-03-27 07:46:39,411 - jobManagement - ERROR - userStatus: 0 0
+2014-03-27 08:09:25,551 - jobManagement - ERROR - appears in createToxUser
+2014-03-27 08:09:25,552 - jobManagement - ERROR - An DB-error occurred: SQLite objects created in a thread can only be used in that same thread.The object was created in thread id 139897391265600 and this is thread id 139896943376128
+2014-03-27 08:09:34,410 - jobManagement - ERROR - newsStatus: 0 smoking....
+2014-03-27 08:09:34,411 - jobManagement - ERROR - userStatus: 0 0
+2014-03-27 08:26:29,315 - jobManagement - ERROR - newsStatus: 0 smoking....
+2014-03-27 08:26:29,315 - jobManagement - ERROR - userStatus: 0 0
+2014-03-27 08:32:49,668 - jobManagement - ERROR - newsStatus: 0 smoking....
+2014-03-27 08:32:49,668 - jobManagement - ERROR - appears in createToxUser
+2014-03-27 08:32:49,668 - jobManagement - ERROR - An DB-error occurred: SQLite objects created in a thread can only be used in that same thread.The object was created in thread id 140437726545728 and this is thread id 140437278861056
+2014-03-27 08:32:49,669 - jobManagement - ERROR - userStatus: 0 0
+2014-03-27 08:46:29,333 - jobManagement - ERROR - newsStatus: 0 smoking....
+2014-03-27 08:46:29,334 - jobManagement - ERROR - userStatus: 0 0
+2014-03-27 08:48:15,615 - jobManagement - ERROR - newsStatus: 0 smoking....
+2014-03-27 08:48:15,717 - jobManagement - ERROR - userStatus: 0 0
+2014-03-27 08:51:04,346 - jobManagement - ERROR - newsStatus: 0 smoking....
+2014-03-27 08:51:04,346 - jobManagement - ERROR - userStatus: 0 0
+2014-03-27 08:52:39,098 - jobManagement - ERROR - newsStatus: 0 smoking....
+2014-03-27 08:52:39,159 - jobManagement - ERROR - userStatus: 0 0

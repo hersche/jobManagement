@@ -1,4 +1,4 @@
-
+from lib.toxModels import *
 from lib.models import *
 from lib.staticTools import *
 from lib.toxTry import *
@@ -7,13 +7,20 @@ singleViewId = -1
 mightyController = Controller()
 #the whole gui...
 class toxThread(QtCore.QThread):
- def __init__(self,tt):
+ def __init__(self,ui):
   QtCore.QThread.__init__(self)
-  self.tt = tt
+  self.tmc = toxController("","")
+  self.tt = ToxTry(ui,self.tmc)
+  self.tmc.updateToxUsers()
  def run(self):
-    self.tt.loop()
-    self.emit( QtCore.SIGNAL('update(QString)'), "from tox thread " + str(i) )
-    return
+    self.tt.loop(self.tmc)
+    if self.tt.FriendRequest[0]:
+      logger.error("friend request with value: "+self.tt.FriendRequest[1])
+      self.tt.FriendRequest=False,""
+    if self.tt.statusMessage[0]:
+      logger.error("statusMessage request with value: "+self.tt.FriendRequest[1]+" and "+self.tt.FriendRequest[2])
+    #self.emit( QtCore.SIGNAL('update(QString)'), "from tox thread " + str(i) )
+    #return
 class Gui(QtGui.QMainWindow):
     def __init__(self, parent=None):
         logger.debug("|GUI| Init Gui")
@@ -37,9 +44,10 @@ class Gui(QtGui.QMainWindow):
         else:
             self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.tt = ToxTry(self.ui)
-        self.toxThread = toxThread(self.tt)
+        self.toxThread = toxThread(self.ui)
+        #self.connect(self.toxThread,QtCore.SIGNAL("addPK"),self.createToxUser)
         self.toxThread.start()
+        
         self.updateCompanyList(selectFirst=True)
         if singleView:
             self.onCompanyItemClick("singleView")
@@ -141,12 +149,27 @@ class Gui(QtGui.QMainWindow):
             self.ui.companyViewSelect.currentIndexChanged.connect(self.updateCompanyView)
         self.ui.companyViewCalendar.currentPageChanged.connect(self.updateCompanyView)
         self.ui.companyViewCalendarFilter.clicked.connect(self.updateCompanyView)
+        
         self.ui.toxTrySendButton.clicked.connect(self.onSendToxMessage)
-    
+        self.ui.toxTrySendText.returnPressed.connect(self.onSendToxMessage)
+        self.ui.toxTryUsername.returnPressed.connect(self.onSaveToxUsername)
+        self.toxThread.tt.statusMsg.connect(self.createToxUser)
+        self.updateToxUserList()
+        
+        
+    def createToxUser(self, pk=""):
+        logger.error("das signal ist daaaaaa!!")
+        #self.tt.toxModelController.createToxUser("",pk,"")
+    def updateToxUserList(self):
+        self.ui.toxTryFriends.clear()
+
+    def onSaveToxUsername(self):
+        self.tt.set_name(self.ui.toxTryUsername.text())
+        self.tt.save_to_file('toxData')
     def onSendToxMessage(self):
         message = self.ui.toxTrySendText.text()
         self.tt.send_message(self.tt.currentId, message)
-        self.ui.toxTryChat.append('ToxTry: %s' % message)
+        self.ui.toxTryChat.append(self.tt.toxModelController.name+": "+message)
     def tabUpdater(self,  index=0):
         try: 
             ci = self.ui.mainTab.currentIndex()

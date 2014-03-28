@@ -1731,12 +1731,22 @@ p, li { white-space: pre-wrap; }
      <widget class="QListWidget" name="toxTryFriends">
       <property name="geometry">
        <rect>
-        <x>470</x>
-        <y>150</y>
+        <x>460</x>
+        <y>140</y>
         <width>256</width>
         <height>192</height>
        </rect>
       </property>
+      <item>
+       <property name="text">
+        <string>fake</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>fake2</string>
+       </property>
+      </item>
      </widget>
      <widget class="QWidget" name="gridLayoutWidget_5">
       <property name="geometry">
@@ -1800,6 +1810,52 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
       </layout>
+     </widget>
+     <widget class="QLabel" name="label_44">
+      <property name="geometry">
+       <rect>
+        <x>470</x>
+        <y>120</y>
+        <width>101</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Friendlist</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_45">
+      <property name="geometry">
+       <rect>
+        <x>470</x>
+        <y>340</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>FriendInfos</string>
+      </property>
+     </widget>
+     <widget class="QTextEdit" name="toxTryFriendInfos">
+      <property name="geometry">
+       <rect>
+        <x>470</x>
+        <y>360</y>
+        <width>241</width>
+        <height>91</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QTextEdit" name="toxTryNotifications">
+      <property name="geometry">
+       <rect>
+        <x>670</x>
+        <y>40</y>
+        <width>191</width>
+        <height>76</height>
+       </rect>
+      </property>
      </widget>
     </widget>
    </widget>

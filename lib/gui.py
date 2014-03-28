@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/gui.ui'
 #
-# Created: Thu Mar 27 03:40:11 2014
+# Created: Fri Mar 28 11:17:06 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -742,8 +742,12 @@ class Ui_MainWindow(object):
         self.toxTrySendButton.setGeometry(QtCore.QRect(330, 470, 91, 24))
         self.toxTrySendButton.setObjectName(_fromUtf8("toxTrySendButton"))
         self.toxTryFriends = QtGui.QListWidget(self.tab_9)
-        self.toxTryFriends.setGeometry(QtCore.QRect(470, 150, 256, 192))
+        self.toxTryFriends.setGeometry(QtCore.QRect(460, 140, 256, 192))
         self.toxTryFriends.setObjectName(_fromUtf8("toxTryFriends"))
+        item = QtGui.QListWidgetItem()
+        self.toxTryFriends.addItem(item)
+        item = QtGui.QListWidgetItem()
+        self.toxTryFriends.addItem(item)
         self.gridLayoutWidget_5 = QtGui.QWidget(self.tab_9)
         self.gridLayoutWidget_5.setGeometry(QtCore.QRect(10, 10, 621, 80))
         self.gridLayoutWidget_5.setObjectName(_fromUtf8("gridLayoutWidget_5"))
@@ -772,6 +776,18 @@ class Ui_MainWindow(object):
         self.toxTryStatus.addItem(_fromUtf8(""))
         self.toxTryStatus.addItem(_fromUtf8(""))
         self.gridLayout_5.addWidget(self.toxTryStatus, 4, 2, 1, 1)
+        self.label_44 = QtGui.QLabel(self.tab_9)
+        self.label_44.setGeometry(QtCore.QRect(470, 120, 101, 16))
+        self.label_44.setObjectName(_fromUtf8("label_44"))
+        self.label_45 = QtGui.QLabel(self.tab_9)
+        self.label_45.setGeometry(QtCore.QRect(470, 340, 111, 16))
+        self.label_45.setObjectName(_fromUtf8("label_45"))
+        self.toxTryFriendInfos = QtGui.QTextEdit(self.tab_9)
+        self.toxTryFriendInfos.setGeometry(QtCore.QRect(470, 360, 241, 91))
+        self.toxTryFriendInfos.setObjectName(_fromUtf8("toxTryFriendInfos"))
+        self.toxTryNotifications = QtGui.QTextEdit(self.tab_9)
+        self.toxTryNotifications.setGeometry(QtCore.QRect(670, 40, 191, 76))
+        self.toxTryNotifications.setObjectName(_fromUtf8("toxTryNotifications"))
         self.mainTab.addTab(self.tab_9, _fromUtf8(""))
         self.status = QtGui.QLabel(self.centralwidget)
         self.status.setGeometry(QtCore.QRect(760, 10, 271, 16))
@@ -938,6 +954,13 @@ class Ui_MainWindow(object):
 "<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Sans Serif\';\"><br /></p></body></html>", None))
         self.mainTab.setTabText(self.mainTab.indexOf(self.settings), _translate("MainWindow", "Settings", "en"))
         self.toxTrySendButton.setText(_translate("MainWindow", "send", None))
+        __sortingEnabled = self.toxTryFriends.isSortingEnabled()
+        self.toxTryFriends.setSortingEnabled(False)
+        item = self.toxTryFriends.item(0)
+        item.setText(_translate("MainWindow", "fake", None))
+        item = self.toxTryFriends.item(1)
+        item.setText(_translate("MainWindow", "fake2", None))
+        self.toxTryFriends.setSortingEnabled(__sortingEnabled)
         self.label_25.setText(_translate("MainWindow", "Your ID", None))
         self.label_42.setText(_translate("MainWindow", "Username", None))
         self.label_43.setText(_translate("MainWindow", "Status", None))
@@ -945,6 +968,8 @@ class Ui_MainWindow(object):
         self.toxTryStatus.setItemText(1, _translate("MainWindow", "Away", None))
         self.toxTryStatus.setItemText(2, _translate("MainWindow", "Busy", None))
         self.toxTryStatus.setItemText(3, _translate("MainWindow", "Offline", None))
+        self.label_44.setText(_translate("MainWindow", "Friendlist", None))
+        self.label_45.setText(_translate("MainWindow", "FriendInfos", None))
         self.mainTab.setTabText(self.mainTab.indexOf(self.tab_9), _translate("MainWindow", "ToxTry", None))
         self.status.setText(_translate("MainWindow", "Status..", None))
 

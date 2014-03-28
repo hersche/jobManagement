@@ -98,3 +98,64 @@
 2014-03-27 12:28:48,405 - jobManagement - ERROR - newsStatus: 0 smoking....
 2014-03-27 12:28:48,405 - jobManagement - ERROR - userStatus: 0 0
 2014-03-27 12:29:19,206 - jobManagement - ERROR - 7085968702A504102C88824ED03860D206923C6C0548DCCB63583CDF630C4157
+2014-03-28 08:31:09,447 - jobManagement - ERROR - unsafed, but right before 64
+2014-03-28 08:31:09,671 - jobManagement - ERROR - safed, but right after 64
+2014-03-28 08:32:01,408 - jobManagement - ERROR - newsStatus: 0 smoking....
+2014-03-28 08:32:01,409 - jobManagement - ERROR - userStatus: 0 0
+2014-03-28 10:24:20,305 - jobManagement - ERROR - |toxTry| name changed to skamster
+2014-03-28 10:24:20,347 - jobManagement - ERROR - newsStatus: 0 smoking....
+2014-03-28 10:24:20,347 - jobManagement - ERROR - userStatus: 0 0
+2014-03-28 10:53:20,328 - jobManagement - ERROR - |toxTry| name changed to skamster
+2014-03-28 10:53:20,350 - jobManagement - ERROR - newsStatus: 0 smoking....
+2014-03-28 10:56:02,752 - jobManagement - ERROR - react<PyQt4.QtGui.QListWidgetItem object at 0x7fa44ee85b00>
+2014-03-28 10:56:40,378 - jobManagement - ERROR - |toxTry| name changed to skamster
+2014-03-28 10:56:40,399 - jobManagement - ERROR - newsStatus: 0 smoking....
+2014-03-28 11:06:46,795 - jobManagement - ERROR - react<PyQt4.QtGui.QListWidgetItem object at 0x7f413c00cb00>
+2014-03-28 11:16:33,389 - jobManagement - ERROR - 
+7085968702A504102C88824ED03860D206923C6C0548DCCB63583CDF630C4157
+
+2014-03-28 11:16:33,390 - jobManagement - ERROR - react<class 'PyQt4.QtGui.QListWidgetItem'>
+2014-03-28 11:16:54,321 - jobManagement - ERROR - |toxTry| name changed to skamster
+2014-03-28 11:16:54,342 - jobManagement - ERROR - newsStatus: 0 smoking....
+2014-03-28 11:16:54,343 - jobManagement - ERROR - userStatus: 0 0
+2014-03-28 11:17:32,956 - jobManagement - ERROR - |toxTry| name changed to skamster
+2014-03-28 11:17:32,997 - jobManagement - ERROR - newsStatus: 0 smoking....
+2014-03-28 11:17:32,998 - jobManagement - ERROR - userStatus: 0 0
+2014-03-28 11:19:12,863 - jobManagement - ERROR - 
+7085968702A504102C88824ED03860D206923C6C0548DCCB63583CDF630C4157
+
+2014-03-28 11:19:12,864 - jobManagement - ERROR - react<class 'PyQt4.QtGui.QListWidgetItem'>
+2014-03-28 11:19:43,005 - jobManagement - ERROR - react<class 'PyQt4.QtGui.QListWidgetItem'>
+2014-03-28 11:19:44,253 - jobManagement - ERROR - react<class 'PyQt4.QtGui.QListWidgetItem'>
+2014-03-28 11:20:08,406 - jobManagement - ERROR - |toxTry| name changed to skamster
+2014-03-28 11:20:08,427 - jobManagement - ERROR - newsStatus: 0 smoking....
+2014-03-28 11:20:08,428 - jobManagement - ERROR - userStatus: 0 0
+2014-03-28 11:20:08,627 - jobManagement - ERROR - react<class 'PyQt4.QtGui.QListWidgetItem'>
+2014-03-28 11:20:09,519 - jobManagement - ERROR - react<class 'PyQt4.QtGui.QListWidgetItem'>
+2014-03-28 11:20:23,235 - jobManagement - ERROR - skamster
+7085968702A504102C88824ED03860D206923C6C0548DCCB63583CDF630C4157
+smoking....
+2014-03-28 11:20:23,237 - jobManagement - ERROR - react<class 'PyQt4.QtGui.QListWidgetItem'>
+2014-03-28 11:23:13,380 - jobManagement - ERROR - |toxTry| name changed to skamster
+2014-03-28 11:23:13,401 - jobManagement - ERROR - newsStatus: 0 smoking....
+2014-03-28 11:23:13,503 - jobManagement - ERROR - userStatus: 0 0
+2014-03-28 11:23:20,639 - jobManagement - ERROR - skamster
+7085968702A504102C88824ED03860D206923C6C0548DCCB63583CDF630C4157
+smoking....
+2014-03-28 11:23:20,640 - jobManagement - ERROR - react<class 'PyQt4.QtGui.QListWidgetItem'>
+2014-03-28 11:31:30,404 - jobManagement - ERROR - |toxTry| name changed to skamster
+2014-03-28 11:31:30,425 - jobManagement - ERROR - newsStatus: 0 smoking....
+2014-03-28 11:31:30,426 - jobManagement - ERROR - userStatus: 0 0
+2014-03-28 11:35:30,365 - jobManagement - ERROR - |toxTry| name changed to skamster
+2014-03-28 11:37:54,327 - jobManagement - ERROR - |toxTry| name changed to skamster
+2014-03-28 11:47:01,067 - jobManagement - ERROR - |toxTry| name changed to skamster
+2014-03-28 11:48:34,306 - jobManagement - ERROR - |toxTry| name changed to skamster
+2014-03-28 11:52:30,066 - jobManagement - ERROR - |toxTry| name changed to skamster
+2014-03-28 12:03:14,319 - jobManagement - ERROR - |toxTry| name changed to skamster
+2014-03-28 12:03:27,170 - jobManagement - ERROR - |toxTry| name changed to skamster
+2014-03-28 12:07:19,310 - jobManagement - ERROR - |toxTry| name changed to skamster
+2014-03-28 12:08:12,480 - jobManagement - ERROR - |toxTry| name changed to skamster
+2014-03-28 12:11:02,810 - jobManagement - ERROR - Send Message failed: failed to send message
+2014-03-28 12:11:04,906 - jobManagement - ERROR - Send Message failed: failed to send message
+2014-03-28 12:11:17,404 - jobManagement - ERROR - |toxTry| name changed to skamster
+2014-03-28 12:13:18,378 - jobManagement - ERROR - |toxTry| name changed to skamster

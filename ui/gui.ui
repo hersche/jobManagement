@@ -1857,6 +1857,19 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
      </widget>
+     <widget class="QPushButton" name="toxTryNewFriendRequest">
+      <property name="geometry">
+       <rect>
+        <x>480</x>
+        <y>460</y>
+        <width>101</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Add new Friend</string>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QLabel" name="status">

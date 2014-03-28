@@ -159,3 +159,6 @@ smoking....
 2014-03-28 12:11:04,906 - jobManagement - ERROR - Send Message failed: failed to send message
 2014-03-28 12:11:17,404 - jobManagement - ERROR - |toxTry| name changed to skamster
 2014-03-28 12:13:18,378 - jobManagement - ERROR - |toxTry| name changed to skamster
+2014-03-28 13:41:18,454 - jobManagement - ERROR - ('7085968702A504102C88824ED03860D206923C6C0548DCCB63583CDF630C41573413E30CB725', True)    ('I would like to add u to my list', True)
+2014-03-28 13:44:08,889 - jobManagement - ERROR - ('7085968702A504102C88824ED03860D206923C6C0548DCCB63583CDF630C41573413E30CB725', True)    I would like to add u to my list
+2014-03-28 13:45:06,874 - jobManagement - ERROR - 7085968702A504102C88824ED03860D206923C6C0548DCCB63583CDF630C41573413E30CB725    I would like to add u to my list

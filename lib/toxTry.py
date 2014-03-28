@@ -32,8 +32,23 @@ class ToxTry(Tox):
       self.ui.toxTrySendButton.clicked.connect(self.onSendToxMessage)
       self.ui.toxTrySendText.returnPressed.connect(self.onSendToxMessage)
       self.ui.toxTryUsername.returnPressed.connect(self.onSaveToxUsername)
+      self.ui.toxTryNewFriendRequest.clicked.connect(self.onNewFriendRequest)
       self.bootstrap_from_address(SERVER[0], 1, SERVER[1], SERVER[2])
       
+      
+  def onNewFriendRequest(self):
+    pk = QtGui.QInputDialog()
+    #attention, tuples!!!
+    pubKey = pk.getText(QtGui.QWidget(),"Add new friend","Please enter your friends tox-id")
+    pubKey = pubKey[0]
+    msg = QtGui.QInputDialog()
+    message = msg.getText(QtGui.QWidget(),"Add a message","Send your friend a first message too.",text="I would like to add u to my list")
+    message = message[0]
+    #logger.error(str(pubKey)+ "    " +str(message))
+    self.add_friend(str(pubKey),str(message))
+    self.save_to_file('toxData')
+    self.updateToxUserObjects()
+    self.updateToxUsers()
   def updateToxUserObjects(self):
     self.toxUserList = []
     for friendId in self.get_friendlist():
@@ -121,6 +136,7 @@ class ToxTry(Tox):
             sleep(0.02)
     except KeyboardInterrupt:
         self.save_to_file('toxData')
+        self.kill()
   def on_friend_request(self, pk, message):
       self.ui.toxTryNotifications.append('Friend request from %s: %s' % (pk, message))
       self.add_friend_norequest(pk)
@@ -136,12 +152,18 @@ class ToxTry(Tox):
       self.ui.toxTryChat.append('%s: %s' % (name, message))
       
   def on_name_change(self,friendId,name):
-    logger.error("|toxTry| name changed to "+name)
+    self.ui.toxTryNotifications.append("Name changed to "+name)
     self.updateToxUsers()
   def on_user_status(self, friendId,status):
-    self.ui.toxTryNotifications.append("userStatus: "+str(status))
+    self.ui.toxTryNotifications.append("From user "+self.get_name(friendId)+" Status changed to: "+self.statusResolver(status))
     self.updateToxUsers()
       
   def on_status_message(self,friendId, news):
-      self.ui.toxTryNotifications.append("newsStatus: "+str(news))
+      self.ui.toxTryNotifications.append("From user "+self.get_name(friendId)+" StatusMESSAGE changed to: "+self.statusResolver(news))
       self.updateToxUsers()
+      
+  def on_group_invite(friendId,groupPk):
+    logger.error("becoming group invite")
+    self.join_groupchat(friendId,groupPk)
+    
+  

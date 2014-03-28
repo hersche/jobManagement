@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/gui.ui'
 #
-# Created: Fri Mar 28 11:17:06 2014
+# Created: Fri Mar 28 13:20:19 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -788,6 +788,9 @@ class Ui_MainWindow(object):
         self.toxTryNotifications = QtGui.QTextEdit(self.tab_9)
         self.toxTryNotifications.setGeometry(QtCore.QRect(670, 40, 191, 76))
         self.toxTryNotifications.setObjectName(_fromUtf8("toxTryNotifications"))
+        self.toxTryNewFriendRequest = QtGui.QPushButton(self.tab_9)
+        self.toxTryNewFriendRequest.setGeometry(QtCore.QRect(480, 460, 101, 24))
+        self.toxTryNewFriendRequest.setObjectName(_fromUtf8("toxTryNewFriendRequest"))
         self.mainTab.addTab(self.tab_9, _fromUtf8(""))
         self.status = QtGui.QLabel(self.centralwidget)
         self.status.setGeometry(QtCore.QRect(760, 10, 271, 16))
@@ -970,6 +973,7 @@ class Ui_MainWindow(object):
         self.toxTryStatus.setItemText(3, _translate("MainWindow", "Offline", None))
         self.label_44.setText(_translate("MainWindow", "Friendlist", None))
         self.label_45.setText(_translate("MainWindow", "FriendInfos", None))
+        self.toxTryNewFriendRequest.setText(_translate("MainWindow", "Add new Friend", None))
         self.mainTab.setTabText(self.mainTab.indexOf(self.tab_9), _translate("MainWindow", "ToxTry", None))
         self.status.setText(_translate("MainWindow", "Status..", None))
 

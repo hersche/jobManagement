@@ -38,7 +38,7 @@ class toxMessageHandler(QtCore.QObject):
       self.messages.append(toxMessage(msg[1],msg[2],msg[3],msg[4]))
   def flushMessage(self):
     try:
-      logger.error("signal catched, write now!")
+      #logger.error("signal catched, write now!")
       for toxMessage in self.cachedToxMessages:
         if toxMessage.me:       tmpBoolMe = 1
         else:   tmpBoolMe = 0
@@ -54,7 +54,7 @@ class toxMessage:
         self.me = False
       else:
         self.me = True
-      logger.error("message created, timestamp "+timestamp)
+      #logger.error("message created, timestamp "+timestamp)
       self.friendId=friendId
       self.message = message
       self.timestamp = timestamp

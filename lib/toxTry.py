@@ -22,22 +22,25 @@ class ToxTry(Tox):
       self.toxUserlistUpdateCounter=0
       self.currentToxUser = None
       self.groupNrs = []
-      self.ui.toxTryChat.append("Alive! toxTry-Thread started!")
       if exists('./toxData'):
         self.load_from_file('./toxData')
       else:
         self.set_name("ToxTry")
       self.name = self.get_self_name()
       self.pubKey = self.get_address()
+      self.statusMessage = self.get_self_status_message()
+      self.ui.toxTryChat.append("<h3>Welcome 2 toxTry</h3> <br /> <p>This is 'just a little by the way'-project, but it's phun to code, so i will continue. Add friends, chat, have phun! <hr />(and dont forget to click one for your friends to get a rid of booring welcomescreen)</p>")
       self.ui.toxTryUsername.setText(self.name)
+      self.ui.toxTryStatusMessage.setText(self.statusMessage)
       self.ui.toxTryId.setText(self.pubKey)
       self.updateToxUserObjects()
-      self.updateToxUsers()
+      self.updateToxUsersGuiList()
         #self.add_friend_norequest(tUser.pubKey)
       self.save_to_file('toxData')
       self.ui.toxTryFriends.itemClicked.connect(self.onClickToxUser)
       self.ui.toxTrySendButton.clicked.connect(self.onSendToxMessage)
       self.ui.toxTrySendText.returnPressed.connect(self.onSendToxMessage)
+      self.ui.toxTryStatusMessage.returnPressed.connect(self.onChangeStatusMessage)
       self.ui.toxTryUsername.returnPressed.connect(self.onSaveToxUsername)
       self.ui.toxTryNewFriendRequest.clicked.connect(self.onNewFriendRequest)
       self.bootstrap_from_address(SERVER[0], 1, SERVER[1], SERVER[2])
@@ -46,28 +49,29 @@ class ToxTry(Tox):
     for tu in self.toxUserList:
       if tu.friendId == friendId:
         return tu
-      
+  def onChangeStatusMessage(self):
+    self.set_status_message(self.ui.toxTryStatusMessage.text())
+    self.save_to_file('toxData')
+    self.statusMessage = self.ui.toxTryStatusMessage.text()
+    self.ui.toxTryNotifications.append('Your status changed to '+self.ui.toxTryStatusMessage.text())
   def onNewFriendRequest(self):
     pk = QtGui.QInputDialog()
-    #attention, tuples!!!
     pubKey = pk.getText(QtGui.QWidget(),"Add new friend","Please enter your friends tox-id")
-    pubKey = pubKey[0]
     msg = QtGui.QInputDialog()
     message = msg.getText(QtGui.QWidget(),"Add a message","Send your friend a first message too.",text="I would like to add u to my list")
-    message = message[0]
     #logger.error(str(pubKey)+ "    " +str(message))
-    self.add_friend(str(pubKey),str(message))
+    self.add_friend(str(pubKey[0]),str(message[0]))
     self.save_to_file('toxData')
     self.updateToxUserObjects()
-    self.updateToxUsers()
-    logger.error("add and update user")
+    self.updateToxUsersGuiList()
+    self.ui.toxTryNotifications.append('Your friendrequest is sendet ')
   def updateToxUserObjects(self):
     self.toxUserList = []
     for friendId in self.get_friendlist():
       fid = friendId
       self.toxUserList.append(toxUser(fid,self.get_name(fid),self.get_client_id(fid),self.get_user_status(fid),self.get_status_message(fid)))
 
-  def updateToxUsers(self):
+  def updateToxUsersGuiList(self):
     self.ui.toxTryFriends.clear()
     ci = self.ui.toxTryFriends.currentItem()
     for tu in self.toxUserList:
@@ -104,6 +108,7 @@ class ToxTry(Tox):
   def onSaveToxUsername(self):
     self.set_name(self.ui.toxTryUsername.text())
     self.save_to_file('toxData')
+    self.ui.toxTryNotifications.append('Your username is changed to '+self.ui.toxTryUsername.text())
   def onSendToxMessage(self):
     message = self.ui.toxTrySendText.text()
     try:
@@ -118,7 +123,7 @@ class ToxTry(Tox):
   def onClickToxUser(self,item):
     txt = item.text()
     self.updateToxUserObjects()
-    self.updateToxUsers()
+    self.updateToxUsersGuiList()
     for tu in self.toxUserList:
       if tu.name == txt or tu.pubKey == txt:
         self.currentToxUser = tu
@@ -158,19 +163,17 @@ class ToxTry(Tox):
         self.save_to_file('toxData')
         self.kill()
   def on_friend_request(self, pk, message):
-      logger.error("friendrequest")
       self.ui.toxTryNotifications.append('Friend request from %s: %s' % (pk, message))
       self.add_friend_norequest(pk)
       #self.tmc.addToxUser("name",pk,message)
       self.save_to_file('toxData')
       self.updateToxUserObjects()
-      self.updateToxUsers()
+      self.updateToxUsersGuiList()
       self.ui.toxTryNotifications.append('Accepted friend request')
 
   #def on_connection_status(friendId, status):
     
   def on_friend_message(self, friendId, message):
-      logger.error("friendmessage")
       ts = strftime('%Y-%m-%d %H:%M:%S', gmtime())
       self.tmh.addMessage(toxMessage(self.currentToxUser.friendId,ts,message,False))
       self.ui.toxTryChat.append("["+ts+"] "+self.currentToxUser.name+": "+message)
@@ -179,19 +182,16 @@ class ToxTry(Tox):
       self.ui.toxTryNotifications.append("Name changed to "+name)
       tu = self.getToxUserByFriendId(friendId)
       if tu is not None:       tu.name=name
-      logger.error("namechange")
-      self.updateToxUsers()
+      self.updateToxUsersGuiList()
   def on_user_status(self, friendId,status):  
       tu = self.getToxUserByFriendId(friendId)
       if tu is not None:         tu.status=status
-      logger.error("status")
-      self.updateToxUsers()
+      self.updateToxUsersGuiList()
       
   def on_status_message(self,friendId, statusMessage):
       tu = self.getToxUserByFriendId(friendId)
       if tu is not None:       tu.statusMessage=statusMessage
-      logger.error("statusmessage")
-      self.updateToxUsers()  
+      self.updateToxUsersGuiList()  
   def on_group_invite(self,friendId,groupPk):
     logger.error("becoming group invite")
     self.join_groupchat(friendId,groupPk)

@@ -1,6 +1,7 @@
 from tox import Tox
-from time import sleep
+from time import sleep,gmtime, strftime
 from lib.header import *
+import os.path,  sqlite3
 from os.path import exists
 SERVER = ["54.199.139.199", 33445, "56A1ADE4B65B86BCD51CC73E2CD4E542179F47959FE3E0E21B4B0ACDADE5185520B3E6FC5D64"]
 
@@ -11,21 +12,34 @@ class toxUser:
     self.pubKey = pubKey
     self.status = status
     self.statusMessage = statusMessage
-
+class toxMessage:
+  def __init__(self,friendId,message, timestamp,me):
+      if me == 0:
+        self.me = False
+      else:
+        self.me = True
+      logger.error("message created, timestamp "+timestamp)
+      self.friendId=friendId
+      self.message = message
+      self.timestamp = timestamp
 
 class ToxTry(Tox):
-  def __init__(self,ui):
+  def __init__(self,ui,tmh):
       self.ui=ui
+      self.tmh = tmh
       self.toxUserlistUpdateTimes=4
       self.toxUserlistUpdateCounter=0
       self.currentToxUser = None
+      self.groupNrs = []
       self.ui.toxTryChat.append("Alive! toxTry-Thread started!")
       if exists('./toxData'):
         self.load_from_file('./toxData')
       else:
         self.set_name("ToxTry")
-      self.ui.toxTryUsername.setText(self.get_self_name())
-      self.ui.toxTryId.setText(self.get_address())
+      self.name = self.get_self_name()
+      self.pubKey = self.get_address()
+      self.ui.toxTryUsername.setText(self.name)
+      self.ui.toxTryId.setText(self.pubKey)
       self.updateToxUserObjects()
       self.updateToxUsers()
         #self.add_friend_norequest(tUser.pubKey)
@@ -37,7 +51,7 @@ class ToxTry(Tox):
       self.ui.toxTryNewFriendRequest.clicked.connect(self.onNewFriendRequest)
       self.bootstrap_from_address(SERVER[0], 1, SERVER[1], SERVER[2])
   
-  def getToxUserByFriendId(friendId):
+  def getToxUserByFriendId(self,friendId):
     for tu in self.toxUserList:
       if tu.friendId == friendId:
         return tu
@@ -60,13 +74,11 @@ class ToxTry(Tox):
     self.toxUserList = []
     for friendId in self.get_friendlist():
       fid = friendId
-      tu = toxUser(fid,self.get_name(fid),self.get_client_id(fid),self.get_user_status(fid),self.get_status_message(fid))
-      self.toxUserList.append(tu)
+      self.toxUserList.append(toxUser(fid,self.get_name(fid),self.get_client_id(fid),self.get_user_status(fid),self.get_status_message(fid)))
+
   def updateToxUsers(self):
     self.ui.toxTryFriends.clear()
     for tu in self.toxUserList:
-      self.ui.toxTryFriends.addItem("debugFake")
-      self.ui.toxTryFriends.addItem("debugFake2")
       if tu.name == "":
         item1 = QtGui.QListWidgetItem(tu.pubKey)
         self.ui.toxTryFriends.addItem(item1)
@@ -104,10 +116,9 @@ class ToxTry(Tox):
     try:
       if self.currentToxUser is not None:
         self.send_message(self.currentToxUser.friendId, message)
-        if self.currentToxUser.name != "":
-          self.ui.toxTryChat.append(self.currentToxUser.name+": "+message)
-        else:
-          self.ui.toxTryChat.append(self.currentToxUser.pubKey+": "+message)
+        ts = strftime('%Y-%m-%d %H:%M:%S', gmtime())
+        self.tmh.addMessage(toxMessage(self.currentToxUser.friendId,ts,message,True))
+        self.ui.toxTryChat.append("["+ts+"] "+self.name+": "+message)
         self.ui.toxTrySendText.clear()
     except Exception as e:
       logger.error("Send Message failed: "+e.args[0])
@@ -122,7 +133,16 @@ class ToxTry(Tox):
         self.ui.toxTryFriendInfos.append("Public key: "+tu.pubKey)
         self.ui.toxTryFriendInfos.append("Status message: "+self.statusResolver(tu.status))
         self.ui.toxTryFriendInfos.append("Status message: "+tu.statusMessage)
-        self.currentToxUser = tu
+        self.ui.toxTryChat.clear()
+        self.tmh.kickUpdate(tu.friendId)
+        sleep(0.1)
+        #logger.error("so big is the msglist "+str(len(self.tmh.messages)))
+        for msg in self.tmh.messages:
+          if not msg.me:
+            name=tu.name
+          else:
+            name=self.name
+          self.ui.toxTryChat.append("["+msg.timestamp+"] "+name+": "+msg.message)
         if tu.status < 3:
           item.setData(8, QtGui.QColor(51,255,0))
         else:
@@ -158,9 +178,9 @@ class ToxTry(Tox):
     
   def on_friend_message(self, friendId, message):
       logger.error("friendmessage")
-      name = self.get_name(friendId)
-      self.currentId = friendId
-      self.ui.toxTryChat.append('%s: %s' % (name, message))
+      ts = strftime('%Y-%m-%d %H:%M:%S', gmtime())
+      self.tmh.addMessage(toxMessage(self.currentToxUser.friendId,ts,message,False))
+      self.ui.toxTryChat.append("["+ts+"] "+self.currentToxUser.name+": "+message)
       
   def on_name_change(self,friendId,name):
       self.ui.toxTryNotifications.append("Name changed to "+name)
@@ -176,8 +196,19 @@ class ToxTry(Tox):
       if self.currentToxUser is not None:       self.currentToxUser.statusMessage=statusMessage
       logger.error("statusmessage")
       self.updateToxUsers()  
-  def on_group_invite(friendId,groupPk):
+  def on_group_invite(self,friendId,groupPk):
     logger.error("becoming group invite")
     self.join_groupchat(friendId,groupPk)
+    groupNr = -1
+    for gnr in self.get_chatlist():
+        if gnr not in self.groupNrs:
+          groupNr = gnr
+          logger.error("found groupname: "+str(gnr))
+    peersNr = self.group_number_peers(groupNr)
+    peername = self.group_peername(groupNr, peersNr)
+    log.error("found peer "+peername+" with "+str(peersNr)+" people")
+    
+  def on_group_message(group_number, friend_group_number, message):
+    logger.error("groupmessage!! groupnr:"+str(group_number)+" , friend_group_number: "+str(friend_group_number)+", message"+message)
     
   

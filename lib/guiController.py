@@ -1,17 +1,17 @@
 from lib.models import *
 from lib.staticTools import *
 from lib.toxTry import *
+from lib.toxMessageHandler import *
 singleView = False
 singleViewId = -1
 mightyController = Controller()
 #the whole gui...
 class toxThread(QtCore.QThread):
- def __init__(self,ui):
+ def __init__(self,ui,tmh):
   QtCore.QThread.__init__(self)
-  self.tt = ToxTry(ui)
+  self.tt = ToxTry(ui,tmh)
  def run(self):
     self.tt.loop()
-
 class Gui(QtGui.QMainWindow):
     def __init__(self, parent=None):
         logger.debug("|GUI| Init Gui")
@@ -36,8 +36,9 @@ class Gui(QtGui.QMainWindow):
             self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         #self.tmc = toxController("","")
-        self.toxThread = toxThread(self.ui)
-        self.updateToxUserList()
+        self.tmh = toxMessageHandler()
+        self.toxThread = toxThread(self.ui,self.tmh)
+        #self.updateToxUserList()
         self.toxThread.start()
         self.updateCompanyList(selectFirst=True)
         if singleView:

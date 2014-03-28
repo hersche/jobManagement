@@ -469,3 +469,193 @@ smoking....
 2014-03-28 19:43:15,790 - jobManagement - ERROR - giving messages back
 2014-03-28 19:43:15,790 - jobManagement - ERROR - giving messages back
 2014-03-28 19:43:15,791 - jobManagement - ERROR - giving messages back
+2014-03-28 19:45:33,614 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:28
+2014-03-28 19:45:33,615 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:44
+2014-03-28 19:45:33,615 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:03
+2014-03-28 19:45:50,302 - jobManagement - ERROR - namechange
+2014-03-28 19:45:50,425 - jobManagement - ERROR - statusmessage
+2014-03-28 19:45:50,526 - jobManagement - ERROR - status
+2014-03-28 19:45:56,323 - jobManagement - ERROR - namechange
+2014-03-28 19:45:56,445 - jobManagement - ERROR - statusmessage
+2014-03-28 19:45:56,546 - jobManagement - ERROR - status
+2014-03-28 19:45:59,008 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:13
+2014-03-28 19:46:06,660 - jobManagement - ERROR - message created, timestamp invite
+2014-03-28 19:46:06,660 - jobManagement - ERROR - signal catched, write now!
+2014-03-28 19:46:07,720 - jobManagement - ERROR - becoming group invite
+2014-03-28 19:46:07,721 - jobManagement - ERROR - found groupname: 0
+2014-03-28 19:46:07,722 - jobManagement - ERROR - failed to get group peername
+2014-03-28 19:47:47,858 - jobManagement - ERROR - namechange
+2014-03-28 19:47:47,987 - jobManagement - ERROR - statusmessage
+2014-03-28 19:47:48,089 - jobManagement - ERROR - status
+2014-03-28 19:47:49,519 - jobManagement - ERROR - namechange
+2014-03-28 19:47:49,620 - jobManagement - ERROR - statusmessage
+2014-03-28 19:47:49,721 - jobManagement - ERROR - status
+2014-03-28 19:47:51,790 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:13
+2014-03-28 19:47:51,791 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:46:06
+2014-03-28 19:47:57,410 - jobManagement - ERROR - message created, timestamp invite
+2014-03-28 19:47:57,411 - jobManagement - ERROR - signal catched, write now!
+2014-03-28 19:47:58,486 - jobManagement - ERROR - becoming group invite
+2014-03-28 19:47:58,487 - jobManagement - ERROR - found groupname: 0
+2014-03-28 19:47:58,487 - jobManagement - ERROR - groupid? peerNrs? 1
+2014-03-28 19:47:58,488 - jobManagement - ERROR - failed to get group peername
+2014-03-28 19:50:22,130 - jobManagement - ERROR - namechange
+2014-03-28 19:50:22,255 - jobManagement - ERROR - statusmessage
+2014-03-28 19:50:22,356 - jobManagement - ERROR - status
+2014-03-28 19:50:25,607 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:13
+2014-03-28 19:50:25,607 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:46:06
+2014-03-28 19:50:25,607 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:47:57
+2014-03-28 19:50:31,306 - jobManagement - ERROR - namechange
+2014-03-28 19:50:31,428 - jobManagement - ERROR - statusmessage
+2014-03-28 19:50:31,529 - jobManagement - ERROR - status
+2014-03-28 19:50:31,804 - jobManagement - ERROR - message created, timestamp invite
+2014-03-28 19:50:31,804 - jobManagement - ERROR - signal catched, write now!
+2014-03-28 19:50:33,453 - jobManagement - ERROR - becoming group invite
+2014-03-28 19:50:33,454 - jobManagement - ERROR - found groupname: 0
+2014-03-28 19:50:33,454 - jobManagement - ERROR - groupid? peerNrs? 1
+2014-03-28 19:50:33,454 - jobManagement - ERROR - Group joining failed: failed to get group peername
+2014-03-28 19:52:53,730 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:28
+2014-03-28 19:52:53,731 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:44
+2014-03-28 19:52:53,731 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:03
+2014-03-28 19:52:54,312 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:28
+2014-03-28 19:52:54,313 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:44
+2014-03-28 19:52:54,313 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:03
+2014-03-28 19:52:55,513 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:28
+2014-03-28 19:52:55,513 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:44
+2014-03-28 19:52:55,514 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:03
+2014-03-28 21:06:14,593 - jobManagement - ERROR - message created, timestamp still active?
+2014-03-28 21:06:14,593 - jobManagement - ERROR - signal catched, write now!
+2014-03-28 21:07:23,472 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:28
+2014-03-28 21:07:23,472 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:44
+2014-03-28 21:07:23,473 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:03
+2014-03-28 21:07:23,473 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:06:14
+2014-03-28 21:07:24,760 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:28
+2014-03-28 21:07:24,760 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:44
+2014-03-28 21:07:24,760 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:03
+2014-03-28 21:07:24,761 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:06:14
+2014-03-28 21:07:25,856 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:28
+2014-03-28 21:07:25,857 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:44
+2014-03-28 21:07:25,858 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:03
+2014-03-28 21:07:25,858 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:06:14
+2014-03-28 21:07:26,444 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:28
+2014-03-28 21:07:26,445 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:44
+2014-03-28 21:07:26,445 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:03
+2014-03-28 21:07:26,446 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:06:14
+2014-03-28 21:14:28,145 - jobManagement - ERROR - namechange
+2014-03-28 21:14:28,267 - jobManagement - ERROR - statusmessage
+2014-03-28 21:14:28,368 - jobManagement - ERROR - status
+2014-03-28 21:14:29,685 - jobManagement - ERROR - namechange
+2014-03-28 21:14:29,807 - jobManagement - ERROR - statusmessage
+2014-03-28 21:14:29,908 - jobManagement - ERROR - status
+2014-03-28 21:15:19,477 - jobManagement - ERROR - namechange
+2014-03-28 21:15:19,599 - jobManagement - ERROR - statusmessage
+2014-03-28 21:15:19,700 - jobManagement - ERROR - status
+2014-03-28 21:15:26,714 - jobManagement - ERROR - namechange
+2014-03-28 21:15:26,815 - jobManagement - ERROR - statusmessage
+2014-03-28 21:15:27,162 - jobManagement - ERROR - status
+2014-03-28 21:15:30,139 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:28
+2014-03-28 21:15:30,140 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:44
+2014-03-28 21:15:30,141 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:03
+2014-03-28 21:15:30,141 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:06:14
+2014-03-28 21:15:32,925 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:13
+2014-03-28 21:15:32,925 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:46:06
+2014-03-28 21:15:32,926 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:47:57
+2014-03-28 21:15:32,926 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:50:31
+2014-03-28 21:15:35,251 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:28
+2014-03-28 21:15:35,252 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:44
+2014-03-28 21:15:35,252 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:03
+2014-03-28 21:15:35,253 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:06:14
+2014-03-28 21:15:48,106 - jobManagement - ERROR - message created, timestamp ugga
+2014-03-28 21:15:48,106 - jobManagement - ERROR - signal catched, write now!
+2014-03-28 21:15:53,175 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:28
+2014-03-28 21:15:53,175 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:44
+2014-03-28 21:15:53,176 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:03
+2014-03-28 21:15:53,176 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:06:14
+2014-03-28 21:15:53,176 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:15:48
+2014-03-28 21:16:13,671 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:13
+2014-03-28 21:16:13,672 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:46:06
+2014-03-28 21:16:13,672 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:47:57
+2014-03-28 21:16:13,673 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:50:31
+2014-03-28 21:16:15,549 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:28
+2014-03-28 21:16:15,550 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:44
+2014-03-28 21:16:15,550 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:03
+2014-03-28 21:16:15,551 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:06:14
+2014-03-28 21:16:15,551 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:15:48
+2014-03-28 21:19:16,398 - jobManagement - ERROR - namechange
+2014-03-28 21:19:16,521 - jobManagement - ERROR - statusmessage
+2014-03-28 21:19:16,622 - jobManagement - ERROR - status
+2014-03-28 21:19:20,213 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:13
+2014-03-28 21:19:20,214 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:46:06
+2014-03-28 21:19:20,214 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:47:57
+2014-03-28 21:19:20,214 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:50:31
+2014-03-28 21:19:26,036 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:13
+2014-03-28 21:19:26,037 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:46:06
+2014-03-28 21:19:26,037 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:47:57
+2014-03-28 21:19:26,037 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:50:31
+2014-03-28 21:19:26,310 - jobManagement - ERROR - namechange
+2014-03-28 21:19:26,432 - jobManagement - ERROR - statusmessage
+2014-03-28 21:19:26,533 - jobManagement - ERROR - status
+2014-03-28 21:19:27,472 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:13
+2014-03-28 21:19:27,473 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:46:06
+2014-03-28 21:19:27,473 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:47:57
+2014-03-28 21:19:27,473 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:50:31
+2014-03-28 21:19:28,642 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:28
+2014-03-28 21:19:28,643 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:44
+2014-03-28 21:19:28,643 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:03
+2014-03-28 21:19:28,644 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:06:14
+2014-03-28 21:19:28,644 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:15:48
+2014-03-28 21:22:32,681 - jobManagement - ERROR - namechange
+2014-03-28 21:22:32,803 - jobManagement - ERROR - statusmessage
+2014-03-28 21:22:32,904 - jobManagement - ERROR - status
+2014-03-28 21:22:34,443 - jobManagement - ERROR - namechange
+2014-03-28 21:22:34,565 - jobManagement - ERROR - statusmessage
+2014-03-28 21:22:34,666 - jobManagement - ERROR - status
+2014-03-28 21:22:42,442 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:28
+2014-03-28 21:22:42,443 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:44
+2014-03-28 21:22:42,443 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:03
+2014-03-28 21:22:42,444 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:06:14
+2014-03-28 21:22:42,444 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:15:48
+2014-03-28 21:24:25,096 - jobManagement - ERROR - namechange
+2014-03-28 21:24:25,217 - jobManagement - ERROR - statusmessage
+2014-03-28 21:24:25,318 - jobManagement - ERROR - status
+2014-03-28 21:24:29,101 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:28
+2014-03-28 21:24:29,102 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:44
+2014-03-28 21:24:29,103 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:03
+2014-03-28 21:24:29,103 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:06:14
+2014-03-28 21:24:29,103 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:15:48
+2014-03-28 21:25:47,384 - jobManagement - ERROR - namechange
+2014-03-28 21:25:47,506 - jobManagement - ERROR - statusmessage
+2014-03-28 21:25:47,607 - jobManagement - ERROR - status
+2014-03-28 21:31:22,301 - jobManagement - ERROR - namechange
+2014-03-28 21:31:22,423 - jobManagement - ERROR - statusmessage
+2014-03-28 21:31:22,544 - jobManagement - ERROR - status
+2014-03-28 21:31:24,952 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:13
+2014-03-28 21:31:24,952 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:46:06
+2014-03-28 21:31:24,953 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:47:57
+2014-03-28 21:31:24,953 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:50:31
+2014-03-28 21:31:33,348 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:13
+2014-03-28 21:31:33,349 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:46:06
+2014-03-28 21:31:33,349 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:47:57
+2014-03-28 21:31:33,349 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:50:31
+2014-03-28 21:31:34,427 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:28
+2014-03-28 21:31:34,428 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:44
+2014-03-28 21:31:34,428 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:03
+2014-03-28 21:31:34,429 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:06:14
+2014-03-28 21:31:34,429 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:15:48
+2014-03-28 21:31:45,936 - jobManagement - ERROR - message created, timestamp uiuiu
+2014-03-28 21:31:45,936 - jobManagement - ERROR - signal catched, write now!
+2014-03-28 21:32:04,987 - jobManagement - ERROR - namechange
+2014-03-28 21:32:05,110 - jobManagement - ERROR - statusmessage
+2014-03-28 21:32:05,211 - jobManagement - ERROR - status
+2014-03-28 21:33:32,062 - jobManagement - ERROR - namechange
+2014-03-28 21:33:32,183 - jobManagement - ERROR - statusmessage
+2014-03-28 21:33:32,305 - jobManagement - ERROR - status
+2014-03-28 21:33:33,489 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:13
+2014-03-28 21:33:33,489 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:46:06
+2014-03-28 21:33:33,490 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:47:57
+2014-03-28 21:33:33,490 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:50:31
+2014-03-28 21:33:34,674 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:28
+2014-03-28 21:33:34,675 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:42:44
+2014-03-28 21:33:34,675 - jobManagement - ERROR - message created, timestamp 2014-03-28 18:43:03
+2014-03-28 21:33:34,675 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:06:14
+2014-03-28 21:33:34,676 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:15:48
+2014-03-28 21:33:34,676 - jobManagement - ERROR - message created, timestamp 2014-03-28 20:31:45

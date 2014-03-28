@@ -1,4 +1,5 @@
 from tox import Tox
+from lib.toxMessageHandler import toxMessage
 from time import sleep,gmtime, strftime
 from lib.header import *
 import os.path,  sqlite3
@@ -12,16 +13,6 @@ class toxUser:
     self.pubKey = pubKey
     self.status = status
     self.statusMessage = statusMessage
-class toxMessage:
-  def __init__(self,friendId,message, timestamp,me):
-      if me == 0:
-        self.me = False
-      else:
-        self.me = True
-      logger.error("message created, timestamp "+timestamp)
-      self.friendId=friendId
-      self.message = message
-      self.timestamp = timestamp
 
 class ToxTry(Tox):
   def __init__(self,ui,tmh):
@@ -78,23 +69,25 @@ class ToxTry(Tox):
 
   def updateToxUsers(self):
     self.ui.toxTryFriends.clear()
+    ci = self.ui.toxTryFriends.currentItem()
     for tu in self.toxUserList:
       if tu.name == "":
         item1 = QtGui.QListWidgetItem(tu.pubKey)
         self.ui.toxTryFriends.addItem(item1)
         item1.setData(3, str(tu.statusMessage))
-        if tu.status < 3:
-          item1.setData(8, QtGui.QColor(51,255,0))
+        if tu.status < 2:
+          item1.setBackgroundColor(QtGui.QColor(51,253,0))
         else:
-          item1.setData(8, QtGui.QColor(255,0,51))
+          item1.setBackgroundColor(QtGui.QColor(253,0,51))
       else:
         item1 = QtGui.QListWidgetItem(tu.name)
         self.ui.toxTryFriends.addItem(item1)
         item1.setData(3, str(tu.statusMessage))
-        if tu.status < 3:
-          item1.setData(8, QtGui.QColor(51,255,0))
+        if tu.status < 2:
+          item1.setBackgroundColor(QtGui.QColor(51,253,0))
         else:
-          item1.setData(8, QtGui.QColor(255,0,51))
+          item1.setBackgroundColor(QtGui.QColor(253,0,51))
+    if ci is not None:          self.ui.toxTryFriends.setItemSelected(ci,True)
     sleep(.1)
         
   def statusResolver(self,inti):
@@ -125,6 +118,7 @@ class ToxTry(Tox):
   def onClickToxUser(self,item):
     txt = item.text()
     self.updateToxUserObjects()
+    self.updateToxUsers()
     for tu in self.toxUserList:
       if tu.name == txt or tu.pubKey == txt:
         self.currentToxUser = tu
@@ -143,10 +137,7 @@ class ToxTry(Tox):
           else:
             name=self.name
           self.ui.toxTryChat.append("["+msg.timestamp+"] "+name+": "+msg.message)
-        if tu.status < 3:
-          item.setData(8, QtGui.QColor(51,255,0))
-        else:
-          item.setData(8, QtGui.QColor(255,0,51))
+
   def loop(self):
     checked = False
     try:
@@ -172,6 +163,8 @@ class ToxTry(Tox):
       self.add_friend_norequest(pk)
       #self.tmc.addToxUser("name",pk,message)
       self.save_to_file('toxData')
+      self.updateToxUserObjects()
+      self.updateToxUsers()
       self.ui.toxTryNotifications.append('Accepted friend request')
 
   #def on_connection_status(friendId, status):
@@ -184,16 +177,19 @@ class ToxTry(Tox):
       
   def on_name_change(self,friendId,name):
       self.ui.toxTryNotifications.append("Name changed to "+name)
-      if self.currentToxUser is not None:       self.currentToxUser.name=name
+      tu = self.getToxUserByFriendId(friendId)
+      if tu is not None:       tu.name=name
       logger.error("namechange")
       self.updateToxUsers()
   def on_user_status(self, friendId,status):  
-      if self.currentToxUser is not None:       self.currentToxUser.status=status
+      tu = self.getToxUserByFriendId(friendId)
+      if tu is not None:         tu.status=status
       logger.error("status")
       self.updateToxUsers()
       
-  def on_status_message(self,friendId, statusMessage):  
-      if self.currentToxUser is not None:       self.currentToxUser.statusMessage=statusMessage
+  def on_status_message(self,friendId, statusMessage):
+      tu = self.getToxUserByFriendId(friendId)
+      if tu is not None:       tu.statusMessage=statusMessage
       logger.error("statusmessage")
       self.updateToxUsers()  
   def on_group_invite(self,friendId,groupPk):
@@ -204,9 +200,13 @@ class ToxTry(Tox):
         if gnr not in self.groupNrs:
           groupNr = gnr
           logger.error("found groupname: "+str(gnr))
-    peersNr = self.group_number_peers(groupNr)
-    peername = self.group_peername(groupNr, peersNr)
-    log.error("found peer "+peername+" with "+str(peersNr)+" people")
+    try:
+      peersNr = self.group_number_peers(groupNr)
+      logger.error("groupid? peerNrs? "+str(peersNr))
+      peername = self.group_peername(groupNr, peersNr)
+      log.error("found peer "+peername+" with "+str(peersNr)+" people")
+    except Exception as e:
+      logger.error("Group joining failed: "+e.args[0])
     
   def on_group_message(group_number, friend_group_number, message):
     logger.error("groupmessage!! groupnr:"+str(group_number)+" , friend_group_number: "+str(friend_group_number)+", message"+message)

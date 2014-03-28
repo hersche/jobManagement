@@ -162,3 +162,31 @@ smoking....
 2014-03-28 13:41:18,454 - jobManagement - ERROR - ('7085968702A504102C88824ED03860D206923C6C0548DCCB63583CDF630C41573413E30CB725', True)    ('I would like to add u to my list', True)
 2014-03-28 13:44:08,889 - jobManagement - ERROR - ('7085968702A504102C88824ED03860D206923C6C0548DCCB63583CDF630C41573413E30CB725', True)    I would like to add u to my list
 2014-03-28 13:45:06,874 - jobManagement - ERROR - 7085968702A504102C88824ED03860D206923C6C0548DCCB63583CDF630C41573413E30CB725    I would like to add u to my list
+2014-03-28 14:16:41,400 - jobManagement - ERROR - namechange
+2014-03-28 14:16:41,421 - jobManagement - ERROR - statusmessage
+2014-03-28 14:16:41,422 - jobManagement - ERROR - status
+2014-03-28 14:19:15,408 - jobManagement - ERROR - namechange
+2014-03-28 14:19:15,430 - jobManagement - ERROR - statusmessage
+2014-03-28 14:19:15,431 - jobManagement - ERROR - status
+2014-03-28 14:21:38,397 - jobManagement - ERROR - namechange
+2014-03-28 14:21:38,419 - jobManagement - ERROR - statusmessage
+2014-03-28 14:21:38,420 - jobManagement - ERROR - status
+2014-03-28 14:25:24,084 - jobManagement - ERROR - namechange
+2014-03-28 14:25:24,114 - jobManagement - ERROR - statusmessage
+2014-03-28 14:25:24,197 - jobManagement - ERROR - status
+2014-03-28 14:26:19,324 - jobManagement - ERROR - namechange
+2014-03-28 14:26:19,347 - jobManagement - ERROR - statusmessage
+2014-03-28 14:26:19,348 - jobManagement - ERROR - status
+2014-03-28 14:27:10,070 - jobManagement - ERROR - namechange
+2014-03-28 14:27:10,076 - jobManagement - ERROR - statusmessage
+2014-03-28 15:42:49,378 - jobManagement - ERROR - namechange
+2014-03-28 15:45:22,319 - jobManagement - ERROR - namechange
+2014-03-28 15:45:22,442 - jobManagement - ERROR - statusmessage
+2014-03-28 15:45:22,544 - jobManagement - ERROR - status
+2014-03-28 15:55:34,391 - jobManagement - ERROR - namechange
+2014-03-28 15:55:34,513 - jobManagement - ERROR - statusmessage
+2014-03-28 15:55:34,614 - jobManagement - ERROR - status
+2014-03-28 15:56:19,949 - jobManagement - ERROR - add and update user
+2014-03-28 15:56:56,113 - jobManagement - ERROR - namechange
+2014-03-28 15:56:56,235 - jobManagement - ERROR - statusmessage
+2014-03-28 15:56:56,337 - jobManagement - ERROR - status

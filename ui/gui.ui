@@ -1733,7 +1733,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>460</x>
         <y>140</y>
-        <width>256</width>
+        <width>491</width>
         <height>192</height>
        </rect>
       </property>
@@ -1842,7 +1842,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>470</x>
         <y>360</y>
-        <width>241</width>
+        <width>481</width>
         <height>91</height>
        </rect>
       </property>
@@ -1850,11 +1850,20 @@ p, li { white-space: pre-wrap; }
      <widget class="QTextEdit" name="toxTryNotifications">
       <property name="geometry">
        <rect>
-        <x>670</x>
-        <y>40</y>
-        <width>191</width>
-        <height>76</height>
+        <x>650</x>
+        <y>10</y>
+        <width>341</width>
+        <height>121</height>
        </rect>
+      </property>
+      <property name="documentTitle">
+       <string notr="true"/>
+      </property>
+      <property name="undoRedoEnabled">
+       <bool>false</bool>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
      <widget class="QPushButton" name="toxTryNewFriendRequest">

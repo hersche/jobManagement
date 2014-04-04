@@ -196,6 +196,12 @@ class Config:
         self.key = key
         self.value = value
         
+    @staticmethod
+    def getConfigByKey(key):
+      c.execute("SELECT * FROM config WHERE key=?;",(key, ))
+      for row in c.fetchall():
+        return Config(row[0],row[1],row[2])
+      return None
     def save(self, key,  value):
         try:
             c.execute("UPDATE config SET key=?, value=? WHERE coid=?",  (key, value,  self.id))

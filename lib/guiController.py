@@ -1,17 +1,9 @@
 from lib.models import *
 from lib.staticTools import *
-from lib.toxTry import *
-from lib.toxMessageHandler import *
 singleView = False
 singleViewId = -1
 mightyController = Controller()
 #the whole gui...
-class toxThread(QtCore.QThread):
- def __init__(self,ui,tmh):
-  QtCore.QThread.__init__(self)
-  self.tt = ToxTry(ui,tmh)
- def run(self):
-    self.tt.loop()
 class Gui(QtGui.QMainWindow):
     def __init__(self, parent=None):
         logger.debug("|GUI| Init Gui")
@@ -35,11 +27,7 @@ class Gui(QtGui.QMainWindow):
         else:
             self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        #self.tmc = toxController("","")
-        self.tmh = toxMessageHandler()
-        self.toxThread = toxThread(self.ui,self.tmh)
-        #self.updateToxUserList()
-        self.toxThread.start()
+
         self.updateCompanyList(selectFirst=True)
         if singleView:
             self.onCompanyItemClick("singleView")
@@ -141,17 +129,13 @@ class Gui(QtGui.QMainWindow):
             self.ui.companyViewSelect.currentIndexChanged.connect(self.updateCompanyView)
         self.ui.companyViewCalendar.currentPageChanged.connect(self.updateCompanyView)
         self.ui.companyViewCalendarFilter.clicked.connect(self.updateCompanyView)
-        
-
-
-    def updateToxUserList(self):
-        #self.tmc.updateToxUsers()
-       logger.debug("unused method")
-        
-        #for tU in self.tmc.toxUserList:
-          
-
-
+    def closeEvent(self, event):
+      reply = QtGui.QMessageBox.question(self, tr('Really leave tryToxic?'),
+          tr("Are you sure to quit?"), QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
+      if reply == QtGui.QMessageBox.Yes:
+        event.accept()
+      else:
+         event.ignore()
     def tabUpdater(self,  index=0):
         try: 
             ci = self.ui.mainTab.currentIndex()

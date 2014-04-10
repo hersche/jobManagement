@@ -1,11 +1,8 @@
 .kdev4/
 #this is, if you wanna make a backup to restore same idendity and messages.. 
-backtoxMessages.db
-backtoxData
 
-tryToxics.log
-toxData
-toxMessages.db
+jobManagement.log
+jobManagement.db
 
 *.pyc
 

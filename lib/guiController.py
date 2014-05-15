@@ -405,7 +405,7 @@ class Gui(QtGui.QMainWindow):
         for pf in mightyController.personalFinances:
             if cm is not None and pf.name == cm.text():
                 if pf.save(self.ui.pfName.text(), self.ui.pfValue.text(), self.ui.pfDate.text(),self.ui.pfEndDate.text(), self.ui.pfRepeat.currentText(), self.ui.pfRepeatTimes.value(), self.ui.pfPlusMinus.currentText(), self.ui.pfActive.isChecked()) != -1:
-                    self.ui.status.setText(tr("Personal Finance")+" "+self.ui.pfName.text()+" "+tr("saved"))
+                    self.ui.status.showMessage(tr("Personal Finance")+" "+self.ui.pfName.text()+" "+tr("saved"))
                 else:
                     logger.error(tr("Personal Finance")+" "+tr("could not")+" be "+tr("saved")+". DB-Error. The name maybe exist allready?")
                     sdt.aB(tr("Personal Finance")+" "+tr("could not")+" be "+tr("saved")+". DB-Error. The name maybe exist allready?")
@@ -417,7 +417,7 @@ class Gui(QtGui.QMainWindow):
             if cm is not None and pf.name == cm.text():
                 pf.delete()
                 success = True
-                self.ui.status.setText(tr("Charge")+" "+cm.text()+" "+tr("deleted"))
+                self.ui.status.showMessage(tr("Charge")+" "+cm.text()+" "+tr("deleted"))
         if not success:
             logger.error(tr("Charge")+" "+tr("could not")+" be "+tr("deleted"))
             sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("deleted"))
@@ -442,7 +442,7 @@ class Gui(QtGui.QMainWindow):
         for charge in self.currentCompany.charges:
             if cm is not None and charge.name == cm.text():
                 if charge.save(self.ui.chargesName.text(), self.ui.chargesValue.text()) != -1:
-                    self.ui.status.setText(tr("Charge")+" "+self.ui.chargesName.text()+" "+tr("saved"))
+                    self.ui.status.showMessage(tr("Charge")+" "+self.ui.chargesName.text()+" "+tr("saved"))
                 else:
                     logger.error(tr("Charge")+" "+tr("could not")+" be "+tr("saved")+". DB-Error. The name maybe exist allready?")
                     sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("saved")+". DB-Error. The name maybe exist allready?")
@@ -458,7 +458,7 @@ class Gui(QtGui.QMainWindow):
             if cm is not None and charge.name == cm.text():
                 charge.delete()
                 success = True
-                self.ui.status.setText(tr("Charge")+" "+cm.text()+" "+tr("deleted"))
+                self.ui.status.showMessage(tr("Charge")+" "+cm.text()+" "+tr("deleted"))
         if not success:
             logger.error(tr("Charge")+" "+tr("could not")+" be "+tr("deleted"))
             sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("deleted"))
@@ -470,7 +470,7 @@ class Gui(QtGui.QMainWindow):
     def onCreateLoanDistraction(self):
         self.currentCompany.createLoanDistraction(self.ui.loanDistractionName.text(), self.ui.loanDistractionValue.text(),  self.ui.loanDistractionMoney.isChecked())
         # @TODO select the created!
-        self.ui.status.setText(tr("LoanDistraction")+" "+self.ui.loanDistractionName.text()+" "+tr("created"))
+        self.ui.status.showMessage(tr("LoanDistraction")+" "+self.ui.loanDistractionName.text()+" "+tr("created"))
         self.updateLoanDistractionList(True)
     def onSaveLoanDistraction(self):
         cr = self.ui.loanDistractionList.currentRow()
@@ -480,7 +480,7 @@ class Gui(QtGui.QMainWindow):
             if cm is not None and loanDistraction.name == cm.text():
                 loanDistraction.save(self.ui.loanDistractionName.text(), self.ui.loanDistractionValue.text(),  self.ui.loanDistractionMoney.isChecked())
                 success = True
-                self.ui.status.setText(tr("LoanSplit")+" "+self.ui.loanSplitName.text()+" "+tr("saved"))
+                self.ui.status.showMessage(tr("LoanSplit")+" "+self.ui.loanSplitName.text()+" "+tr("saved"))
         if not success:
             logger.error(tr("LoanSplit")+" "+tr("could not")+" be "+tr("saved"))
             sdt.aB(tr("LoanSplit")+" "+tr("could not")+" be "+tr("saved"))
@@ -496,7 +496,7 @@ class Gui(QtGui.QMainWindow):
             if cm is not None and loanDistraction.name == cm.text():
                 loanDistraction.delete()
                 success = True
-                self.ui.status.setText(tr("LoanSplit")+" "+cm.text()+" "+tr("deleted"))
+                self.ui.status.showMessage(tr("LoanSplit")+" "+cm.text()+" "+tr("deleted"))
         if not success:
             logger.error(tr("Charge")+" "+tr("could not")+" be "+tr("saved"))
             sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("saved"))
@@ -509,7 +509,7 @@ class Gui(QtGui.QMainWindow):
     def onCreateConfig(self):
         mightyController.createConfig(self.ui.configKey.text(), self.ui.configValue.text())
         # @TODO select the created!
-        self.ui.status.setText(tr("Config")+" "+self.ui.configKey.text()+" "+tr("created"))
+        self.ui.status.showMessage(tr("Config")+" "+self.ui.configKey.text()+" "+tr("created"))
         if self.ui.configKey.text() == "encrypted" and self.ui.configValue.text() != "None":
             pw, okCancel = QtGui.QInputDialog.getText(None,tr("Password"),tr("Enter Password"),QtGui.QLineEdit.Password)
             self.tmpPw = pw
@@ -524,7 +524,7 @@ class Gui(QtGui.QMainWindow):
         for config in mightyController.configlist:
             if cI is not None and config.key == ciText:
                 config.save(self.ui.configKey.text(), self.ui.configValue.text())
-                self.ui.status.setText(tr("Config")+" "+self.ui.configKey.text()+" "+tr("saved"))
+                self.ui.status.showMessage(tr("Config")+" "+self.ui.configKey.text()+" "+tr("saved"))
                 if self.ui.configKey.text() == "encrypted":
                     if self.ui.configValue.text() != "None":
                       logger.error("not none but "+self.ui.configValue.text())
@@ -544,7 +544,7 @@ class Gui(QtGui.QMainWindow):
             if cm is not None and config.key == cm.text():
                 config.delete()
                 success = True
-                self.ui.status.setText(tr("Charge")+" "+cm.text()+" "+tr("deleted"))
+                self.ui.status.showMessage(tr("Charge")+" "+cm.text()+" "+tr("deleted"))
         if not success:
             logger.error(tr("Charge")+" "+tr("could not")+" be "+tr("saved"))
             sdt.aB(tr("Charge")+" "+tr("could not")+" be "+tr("saved"))
@@ -556,7 +556,7 @@ class Gui(QtGui.QMainWindow):
     #---------------------------------------
     def onCreateCredit(self):
         self.currentCompany.createCredit(self.ui.creditName.text(), self.ui.creditValue.value(), self.ui.creditDate.text(), self.ui.creditPayed.isChecked(), self.ui.creditActive.isChecked())
-        self.ui.status.setText(tr("Credit")+" "+tr("created")+":"+str(self.ui.creditValue.value()))
+        self.ui.status.showMessage(tr("Credit")+" "+tr("created")+":"+str(self.ui.creditValue.value()))
         # @TODO select the created!
         self.updateCreditList(selectFirst=True)
     def onSaveCredit(self):
@@ -567,7 +567,7 @@ class Gui(QtGui.QMainWindow):
             if cm is not None and (credit.name+" / "+str(credit.value) +".- "+credit.date.toString(dbDateFormat)) == cm.text():
                 credit.save(self.ui.creditName.text(), self.ui.creditValue.text(), self.ui.creditDate.text(),   self.ui.creditPayed.isChecked(), self.ui.creditActive.isChecked())
                 success = True
-                self.ui.status.setText(tr("Credit")+" "+self.ui.creditName.text()+":"+self.ui.creditValue.text()+" "+tr("saved"))
+                self.ui.status.showMessage(tr("Credit")+" "+self.ui.creditName.text()+":"+self.ui.creditValue.text()+" "+tr("saved"))
         if not success:
             logger.error(tr("Credit")+" "+tr("could not")+" be "+tr("saved"))
             sdt.aB(tr("Credit")+" "+tr("could not")+" be "+tr("saved"))
@@ -581,7 +581,7 @@ class Gui(QtGui.QMainWindow):
             if cm is not None and (credit.name+" / "+str(credit.value) +".- "+credit.date.toString(dbDateFormat)) == cm.text():
                 credit.delete()
                 success = True
-                self.ui.status.setText(tr("Credit")+" "+self.ui.creditValue.text()+" "+tr("deleted"))
+                self.ui.status.showMessage(tr("Credit")+" "+self.ui.creditValue.text()+" "+tr("deleted"))
         if not success:
             logger.error(tr("Credit")+" "+tr("could not")+" be "+tr("deleted"))
             sdt.aB(tr("Credit")+" "+tr("could not")+" be "+tr("deleted"))
@@ -646,7 +646,7 @@ class Gui(QtGui.QMainWindow):
                     job.save(self.ui.jobname.text(),  self.ui.jobplace.text(),self.ui.jobComment.toPlainText(),   self.ui.hours.text(),self.ui.correctionHours.text(),  self.ui.weekendDays.value(),-1, -1, self.ui.baustellenleiter.text(),  self.ui.active.isChecked(), self.currentCompany.id)
                 else:
                     job.save(self.ui.jobname.text(),  self.ui.jobplace.text(),self.ui.jobComment.toPlainText(),   self.ui.hours.text(),self.ui.correctionHours.text(),  self.ui.weekendDays.value(),  self.ui.startdate.text(),  self.ui.enddate.text(),  self.ui.baustellenleiter.text(),  self.ui.active.isChecked(), self.currentCompany.id)
-                self.ui.status.setText("Job "+job.name+" "+tr("saved"))
+                self.ui.status.showMessage("Job "+job.name+" "+tr("saved"))
         self.updateJobList(False,job.name)
     def onDeleteJob(self):
         cm = self.ui.jobList.currentItem()

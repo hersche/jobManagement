@@ -568,8 +568,9 @@ class Job:
         
     def save(self, name,  place, comment, hours, correctionHours, weekendDays,  startdate, enddate,leader, active, companyid):
             tmpActive = 0
-            startdate = startdate.toString(dbDateFormat)
-            enddate = enddate.toString(dbDateFormat)
+            # startdate = startdate.toString(dbDateFormat)
+            # enddate = enddate.toString(dbDateFormat)
+            print(startdate)
             #logger.debug(str(name+place + comment+ str(hours)+ str(correctionHours)+ str(weekendDays)+  str(startdate)+ str(enddate)+ leader+ str(tmpActive)+ str(companyid)))
             if active == True:
                 tmpActive = 1

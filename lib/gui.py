@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'gui.ui'
 #
-# Created: Fri May 16 00:01:17 2014
+# Created: Tue Jun 10 22:46:12 2014
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -497,6 +497,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.gridLayout = QtGui.QGridLayout()
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
+        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.gridLayout.addItem(spacerItem, 4, 0, 1, 1)
+        spacerItem1 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.gridLayout.addItem(spacerItem1, 3, 0, 1, 1)
         self.companyViewSelect = QtGui.QComboBox(self.tab_5)
         self.companyViewSelect.setObjectName(_fromUtf8("companyViewSelect"))
         self.gridLayout.addWidget(self.companyViewSelect, 0, 0, 1, 1)
@@ -506,6 +510,8 @@ class Ui_MainWindow(object):
         self.companyViewCalendarFilter = QtGui.QCheckBox(self.tab_5)
         self.companyViewCalendarFilter.setObjectName(_fromUtf8("companyViewCalendarFilter"))
         self.gridLayout.addWidget(self.companyViewCalendarFilter, 1, 0, 1, 1)
+        spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.gridLayout.addItem(spacerItem2, 2, 1, 1, 1)
         self.horizontalLayout_2.addLayout(self.gridLayout)
         self.companyViewText = QtGui.QTextEdit(self.tab_5)
         self.companyViewText.setReadOnly(True)
@@ -681,7 +687,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.status)
 
         self.retranslateUi(MainWindow)
-        self.mainTab.setCurrentIndex(0)
+        self.mainTab.setCurrentIndex(2)
         self.tabWidget.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(0)
         self.viewTabs.setCurrentIndex(1)

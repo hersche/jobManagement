@@ -88,6 +88,9 @@ class Controller:
                 logger.error("An DB-error occurred: "+e.args[0])
                 return -1
         def createCompany(self, name,  loan,  perHours,  describtion):
+            """
+             Creates a company, whats beside the personal finance the top-element in hirarchy.
+            """
             logger.debug("|Model|create Company: "+name)
             try:
                 if self.encryptionObject != None:
@@ -101,12 +104,16 @@ class Controller:
                 if e.args[0] == "column name is not unique":
                     return -2
                 return -1
-        def createPersonalFinance(self, name,  value, date, repeat, timesRepeat, plusMinus,  active,  encrypted ):
+            
+        def createPersonalFinance(self, name,  value, date,endDate, repeat, timesRepeat, plusMinus,  active,  encrypted ):
+            """
+            Creates a personal finance - really a separated model.
+            """
             try:
                 if self.encryptionObject != None:
-                    c.execute("INSERT INTO personalFinance (name,  value, date, repeat, timesRepeat, plusMinus,  active,  encrypted) VALUES (?,?,?,?,?,?,?,?);",  (self.encryptionObject.encrypt(name),  self.encryptionObject.encrypt(value), self.encryptionObject.encrypt(date), self.encryptionObject.encrypt(repeat), self.encryptionObject.encrypt(timesRepeat), self.encryptionObject.encrypt(plusMinus),  self.encryptionObject.encrypt(active), self.encryptionObject.name))
+                    c.execute("INSERT INTO personalFinance (name,  value, date, endDate, repeat, timesRepeat, plusMinus,  active,  encrypted) VALUES (?,?,?,?,?,?,?,?,?);",  (self.encryptionObject.encrypt(name),  self.encryptionObject.encrypt(value), self.encryptionObject.encrypt(date),self.encryptionObject.encrypt(endDate),  self.encryptionObject.encrypt(repeat), self.encryptionObject.encrypt(timesRepeat), self.encryptionObject.encrypt(plusMinus),  self.encryptionObject.encrypt(active), self.encryptionObject.name))
                 else:
-                    c.execute("INSERT INTO personalFinance (name,  value, date, repeat, timesRepeat, plusMinus,  active,  encrypted) VALUES (?,?,?,?,?,?,?,?);",  (name,  value, date, repeat, timesRepeat, plusMinus,  active,  "-1"))
+                    c.execute("INSERT INTO personalFinance (name,  value, date, endDate, repeat, timesRepeat, plusMinus,  active,  encrypted) VALUES (?,?,?,?,?,?,?,?,?);",  (name,  value, date, endDate, repeat, timesRepeat, plusMinus,  active,  "-1"))
                 db.commit()
             except sqlite3.Error as e:
                 logger.error("An DB-error occurred: "+e.args[0])

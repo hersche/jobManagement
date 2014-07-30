@@ -39,7 +39,7 @@
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Personal finances&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="data">
        <property name="sizePolicy">
@@ -68,7 +68,7 @@
             <string>Companys and Jobs</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_12">
-            <item row="0" column="0" colspan="3">
+            <item row="0" column="0" colspan="2">
              <layout class="QGridLayout" name="gridLayout_7">
               <item row="0" column="0">
                <widget class="QLabel" name="label">
@@ -102,7 +102,7 @@
               </item>
              </layout>
             </item>
-            <item row="0" column="3" rowspan="7">
+            <item row="0" column="2" rowspan="7">
              <layout class="QVBoxLayout" name="verticalLayout_5">
               <item>
                <layout class="QFormLayout" name="formLayout">
@@ -317,14 +317,14 @@
               </item>
              </layout>
             </item>
-            <item row="1" column="0" colspan="2">
+            <item row="1" column="0">
              <widget class="QLabel" name="label_8">
               <property name="text">
                <string>Companyname</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="2">
+            <item row="1" column="1">
              <widget class="QLineEdit" name="companyname">
               <property name="text">
                <string/>
@@ -338,7 +338,7 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="2">
+            <item row="2" column="1">
              <widget class="QDoubleSpinBox" name="loan">
               <property name="decimals">
                <number>2</number>
@@ -358,7 +358,7 @@
               </property>
              </widget>
             </item>
-            <item row="3" column="2">
+            <item row="3" column="1">
              <widget class="QDoubleSpinBox" name="perHours">
               <property name="decimals">
                <number>2</number>
@@ -371,17 +371,17 @@
               </property>
              </widget>
             </item>
-            <item row="4" column="0" colspan="2">
+            <item row="4" column="0">
              <widget class="QLabel" name="label_35">
               <property name="text">
                <string>Comment / Details</string>
               </property>
              </widget>
             </item>
-            <item row="4" column="2">
+            <item row="4" column="1">
              <widget class="QTextEdit" name="companydescription"/>
             </item>
-            <item row="5" column="2">
+            <item row="5" column="1">
              <layout class="QHBoxLayout" name="horizontalLayout_8">
               <item>
                <widget class="QPushButton" name="createCompany">
@@ -406,10 +406,10 @@
               </item>
              </layout>
             </item>
-            <item row="6" column="1" colspan="2">
+            <item row="6" column="0" colspan="2">
              <widget class="QTabWidget" name="tabWidget_2">
               <property name="currentIndex">
-               <number>0</number>
+               <number>2</number>
               </property>
               <widget class="QWidget" name="tab">
                <attribute name="title">
@@ -1281,13 +1281,13 @@ When you &quot;add to job&quot; it, it becames a workcharge, means it is active 
            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'DejaVu Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif'; font-size:18pt; text-decoration: underline;&quot;&gt;Avaible Config-Keys&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif';&quot;&gt;* lang / language = language - put the right filename (*.qm in your folder) there&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif';&quot;&gt;* singleview = 1 - enables singleView (experimental)&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif';&quot;&gt;* encrypted : 1=CAST, 2=Blowfish, 3=DES3,4=ARC4,5=XOR,6=AES,7=ARC2 (you need to install pycrypto / python3-crypto @ *buntu). Put &amp;quot;None&amp;quot; as value for going back to cleartext. Encryption shouldn't need any restart.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif';&quot;&gt;Restart is needed after changes!&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif';&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif'; font-size:9pt;&quot;&gt;* lang / language = language - put the right filename (*.qm in your folder) there&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif'; font-size:9pt;&quot;&gt;* singleview = 1 - enables singleView (experimental)&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif'; font-size:9pt;&quot;&gt;* encrypted : 1=CAST, 2=Blowfish, 3=DES3,4=ARC4,5=XOR,6=AES,7=ARC2 (you need to install pycrypto / python3-crypto @ *buntu). Put &amp;quot;None&amp;quot; as value for going back to cleartext. Encryption shouldn't need any restart.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif'; font-size:9pt;&quot;&gt;Restart is needed after changes!&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Sans Serif'; font-size:9pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>

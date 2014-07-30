@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'gui.ui'
+# Form implementation generated from reading ui file 'ui/gui.ui'
 #
-# Created: Tue Jun 10 22:46:12 2014
-#      by: PyQt4 UI code generator 4.10.4
+# Created: Wed Jul 30 21:31:42 2014
+#      by: PyQt4 UI code generator 4.11.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -81,7 +81,7 @@ class Ui_MainWindow(object):
         self.jobList = QtGui.QListWidget(self.tab_7)
         self.jobList.setObjectName(_fromUtf8("jobList"))
         self.gridLayout_7.addWidget(self.jobList, 1, 1, 1, 2)
-        self.gridLayout_12.addLayout(self.gridLayout_7, 0, 0, 1, 3)
+        self.gridLayout_12.addLayout(self.gridLayout_7, 0, 0, 1, 2)
         self.verticalLayout_5 = QtGui.QVBoxLayout()
         self.verticalLayout_5.setObjectName(_fromUtf8("verticalLayout_5"))
         self.formLayout = QtGui.QFormLayout()
@@ -187,14 +187,14 @@ class Ui_MainWindow(object):
         self.label_29.setObjectName(_fromUtf8("label_29"))
         self.formLayout_9.setWidget(1, QtGui.QFormLayout.LabelRole, self.label_29)
         self.verticalLayout_5.addLayout(self.formLayout_9)
-        self.gridLayout_12.addLayout(self.verticalLayout_5, 0, 3, 7, 1)
+        self.gridLayout_12.addLayout(self.verticalLayout_5, 0, 2, 7, 1)
         self.label_8 = QtGui.QLabel(self.tab_7)
         self.label_8.setObjectName(_fromUtf8("label_8"))
-        self.gridLayout_12.addWidget(self.label_8, 1, 0, 1, 2)
+        self.gridLayout_12.addWidget(self.label_8, 1, 0, 1, 1)
         self.companyname = QtGui.QLineEdit(self.tab_7)
         self.companyname.setText(_fromUtf8(""))
         self.companyname.setObjectName(_fromUtf8("companyname"))
-        self.gridLayout_12.addWidget(self.companyname, 1, 2, 1, 1)
+        self.gridLayout_12.addWidget(self.companyname, 1, 1, 1, 1)
         self.label_15 = QtGui.QLabel(self.tab_7)
         self.label_15.setObjectName(_fromUtf8("label_15"))
         self.gridLayout_12.addWidget(self.label_15, 2, 0, 1, 1)
@@ -203,7 +203,7 @@ class Ui_MainWindow(object):
         self.loan.setMaximum(99999999.99)
         self.loan.setProperty("value", 20.0)
         self.loan.setObjectName(_fromUtf8("loan"))
-        self.gridLayout_12.addWidget(self.loan, 2, 2, 1, 1)
+        self.gridLayout_12.addWidget(self.loan, 2, 1, 1, 1)
         self.label_24 = QtGui.QLabel(self.tab_7)
         self.label_24.setObjectName(_fromUtf8("label_24"))
         self.gridLayout_12.addWidget(self.label_24, 3, 0, 1, 1)
@@ -212,13 +212,13 @@ class Ui_MainWindow(object):
         self.perHours.setMaximum(99999999.99)
         self.perHours.setProperty("value", 1.0)
         self.perHours.setObjectName(_fromUtf8("perHours"))
-        self.gridLayout_12.addWidget(self.perHours, 3, 2, 1, 1)
+        self.gridLayout_12.addWidget(self.perHours, 3, 1, 1, 1)
         self.label_35 = QtGui.QLabel(self.tab_7)
         self.label_35.setObjectName(_fromUtf8("label_35"))
-        self.gridLayout_12.addWidget(self.label_35, 4, 0, 1, 2)
+        self.gridLayout_12.addWidget(self.label_35, 4, 0, 1, 1)
         self.companydescription = QtGui.QTextEdit(self.tab_7)
         self.companydescription.setObjectName(_fromUtf8("companydescription"))
-        self.gridLayout_12.addWidget(self.companydescription, 4, 2, 1, 1)
+        self.gridLayout_12.addWidget(self.companydescription, 4, 1, 1, 1)
         self.horizontalLayout_8 = QtGui.QHBoxLayout()
         self.horizontalLayout_8.setObjectName(_fromUtf8("horizontalLayout_8"))
         self.createCompany = QtGui.QPushButton(self.tab_7)
@@ -230,7 +230,7 @@ class Ui_MainWindow(object):
         self.deleteCompany = QtGui.QPushButton(self.tab_7)
         self.deleteCompany.setObjectName(_fromUtf8("deleteCompany"))
         self.horizontalLayout_8.addWidget(self.deleteCompany)
-        self.gridLayout_12.addLayout(self.horizontalLayout_8, 5, 2, 1, 1)
+        self.gridLayout_12.addLayout(self.horizontalLayout_8, 5, 1, 1, 1)
         self.tabWidget_2 = QtGui.QTabWidget(self.tab_7)
         self.tabWidget_2.setObjectName(_fromUtf8("tabWidget_2"))
         self.tab = QtGui.QWidget()
@@ -376,7 +376,7 @@ class Ui_MainWindow(object):
         self.plainTextEdit.setObjectName(_fromUtf8("plainTextEdit"))
         self.gridLayout_13.addWidget(self.plainTextEdit, 1, 0, 1, 1)
         self.tabWidget_2.addTab(self.tab_3, _fromUtf8(""))
-        self.gridLayout_12.addWidget(self.tabWidget_2, 6, 1, 1, 2)
+        self.gridLayout_12.addWidget(self.tabWidget_2, 6, 0, 1, 2)
         self.tabWidget.addTab(self.tab_7, _fromUtf8(""))
         self.tab_8 = QtGui.QWidget()
         self.tab_8.setObjectName(_fromUtf8("tab_8"))
@@ -687,9 +687,9 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.status)
 
         self.retranslateUi(MainWindow)
-        self.mainTab.setCurrentIndex(2)
+        self.mainTab.setCurrentIndex(0)
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(0)
+        self.tabWidget_2.setCurrentIndex(2)
         self.viewTabs.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -824,12 +824,12 @@ class Ui_MainWindow(object):
         self.textEdit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Ubuntu\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'DejaVu Sans\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\'; font-size:18pt; text-decoration: underline;\">Avaible Config-Keys</span></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\';\">* lang / language = language - put the right filename (*.qm in your folder) there</span></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\';\">* singleview = 1 - enables singleView (experimental)</span></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\';\">* encrypted : 1=CAST, 2=Blowfish, 3=DES3,4=ARC4,5=XOR,6=AES,7=ARC2 (you need to install pycrypto / python3-crypto @ *buntu). Put &quot;None&quot; as value for going back to cleartext. Encryption shouldn\'t need any restart.</span></p>\n"
-"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\';\">Restart is needed after changes!</span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Sans Serif\';\"><br /></p></body></html>", None))
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\'; font-size:9pt;\">* lang / language = language - put the right filename (*.qm in your folder) there</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\'; font-size:9pt;\">* singleview = 1 - enables singleView (experimental)</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\'; font-size:9pt;\">* encrypted : 1=CAST, 2=Blowfish, 3=DES3,4=ARC4,5=XOR,6=AES,7=ARC2 (you need to install pycrypto / python3-crypto @ *buntu). Put &quot;None&quot; as value for going back to cleartext. Encryption shouldn\'t need any restart.</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans Serif\'; font-size:9pt;\">Restart is needed after changes!</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Sans Serif\'; font-size:9pt;\"><br /></p></body></html>", None))
         self.mainTab.setTabText(self.mainTab.indexOf(self.settings), _translate("MainWindow", "Settings", "en"))
 

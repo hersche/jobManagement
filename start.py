@@ -11,7 +11,7 @@ singleViewId = -1
 lang = Config.getConfigByKey("lang")
 if lang==None:
   lang = Config.getConfigByKey("language")
-app = QtGui.QApplication(sys.argv)
+app = QtWidgets.QApplication(sys.argv)
 translator = QtCore.QTranslator()
 if lang is not None:
   translator.load(lang.value,"./lang/")

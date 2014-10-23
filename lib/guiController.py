@@ -4,7 +4,7 @@ singleView = False
 singleViewId = -1
 mightyController = Controller()
 #the whole gui...
-class Gui(QtGui.QMainWindow):
+class Gui(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         logger.debug("|GUI| Init Gui")
         self.roundSum = 0
@@ -14,13 +14,13 @@ class Gui(QtGui.QMainWindow):
         self.showInactive = True
         self.tmpPw = ""
         if mightyController.encryptionObject is not None and mightyController.encryptionObject.name is not "None":
-            pw, okCancel = QtGui.QInputDialog.getText(None,tr("Password"),tr("Enter Password"),QtGui.QLineEdit.Password)
+            pw, okCancel = QtWidgets.QInputDialog.getText(None,tr("Password"),tr("Enter Password"),QtWidgets.QLineEdit.Password)
             self.tmpPw = pw
             mightyController.encryptionObject.setKey(pw)
         if True is not mightyController.singleView:
             from lib.gui import Ui_MainWindow
 
-        QtGui.QWidget.__init__(self, parent)
+        QtWidgets.QWidget.__init__(self, parent)
         
         if mightyController.singleView:
             self.ui = Ui_MainWindowSingle()
@@ -130,9 +130,9 @@ class Gui(QtGui.QMainWindow):
         self.ui.companyViewCalendar.currentPageChanged.connect(self.updateCompanyView)
         self.ui.companyViewCalendarFilter.clicked.connect(self.updateCompanyView)
     def closeEvent(self, event):
-      reply = QtGui.QMessageBox.question(self, tr('Really leave tryToxic?'),
-          tr("Are you sure to quit?"), QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
-      if reply == QtGui.QMessageBox.Yes:
+      reply = QtWidgets.QMessageBox.question(self, tr('Really leave tryToxic?'),
+          tr("Are you sure to quit?"), QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.No)
+      if reply == QtWidgets.QMessageBox.Yes:
         event.accept()
       else:
          event.ignore()

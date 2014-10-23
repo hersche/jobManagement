@@ -1,4 +1,4 @@
-from PyQt4 import QtCore,QtGui
+from PyQt5 import QtCore,QtGui
 from binascii import b2a_hex
 import re
 import logging

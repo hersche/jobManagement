@@ -1,5 +1,5 @@
 from lib.header import *
-from PyQt4 import QtGui 
+from PyQt5 import QtGui 
 from lib.staticTools import *
 #semantic designer tools
 """

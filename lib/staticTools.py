@@ -1,5 +1,5 @@
 from lib.header import *
-from PyQt4 import QtGui 
+from PyQt5 import QtGui, QtWidgets
 
 """
 Semantic designer tools (sdt) are used for getting a good and logical look of the data for the user.
@@ -43,31 +43,31 @@ class sdt:
         loanSum,  loanDistractionSum, realHourLoan, realHourSplitSum,  chargeSum = maths.calcJobSum(company,  job,  workCalendar)
         #building table..
         if not singleView:
-            w = QtGui.QTableWidgetItem(str(company.name))
+            w = QtWidgets.QTableWidgetItem(str(company.name))
             w.setToolTip(company.describtion)
             ui.infoExel.setItem(rowNr,  colNr,   w)
             colNr = colNr + 1
-        w = QtGui.QTableWidgetItem(job.name)
+        w = QtWidgets.QTableWidgetItem(job.name)
         w.setToolTip(job.comment)
         ui.infoExel.setItem(rowNr,  colNr,   w)
         colNr = colNr + 1
-        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(job.place) ))
+        ui.infoExel.setItem(rowNr,  colNr,  QtWidgets.QTableWidgetItem(str(job.place) ))
         colNr = colNr + 1
-        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(str(job.leader) ))
+        ui.infoExel.setItem(rowNr,  colNr,  QtWidgets.QTableWidgetItem(str(job.leader) ))
         colNr = colNr + 1
-        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(maths.rounder(loanSum) + ".- ("+maths.rounder(realHourLoan)+"/std)" ))
+        ui.infoExel.setItem(rowNr,  colNr,  QtWidgets.QTableWidgetItem(maths.rounder(loanSum) + ".- ("+maths.rounder(realHourLoan)+"/std)" ))
         colNr = colNr + 1
-        w = QtGui.QTableWidgetItem(maths.rounder((daySpace * job.hours)+job.correctionHours) +" Std")
+        w = QtWidgets.QTableWidgetItem(maths.rounder((daySpace * job.hours)+job.correctionHours) +" Std")
         w.setToolTip(tr("From")+" "+job.startdate.toString(dbDateFormat)+" to "+job.enddate.toString(dbDateFormat)+ "<hr />"+maths.rounder(daySpace)+ "d (*"+str(job.hours)+"h)+"+str(job.correctionHours)+"correctionH. "+str(weekendPart)+"d was Weekenddays")
         ui.infoExel.setItem(rowNr,  colNr,   w)
         colNr = colNr + 1
-        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(maths.rounder(chargeSum)+".- " ))
+        ui.infoExel.setItem(rowNr,  colNr,  QtWidgets.QTableWidgetItem(maths.rounder(chargeSum)+".- " ))
         colNr = colNr + 1
-        w = QtGui.QTableWidgetItem(maths.rounder(realHourSplitSum)+".- @all")
+        w = QtWidgets.QTableWidgetItem(maths.rounder(realHourSplitSum)+".- @all")
         w.setToolTip(maths.rounder(loanDistractionSum)+".-/"+str(company.perHours)+tr("h")+")")
         ui.infoExel.setItem(rowNr,  colNr,   w)
         colNr = colNr + 1
-        ui.infoExel.setItem(rowNr,  colNr,  QtGui.QTableWidgetItem(maths.rounder(sum + loanSum)+".-" ))
+        ui.infoExel.setItem(rowNr,  colNr,  QtWidgets.QTableWidgetItem(maths.rounder(sum + loanSum)+".-" ))
         return loanSum
     @staticmethod
     def colorChanger(color):
@@ -86,7 +86,7 @@ class sdt:
             widthPerHour = 2.8
         else:
             widthPerHour = 2.0
-        scene = QtGui.QGraphicsScene()
+        scene = QtWidgets.QGraphicsScene()
         pen.setColor(QtGui.QColor(188, 188, 188))
         scene.addLine(0,0,450,0,pen)
         pen=QtGui.QPen(QtCore.Qt.yellow)
